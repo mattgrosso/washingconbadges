@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WashingCon Badge Barcode System</title>
+    <link rel="stylesheet" href="badges.css">
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <header>
+      <h1>WashingCon Badge System</h1>
+
+      <div class="auth-buttons">
+        <button id="authorize-button" style="display: none;">Authorize</button>
+        <button id="signout-button" style="display: none;">Sign Out</button>
+      </div>
+
+      <div class="section-select-buttons">
+        <a id="registration-link" data-section="registration-section">Registration</a>
+        <a id="library-link" data-section="checkout-section">Game Library</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="registration-section">
+        <form>
+          <input id="search-name" type="text" placeholder="name, email, phone, or order#">
+          <button id="find-person">Find</button>
+        </form>
+
+        <div class="user-view">
+          <h2 class="user-name"></h2>
+          <p class="user-email"></p>
+          <p class="user-phone"></p>
+          <form class="user-badge-form">
+            <div class="user-badges"></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="checkout-section hidden">
+        <form>
+          <input id="checkout-badge-barcode" type="text" placeholder="Badge Code">
+          <input id="checkout-game-barcode" type="text" placeholder="Game Code">
+          <button id="checkout-game">Post</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="auth.js" charset="utf-8"></script>
+    <script src="badges.js" charset="utf-8"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>
