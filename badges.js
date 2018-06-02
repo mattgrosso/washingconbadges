@@ -66,18 +66,17 @@ function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
 }
 
-/**
- * Just dicking around
- */
- const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
+// Start my own code
 
-// Ok, here's what I want to do. I want to look up someone's name from the list
-// and return the value to the right of thier name.
+const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
 // Start Nav functions
 const navLinks = document.querySelectorAll('.section-select-buttons a');
 const sections = document.querySelectorAll('main > section');
 
+/**
+ * Adds click events to the nav links for single paginess
+ */
 navLinks.forEach(function (each) {
   each.addEventListener('click', function () {
     sections.forEach(function (eachSection) {
@@ -90,6 +89,11 @@ navLinks.forEach(function (each) {
 // End Nav functions
 
 // Start Registration functions
+/**
+ * Adds event to form submit to find user in spreadsheet and return user data
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 document.querySelector('#find-person').addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -98,47 +102,15 @@ document.querySelector('#find-person').addEventListener('click', function (event
   findUser(searchString);
 });
 
-document.querySelector('.user-badges').addEventListener('keydown', function (event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    const target = event.target;
-    const badgeCode = target.value;
-    const userRow = target.dataset.row;
-
-    addBadgeCodeToUser(badgeCode, userRow);
-  }
-});
-
-function addBadgeCodeToUser(badgeCode, userRow) {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `${userRow}:${userRow}`
-  }).then(function (response) {
-    let userBadgeArray = [];
-    if (response.result.values[0][5]) {
-      userBadgeArray = JSON.parse(response.result.values[0][5]);
-    }
-    userBadgeArray.push(parseInt(badgeCode));
-    const jsonBadgeArray = JSON.stringify(userBadgeArray);
-    gapi.client.sheets.spreadsheets.values.update({
-      spreadsheetId: sheetId,
-      range: `F${userRow}`,
-      valueInputOption: 'USER_ENTERED',
-      resource: {
-          values: [
-            [jsonBadgeArray]
-          ]
-        }
-    }).then(function (response) {
-      console.log(response);
-    });
-  });
-}
-
+/**
+ * Retrieves user data for user that contains matching textContent
+ * @param  {string} searchString  This is the query string from the form. It can
+ *                                be name, email, or phone. // TODO: It would be nice if this could find partial matches and could return multiple options to choose from.
+ */
 function findUser(searchString) {
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: `A:E`
+    range: `A:E` // TODO: This is basically a magic number. Is there a way to make it less magical?
   }).then(function (response) {
     const data = response.result.values;
 
@@ -160,16 +132,26 @@ function findUser(searchString) {
   });
 }
 
+/**
+ * Adds text content to user profile in registration view.
+ */
 function buildUserView(registrationEntry) {
   addTextToElement('.user-view .user-name', registrationEntry.name);
   addTextToElement('.user-view .user-email', registrationEntry.email);
   addTextToElement('.user-view .user-phone', registrationEntry.phone);
 }
 
+/**
+ * Adds given text to given element
+ */
 function addTextToElement(element, text) {
   document.querySelector(element).textContent = text;
 }
 
+/**
+ * Builds the correct number of badge inputs for the given user and puts them in
+ * the DOM.
+ */
 function buildBadgeCodeInputs(registrationEntry) {
   let inputCount = registrationEntry.quantity;
   const userBadges = document.querySelector('.user-view .user-badges');
@@ -182,13 +164,60 @@ function buildBadgeCodeInputs(registrationEntry) {
   userBadges.innerHTML = inputs;
 }
 
+/**
+ * Adds event to enter key press on badge inputs (mostly triggered by scanner)
+ */
+document.querySelector('.user-badges').addEventListener('keydown', function (event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    const target = event.target;
+    const badgeCode = target.value;
+    const userRow = target.dataset.row;
+
+    addBadgeCodeToUser(badgeCode, userRow);
+  }
+});
+
+/**
+ * Gets UserRow from Sheets and adds the new badge into the array of badge numbers
+ * @param {[type]} badgeCode [description]
+ * @param {[type]} userRow   [description]
+ */
+function addBadgeCodeToUser(badgeCode, userRow) {
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: `${userRow}:${userRow}` // TODO: Maybe we could not grab the whole row but just grab the cell instead.
+  }).then(function (response) {
+    let userBadgeArray = [];
+    if (response.result.values[0][5]) {
+      userBadgeArray = JSON.parse(response.result.values[0][5]);
+    }
+    userBadgeArray.push(parseInt(badgeCode));
+    const jsonBadgeArray = JSON.stringify(userBadgeArray);
+    gapi.client.sheets.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: `F${userRow}`,
+      valueInputOption: 'USER_ENTERED',
+      resource: {
+          values: [
+            [jsonBadgeArray]
+          ]
+        }
+    }).then(function () {
+      console.log('Badge added to user row');
+      // TODO: Perhaps include a verification step here that retrieves the data and
+      // checks that it's been added.
+    });
+  });
+}
+
 // End Registration functions
 
 // Start Library functions
 
 /**
  * When the badge is scanned at the library, it moves to the next field instead
- * of submitting the form
+ * of submitting the form. This does that.
  */
 document.querySelector('#checkout-badge-barcode').addEventListener('keydown', function (event) {
   if (event.keyCode === 13) {
@@ -197,6 +226,9 @@ document.querySelector('#checkout-badge-barcode').addEventListener('keydown', fu
   }
 });
 
+/**
+ * Adds event for when checkout form is subbmitted.
+ */
 document.querySelector('#checkout-game').addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -206,17 +238,23 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
   postValueToPersonRow(badgeCode, gameCode);
 });
 
+/**
+ * Goes and finds badge number among all the rows in the Sheet
+ */
 function postValueToPersonRow(badgeCode, gameCode) {
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: 'F:F'
+    range: 'F:F' // TODO: This is another magic number. Can we make it less magical?
   }).then(function (response) {
-    // The ''+ 1' is there to convert a 0-index array to a 1-index sheet
-    const entryRow = findValueInArrays(badgeCode, response.result.values) + 1;
+    const entryRow = findValueInArrays(badgeCode, response.result.values);
     postValueToRowAndColumn(gameCode, entryRow, 'G');
   });
 }
 
+/**
+ * Searches nested arrays for value and returns the row number of the correct user
+ */
+// TODO: It would be great if this could determine if it needed to go another level deep dynamically instead of being set to go a certain depth
 function findValueInArrays(value, arrays) {
   let index;
 
@@ -231,12 +269,21 @@ function findValueInArrays(value, arrays) {
   });
 
   if (index >= 0) {
-    return index;
+    // The ''+ 1' is there to convert a 0-index array to a 1-index sheet
+    return index  + 1;
   } else {
     return "Person Not Found";
   }
 }
 
+/**
+ * Retrieves data from given cell and, if it's empty, put the given value there.
+ * Otherwise, it logs that the cell is already full.
+ * @param  {[type]} value  [description]
+ * @param  {[type]} row    [description]
+ * @param  {[type]} column [description]
+ * @return {[type]}        [description]
+ */
 function postValueToRowAndColumn(value, row, column) {
   // Check what value is in that cell
   gapi.client.sheets.spreadsheets.values.get({
@@ -254,10 +301,11 @@ function postValueToRowAndColumn(value, row, column) {
               [value]
             ]
           }
-      }).then(function (response) {
-        console.log(response);
+      }).then(function () {
+        console.log('Data pushed to spreadsheet');
       });
-    } else { // Otherwise just notify us
+    } else {
+      // We need to do something else with this.
       console.log('Cell Full');
     }
   });
