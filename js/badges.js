@@ -240,14 +240,18 @@ function doubleCheckEntry(jsonBadgeArray, userRow, loopCount) {
 // Start Library functions
 
 /**
- * When the badge is scanned at the library, it moves to the next field instead
- * of submitting the form. This does that.
+ * When an element with the class 'enter-to-next-sibling' recieves an 'enter'
+ * it moves to the next field instead of submitting the form.
  */
-document.querySelector('#checkout-badge-barcode').addEventListener('keydown', function (event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    document.querySelector('#checkout-game-barcode').focus();
-  }
+const noEnters = document.querySelectorAll('.enter-to-next-sibling');
+
+noEnters.forEach(function (el) {
+  el.addEventListener('keydown', function (event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      this.nextElementSibling.focus();
+    }
+  });
 });
 
 /**
@@ -332,5 +336,9 @@ function postValueToRowAndColumn(value, row, column) {
       console.log('Cell Full');
     }
   });
+}
+
+function returnGame(badgeCode, gameCode) {
+
 }
 // End Library Funtions
