@@ -1,0 +1,26 @@
+{
+  "name": "washingconbadgesystem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattgrosso/washingconbadges.git"
+  },
+  "author": "Matt Grosso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattgrosso/washingconbadges/issues"
+  },
+  "homepage": "https://github.com/mattgrosso/washingconbadges#readme",
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-notify": "^3.2.0",
+    "gulp-sass": "^4.0.1"
+  }
+}
