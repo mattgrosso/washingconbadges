@@ -240,19 +240,15 @@ function findValueInNestedArrays(value, array) {
 
   if (index >= 0) {
     // The ''+ 1' is there to convert a 0-index array to a 1-index sheet
-    return index  + 1;
+    return index + 1;
   } else {
     return "Person Not Found";
   }
 }
 
 /**
- * Retrieves data from given cell and, if it's empty, put the given value there.
+ * Retrieves data from given cell and, if it's empty, puts the given value there.
  * Otherwise, it logs that the cell is already full.
- * @param  {[type]} value  [description]
- * @param  {[type]} row    [description]
- * @param  {[type]} column [description]
- * @return {[type]}        [description]
  */
 function postValueToRowAndColumn(value, row, column) {
   // Check what value is in that cell
@@ -296,8 +292,6 @@ document.querySelector('#returns-game').addEventListener('click', function (even
 
 function returnGame(badgeCode, gameCode) {
   findUserRow(badgeCode, gameCode);
-  // .then(checkCorrectGame());
-  // .then(clearCell());
 }
 
 function findUserRow(badgeCode, gameCode) {
@@ -331,7 +325,6 @@ function checkCorrectGame(gameCode, userRow, rowNumber) {
   if (userRow[1] === gameCode) {
     const cell = `G${rowNumber}`;
     addGameToHistory(rowNumber, gameCode);
-    // clearCell(gameCode, cell); // TODO: move this
   } else {
     console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1]} checked out.`);
   }
