@@ -174,7 +174,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const badgeCode = target.value;
     const userRow = target.dataset.row;
 
-    addBadgeCodeToUser(badgeCode, userRow);
+    addValueToArrayCell(badgeCode, `F${userRow}`);
   }
 });
 
@@ -228,10 +228,10 @@ function postValueToPersonRow(badgeCode, gameCode) {
 function findValueInNestedArrays(value, array) {
   let index;
 
-  arrays.forEach(function (eachRow, i) {
-    if (eachRow[0][0] === "[") {
+  array.forEach(function (eachRow, i) {
+    if (eachRow.length && eachRow[0][0] === "[") {
       JSON.parse(eachRow[0]).forEach(function (eachCode) {
-        if (eachCode === parseInt(value)) {
+        if (eachCode === value) {
           index = i;
         }
       });
@@ -272,18 +272,77 @@ function postValueToRowAndColumn(value, row, column) {
             ]
           }
       }).then(function () {
-        console.log('Data pushed to spreadsheet');
+        doubleCheckEntry(value, `${column}${row}`);
       });
     } else {
-      // We need to do something else with this.
+      // TODO: We need to do something else with this.
       console.log('Cell Full');
     }
   });
 }
 
-function returnGame(badgeCode, gameCode) {
+/**
+ * Adds event for when returns form is submitted.
+ */
+document.querySelector('#returns-game').addEventListener('click', function (event) {
+  event.preventDefault();
 
+  const badgeCode = document.querySelector('#returns-badge-barcode').value;
+  const gameCode = document.querySelector('#returns-game-barcode').value;
+
+  returnGame(badgeCode, gameCode);
+});
+
+
+function returnGame(badgeCode, gameCode) {
+  findUserRow(badgeCode, gameCode);
+  // .then(checkCorrectGame());
+  // .then(clearCell());
 }
+
+function findUserRow(badgeCode, gameCode) {
+  function containsCode(code) {
+    return code === badgeCode;
+  }
+
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: 'F:G' // TODO: This is another magic number. Can we make it less magical?
+  }).then(function (response) {
+    const values = response.result.values;
+    let userRow;
+    let rowNumber;
+
+    values.forEach(function (eachRow, i) {
+      if (eachRow.length && eachRow[0][0] === "[") {
+        let codeArray = JSON.parse(eachRow[0]);
+        if (codeArray.some(containsCode)) {
+          userRow = values[i];
+          rowNumber = i + 1;
+        }
+      }
+    });
+
+    checkCorrectGame(gameCode, userRow, rowNumber);
+  });
+}
+
+function checkCorrectGame(gameCode, userRow, rowNumber) {
+  if (userRow[1] === gameCode) {
+    const cell = `G${rowNumber}`;
+    addGameToHistory(rowNumber, gameCode);
+    // clearCell(gameCode, cell); // TODO: move this
+  } else {
+    console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1]} checked out.`);
+  }
+}
+
+function addGameToHistory(rowNumber, gameCode) {
+  addValueToArrayCell(gameCode, `H${rowNumber}`).then(function () {
+    clearCell(`G${rowNumber}`);
+  });
+}
+
 // End Library Funtions
 
 // Start Utility Functions
