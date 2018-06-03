@@ -184,6 +184,8 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
  * @param {[type]} userRow   [description]
  */
 function addBadgeCodeToUser(badgeCode, userRow) {
+  let jsonBadgeArray;
+
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
     range: `${userRow}:${userRow}` // TODO: Maybe we could not grab the whole row but just grab the cell instead.
@@ -193,7 +195,7 @@ function addBadgeCodeToUser(badgeCode, userRow) {
       userBadgeArray = JSON.parse(response.result.values[0][5]);
     }
     userBadgeArray.push(parseInt(badgeCode));
-    const jsonBadgeArray = JSON.stringify(userBadgeArray);
+    jsonBadgeArray = JSON.stringify(userBadgeArray);
     gapi.client.sheets.spreadsheets.values.update({
       spreadsheetId: sheetId,
       range: `F${userRow}`,
@@ -204,10 +206,32 @@ function addBadgeCodeToUser(badgeCode, userRow) {
           ]
         }
     }).then(function () {
-      console.log('Badge added to user row');
-      // TODO: Perhaps include a verification step here that retrieves the data and
-      // checks that it's been added.
+      doubleCheckEntry(jsonBadgeArray, userRow);
     });
+  });
+}
+
+/**
+ * Checks to make sure that the value we just added to the cell was in fact added.
+ * Will loop for 5 seconds before giving up.
+ */
+function doubleCheckEntry(jsonBadgeArray, userRow, loopCount) {
+  let loopCountForPassing = loopCount || 0;
+
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: `F${userRow}`
+  }).then(function (response) {
+    if (response.result.values[0][0] !== jsonBadgeArray) {
+      loopCountForPassing++;
+      setTimeout(function () {
+        doubleCheckEntry(jsonBadgeArray, userRow, loopCountForPassing);
+      }, 500);
+    } else if (loopCountForPassing >= 10) {
+      console.log('Giving up');
+    } else {
+      console.log('All Good!');
+    }
   });
 }
 
@@ -246,7 +270,7 @@ function postValueToPersonRow(badgeCode, gameCode) {
     spreadsheetId: sheetId,
     range: 'F:F' // TODO: This is another magic number. Can we make it less magical?
   }).then(function (response) {
-    const entryRow = findValueInArrays(badgeCode, response.result.values);
+    const entryRow = findValueInNestedArrays(badgeCode, response.result.values);
     postValueToRowAndColumn(gameCode, entryRow, 'G');
   });
 }
@@ -254,8 +278,7 @@ function postValueToPersonRow(badgeCode, gameCode) {
 /**
  * Searches nested arrays for value and returns the row number of the correct user
  */
-// TODO: It would be great if this could determine if it needed to go another level deep dynamically instead of being set to go a certain depth
-function findValueInArrays(value, arrays) {
+function findValueInNestedArrays(value, array) {
   let index;
 
   arrays.forEach(function (eachRow, i) {
