@@ -178,63 +178,6 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
   }
 });
 
-/**
- * Gets UserRow from Sheets and adds the new badge into the array of badge numbers
- * @param {[type]} badgeCode [description]
- * @param {[type]} userRow   [description]
- */
-function addBadgeCodeToUser(badgeCode, userRow) {
-  let jsonBadgeArray;
-
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `${userRow}:${userRow}` // TODO: Maybe we could not grab the whole row but just grab the cell instead.
-  }).then(function (response) {
-    let userBadgeArray = [];
-    if (response.result.values[0][5]) {
-      userBadgeArray = JSON.parse(response.result.values[0][5]);
-    }
-    userBadgeArray.push(parseInt(badgeCode));
-    jsonBadgeArray = JSON.stringify(userBadgeArray);
-    gapi.client.sheets.spreadsheets.values.update({
-      spreadsheetId: sheetId,
-      range: `F${userRow}`,
-      valueInputOption: 'USER_ENTERED',
-      resource: {
-          values: [
-            [jsonBadgeArray]
-          ]
-        }
-    }).then(function () {
-      doubleCheckEntry(jsonBadgeArray, userRow);
-    });
-  });
-}
-
-/**
- * Checks to make sure that the value we just added to the cell was in fact added.
- * Will loop for 5 seconds before giving up.
- */
-function doubleCheckEntry(jsonBadgeArray, userRow, loopCount) {
-  let loopCountForPassing = loopCount || 0;
-
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `F${userRow}`
-  }).then(function (response) {
-    if (response.result.values[0][0] !== jsonBadgeArray) {
-      loopCountForPassing++;
-      setTimeout(function () {
-        doubleCheckEntry(jsonBadgeArray, userRow, loopCountForPassing);
-      }, 500);
-    } else if (loopCountForPassing >= 10) {
-      console.log('Giving up');
-    } else {
-      console.log('All Good!');
-    }
-  });
-}
-
 // End Registration functions
 
 // Start Library functions
@@ -342,3 +285,81 @@ function returnGame(badgeCode, gameCode) {
 
 }
 // End Library Funtions
+
+// Start Utility Functions
+
+/**
+ * Adds value to array of values in single cell
+ */
+function addValueToArrayCell(value, cell) {
+  let jsonArray;
+
+  return gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: cell
+  }).then(function (response) {
+    let cellArray = [];
+    if (response.result.values) {
+      cellArray = JSON.parse(response.result.values[0]);
+    }
+    cellArray.push(value);
+    jsonArray = JSON.stringify(cellArray);
+    gapi.client.sheets.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: cell,
+      valueInputOption: 'USER_ENTERED',
+      resource: {
+          values: [
+            [jsonArray]
+          ]
+        }
+    }).then(function () {
+      doubleCheckEntry(jsonArray, cell);
+    });
+  });
+}
+
+/**
+ * Checks to make sure that the value we just added to the cell was in fact added.
+ * Will loop for 5 seconds before giving up.
+ */
+function doubleCheckEntry(value, cell, loopCount) {
+  let loopCountForPassing = loopCount || 0;
+
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: cell
+  }).then(function (response) {
+    const responseValue = response.result.values;
+
+    if (!responseValue && value === '') {
+      console.log(`Confirm that ${cell} is empty`);
+    } else if (responseValue[0][0] !== value) {
+      loopCountForPassing++;
+      setTimeout(function () {
+        doubleCheckEntry(value, cell, loopCountForPassing);
+      }, 500);
+    } else if (loopCountForPassing >= 10) {
+      console.log('Giving up');
+    } else {
+      console.log(`Confirm that ${cell} does contain ${value}`);
+    }
+  });
+}
+
+function clearCell(cell) {
+  gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId: sheetId,
+    range: cell,
+    valueInputOption: 'USER_ENTERED',
+    resource: {
+        values: [
+          ['']
+        ]
+      }
+  }).then(function (response) {
+    doubleCheckEntry('', cell);
+  });
+}
+
+// End Utility Functions
