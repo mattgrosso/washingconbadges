@@ -1,0 +1,100 @@
+.registration-section {
+  padding: 150px 50px;
+
+  .search-form {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+
+    input {
+      border: 1px solid #969696;
+      border-radius: 2px;
+      font-size: 2rem;
+      line-height: 2;
+      margin: 0 20px;
+      padding: 0 25px;
+      text-align: center;
+      width: 450px;
+
+      &::placeholder {
+        transition: color .15s ease-out;
+        text-align: center;
+      }
+
+      &:focus {
+        outline: none;
+        text-align: left;
+
+        &::placeholder {
+          color: transparent;
+        }
+      }
+    }
+
+    button {
+      background: #367a3c;
+      border: 0;
+      border-radius: 2px;
+      box-shadow: 2px 2px 8px 0px #969696;
+      color: white;
+      cursor: pointer;
+      font-size: 2rem;
+      padding: 5px 40px;
+
+      &:hover {
+        box-shadow: 2px 2px 8px 0px #000;
+      }
+    }
+  }
+
+  .not-found-message {
+    padding: 0 7vw;
+
+    h2 {
+      font-size: 2.5rem;
+      margin: 15px 0;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .user-view {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    form {
+      margin: 0 25px;
+
+      .user-badges {
+        display: flex;
+        flex-direction: column;
+
+        input {
+          font-size: 2rem;
+          line-height: 1.5;
+          margin: 10px 0;
+          width: 350px;
+        }
+      }
+    }
+
+    .user-data {
+      margin: 0 25px;
+
+      h2 {
+        font-size: 2rem;
+        margin: 15px 0;
+        text-decoration: underline;
+      }
+
+      p {
+        font-size: 1.15rem;
+        margin: 10px 0;
+      }
+    }
+  }
+}

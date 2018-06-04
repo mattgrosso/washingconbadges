@@ -10,6 +10,11 @@ header {
     width: 30%;
   }
 
+  .section-select-buttons a {
+    cursor: pointer;
+    margin: 0 10px;
+  }
+
   .nav-buttons {
     display: flex;
 
@@ -17,6 +22,7 @@ header {
       a {
         color: black;
         font-size: 1.25rem;
+        text-decoration: none;
         transition: color .125s ease-out;
 
         &.active,

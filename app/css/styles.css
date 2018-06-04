@@ -54,46 +54,11 @@ body {
   height: 100vh;
   padding: 0; }
 
-.hidden {
-  display: none !important; }
-
 main {
   padding: 30px 50px; }
 
-.section-select-buttons a {
-  cursor: pointer;
-  margin: 0 10px; }
-
-form {
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-
-form input {
-  margin: 0 15px;
-  height: 50px;
-  width: 350px;
-  font-family: sans-serif;
-  font-size: 1.5rem;
-  text-align: center; }
-
-form input:focus {
-  background: none;
-  outline: none; }
-
-form button {
-  padding: 20px 40px;
-  font-size: 1.5rem;
-  height: 40px;
-  line-height: 0;
-  background: lightgrey;
-  border: 1px solid green;
-  border-radius: 2px;
-  box-shadow: 2px 3px 1px 0px #0000001a;
-  cursor: pointer; }
-
-form button:focus {
-  outline: none; }
+.hidden {
+  display: none !important; }
 
 header {
   align-items: center;
@@ -104,11 +69,15 @@ header {
   padding: 25px 20px; }
   header img {
     width: 30%; }
+  header .section-select-buttons a {
+    cursor: pointer;
+    margin: 0 10px; }
   header .nav-buttons {
     display: flex; }
     header .nav-buttons.advanced-nav a {
       color: black;
       font-size: 1.25rem;
+      text-decoration: none;
       transition: color .125s ease-out; }
       header .nav-buttons.advanced-nav a.active, header .nav-buttons.advanced-nav a:hover {
         color: #CB2128;
@@ -137,3 +106,69 @@ header {
       color: #CB2128;
       font-size: 2rem;
       text-decoration: underline; }
+
+.registration-section {
+  padding: 150px 50px; }
+  .registration-section .search-form {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px; }
+    .registration-section .search-form input {
+      border: 1px solid #969696;
+      border-radius: 2px;
+      font-size: 2rem;
+      line-height: 2;
+      margin: 0 20px;
+      padding: 0 25px;
+      text-align: center;
+      width: 450px; }
+      .registration-section .search-form input::placeholder {
+        transition: color .15s ease-out;
+        text-align: center; }
+      .registration-section .search-form input:focus {
+        outline: none;
+        text-align: left; }
+        .registration-section .search-form input:focus::placeholder {
+          color: transparent; }
+    .registration-section .search-form button {
+      background: #367a3c;
+      border: 0;
+      border-radius: 2px;
+      box-shadow: 2px 2px 8px 0px #969696;
+      color: white;
+      cursor: pointer;
+      font-size: 2rem;
+      padding: 5px 40px; }
+      .registration-section .search-form button:hover {
+        box-shadow: 2px 2px 8px 0px #000; }
+  .registration-section .not-found-message {
+    padding: 0 7vw; }
+    .registration-section .not-found-message h2 {
+      font-size: 2.5rem;
+      margin: 15px 0; }
+    .registration-section .not-found-message p {
+      font-size: 1.1rem; }
+  .registration-section .user-view {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; }
+    .registration-section .user-view form {
+      margin: 0 25px; }
+      .registration-section .user-view form .user-badges {
+        display: flex;
+        flex-direction: column; }
+        .registration-section .user-view form .user-badges input {
+          font-size: 2rem;
+          line-height: 1.5;
+          margin: 10px 0;
+          width: 350px; }
+    .registration-section .user-view .user-data {
+      margin: 0 25px; }
+      .registration-section .user-view .user-data h2 {
+        font-size: 2rem;
+        margin: 15px 0;
+        text-decoration: underline; }
+      .registration-section .user-view .user-data p {
+        font-size: 1.15rem;
+        margin: 10px 0; }

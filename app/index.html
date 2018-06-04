@@ -26,16 +26,24 @@
 
     <main>
       <section class="registration-section">
-        <form>
-          <!-- TODO: Take my name out of here. This is just for testing. -->
-          <input id="search-name" type="text" placeholder="name, email, phone, or order#" value="Matthew Grosso">
+        <form class="search-form">
+          <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="off" value="Charles Bee">
           <button id="find-person">Find</button>
         </form>
 
+        <div class="not-found-message hidden">
+          <h2>Order not found. Try again.</h2>
+          <p>Maybe check spelling or try searching with a different parameter (email, phone, etc.)</p>
+        </div>
+
         <div class="user-view">
-          <h2 class="user-name"></h2>
-          <p class="user-email"></p>
-          <p class="user-phone"></p>
+          <div class="user-data">
+            <h2 class="user-name"></h2>
+            <p class="user-orderId"></p>
+            <p class="user-email"></p>
+            <p class="user-phone"></p>
+            <!-- I should figure out how to indicate here if someone bought a Sunday only badge -->
+          </div>
           <form class="user-badge-form">
             <div class="user-badges"></div>
           </form>
