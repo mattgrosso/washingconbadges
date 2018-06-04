@@ -66,7 +66,7 @@ function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
 }
 
-// Start my own code
+// Start of my own code
 
 const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
@@ -141,7 +141,9 @@ document.querySelector('#find-person').addEventListener('click', function (event
 /**
  * Retrieves user data for user that contains matching textContent
  * @param  {string} searchString  This is the query string from the form. It can
- *                                be name, email, or phone. // TODO: It would be nice if this could find partial matches and could return multiple options to choose from.
+ *                                be name, email, or phone.
+ *                                // TODO: It would be nice if this could find partial matches and could return multiple options to choose from.
+ *                                // TODO: We also need to account for different formats and last name only should be an option
  */
 function findUser(searchString) {
   gapi.client.sheets.spreadsheets.values.get({
@@ -149,10 +151,10 @@ function findUser(searchString) {
     range: `A:E` // TODO: This is basically a magic number. Is there a way to make it less magical?
   }).then(function (response) {
     const data = response.result.values;
-
+    let registrationEntry;
     data.forEach(function (each, i) {
       if (each.includes(searchString)) {
-        const registrationEntry = {
+        registrationEntry = {
           row: i + 1,
           orderId: each[0],
           email: each[1],
@@ -160,11 +162,17 @@ function findUser(searchString) {
           name: each[3],
           phone: each[4]
         };
-
-        buildUserView(registrationEntry);
-        buildBadgeCodeInputs(registrationEntry);
       }
     });
+
+    if (registrationEntry) {
+      buildUserView(registrationEntry);
+      buildBadgeCodeInputs(registrationEntry);
+      document.querySelector('.not-found-message').classList.add('hidden');
+      document.querySelector('.registration-section form').classList.add('hidden');
+    } else {
+      document.querySelector('.not-found-message').classList.remove('hidden');
+    }
   });
 }
 
@@ -173,15 +181,9 @@ function findUser(searchString) {
  */
 function buildUserView(registrationEntry) {
   addTextToElement('.user-view .user-name', registrationEntry.name);
+  addTextToElement('.user-view .user-orderId', `#${registrationEntry.orderId}`);
   addTextToElement('.user-view .user-email', registrationEntry.email);
-  addTextToElement('.user-view .user-phone', registrationEntry.phone);
-}
-
-/**
- * Adds given text to given element
- */
-function addTextToElement(element, text) {
-  document.querySelector(element).textContent = text;
+  addTextToElement('.user-view .user-phone', prettifyPhoneNumber(registrationEntry.phone));
 }
 
 /**
@@ -234,7 +236,7 @@ noEnters.forEach(function (el) {
 });
 
 /**
- * Adds event for when checkout form is subbmitted.
+ * Adds event for when checkout form is submitted.
  */
 document.querySelector('#checkout-game').addEventListener('click', function (event) {
   event.preventDefault();
@@ -448,6 +450,24 @@ function clearCell(cell) {
   }).then(function (response) {
     doubleCheckEntry('', cell);
   });
+}
+
+/**
+ * Adds given text to given element
+ */
+function addTextToElement(element, text) {
+  document.querySelector(element).textContent = text;
+}
+
+function prettifyPhoneNumber(phoneNumberString) {
+  const prettyPhone = phoneNumberString.split('').filter(function (each) {
+    return !/[^0-9]/.test(each);
+  });
+  prettyPhone.splice(6, 0, '-');
+  prettyPhone.splice(3, 0, '-');
+  prettyPhone.join(' ');
+
+  return prettyPhone.join('');
 }
 
 // End Utility Functions
