@@ -79,6 +79,10 @@ const sections = document.querySelectorAll('main > section');
  */
 navLinks.forEach(function (each) {
   each.addEventListener('click', function () {
+    navLinks.forEach(function (each) {
+      each.classList.remove('active');
+    });
+    this.classList.add('active');
     sections.forEach(function (eachSection) {
       eachSection.classList.add('hidden');
     });
@@ -86,6 +90,38 @@ navLinks.forEach(function (each) {
     thisSection.classList.remove('hidden');
   });
 });
+
+window.addEventListener('keydown', function (event) {
+  const shift = event.shiftKey;
+  const cmd = event.metaKey;
+  const one = event.keyCode === 49;
+  if (cmd && shift && one) {
+    event.preventDefault();
+    toggleOptions();
+  }
+});
+
+function toggleOptions() {
+  const elements = document.querySelectorAll('.advanced-options');
+  const navButtonsState = document.querySelector('.nav-buttons').classList;
+
+  elements.forEach(function (each) {
+    const currentState = each.classList;
+    const active = currentState.contains('active');
+
+    if (currentState.contains('hidden')) {
+      currentState.remove('hidden');
+    } else if (!active) {
+      currentState.add('hidden');
+    }
+  });
+
+  if (navButtonsState.contains('advanced-nav')) {
+    navButtonsState.remove('advanced-nav');
+  } else {
+    navButtonsState.add('advanced-nav');
+  }
+}
 // End Nav functions
 
 // Start Registration functions
