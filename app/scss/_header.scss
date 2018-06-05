@@ -21,6 +21,7 @@ header {
     &.advanced-nav {
       a {
         color: black;
+        cursor: pointer;
         font-size: 1.25rem;
         text-decoration: none;
         transition: color .125s ease-out;
@@ -63,6 +64,7 @@ header {
 
     a {
       color: $washingcon-red;
+      cursor: default;
       font-size: 2rem;
       text-decoration: underline;
     }
