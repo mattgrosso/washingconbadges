@@ -74,15 +74,19 @@
         flex-direction: column;
 
         input {
+          border: solid 1px #969696;
+          border-radius: 2px;
           font-size: 2rem;
           line-height: 1.5;
           margin: 10px 0;
+          padding: 5px 20px;
           width: 350px;
         }
       }
     }
 
     .user-data {
+      flex-grow: 1;
       margin: 0 25px;
 
       h2 {
@@ -94,6 +98,23 @@
       p {
         font-size: 1.15rem;
         margin: 10px 0;
+      }
+
+      .entry-status-message {
+        h3 {
+          color: white;
+          font-size: 1.5rem;
+          margin-top: 60px;
+          padding: 25px 35px;
+        }
+
+        .success-message {
+          background-color: #367a3c;
+        }
+
+        .failure-message {
+          background-color: $washingcon-red;
+        }
       }
     }
   }

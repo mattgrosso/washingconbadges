@@ -27,7 +27,7 @@
     <main>
       <section class="registration-section">
         <form class="search-form">
-          <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="off" value="Charles Bee">
+          <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="off" value="Matthew Grosso">
           <button id="find-person">Find</button>
         </form>
 
@@ -43,6 +43,15 @@
             <p class="user-email"></p>
             <p class="user-phone"></p>
             <!-- I should figure out how to indicate here if someone bought a Sunday only badge -->
+
+            <div class="entry-status-message">
+              <h3 class="success-message hidden">All badges entered!</h3>
+              <h3 class="failure-message hidden">
+                There was an error entering badges.
+                <button class="try-again">Try Again</button>
+              </h3>
+
+            </div>
           </div>
           <form class="user-badge-form">
             <div class="user-badges"></div>
@@ -67,8 +76,8 @@
       </section>
     </main>
 
-    <script src="js/auth.js" charset="utf-8"></script>
-    <script src="js/badges.js" charset="utf-8"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/badges.js"></script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">

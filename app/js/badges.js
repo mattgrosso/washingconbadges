@@ -196,7 +196,7 @@ function buildBadgeCodeInputs(registrationEntry) {
   let inputs = '';
 
   for (var i = 0; i < inputCount; i++) {
-    inputs = `${inputs}<input type="text" data-email="${registrationEntry.email}" data-child-number="${i+1}" data-row="${registrationEntry.row}">`;
+    inputs = `${inputs}<p>Badge #${i + 1}</p><input class="badge-input" type="text" data-email="${registrationEntry.email}" data-inputnumber="${i+1}" data-inputcount="${inputCount}" data-row="${registrationEntry.row}">`;
   }
 
   userBadges.innerHTML = inputs;
@@ -211,10 +211,86 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const target = event.target;
     const badgeCode = target.value;
     const userRow = target.dataset.row;
+    const inputNumber = target.dataset.inputnumber;
+    const inputCount = target.dataset.inputcount;
+    const lastInput = inputNumber === inputCount;
 
     addValueToArrayCell(badgeCode, `F${userRow}`);
+    // TODO: It would be cool if each input turned green when it was confirmed
+    // TODO: I should have the focus clear once you enter the third one
+    if (!lastInput) {
+      target.nextElementSibling.nextElementSibling.focus();
+    } else {
+      confirmAllBadgesEntered(userRow, inputCount);
+    }
   }
 });
+
+function confirmAllBadgesEntered(userRow, count) {
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: `F${userRow}` // TODO: This is basically a magic number. Is there a way to make it less magical?
+  }).then(function (response) {
+    const cellValue = response.result.values[0][0];
+    const badgeInputs = document.querySelectorAll('.badge-input');
+    const badgeValues = [];
+    let loopCount = count || 0;
+
+    badgeInputs.forEach(function (each) {
+      badgeValues.push(each.value);
+    });
+
+    if (cellValue === JSON.stringify(badgeValues)) {
+      displaySuccess();
+    } else if (loopCount > 10) {
+      displayFailure(`F${userRow}`);
+      // TODO: We need to give them some procedure for fixing this failure.
+    } else {
+      loopCount++;
+      setTimeout(function () {
+        confirmAllBadgesEntered(userRow, loopCount);
+      }, 10);
+    }
+  });
+}
+
+function displaySuccess() {
+  document.querySelectorAll('.entry-status-message h3').forEach(function (each) {
+    each.classList.add('hidden');
+  });
+  document.querySelector('.entry-status-message .success-message')
+    .classList.remove('hidden');
+}
+
+function displayFailure(cell) {
+  document.querySelectorAll('.entry-status-message h3').forEach(function (each) {
+    each.classList.add('hidden');
+  });
+  document.querySelector('.try-again').setAttribute('data-cell', cell);
+  document.querySelector('.entry-status-message .failure-message')
+    .classList.remove('hidden');
+}
+
+document.querySelector('.try-again').addEventListener('click', function (event) {
+  event.preventDefault();
+  const badgesCell = event.target.dataset.cell;
+
+  tryEntryAgain(badgesCell);
+});
+
+function tryEntryAgain(cell) {
+  clearCell(cell);
+  const badgeInputs = document.querySelectorAll('.badge-input');
+
+  badgeInputs.forEach(function (each) {
+    each.value = "";
+  });
+  badgeInputs[0].focus();
+
+  document.querySelectorAll('.entry-status-message h3').forEach(function (each) {
+    each.classList.add('hidden');
+  });
+}
 
 // End Registration functions
 
