@@ -389,18 +389,6 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
     } else {
       responseObj = {};
     }
-    // TODO: You need to figure out how to check that each individual badge that someone has, has out one game and no more.
-    // Instead of checking if the cell is empty, we need to check if the cell
-    // has out more games than this row has badges, right? What's the worst that
-    // could happen?
-    // Ooooh, I have a better idea. What if the value in column G were an object?
-    // Then I could look up on that object what game was checked out for the key
-    // that matched the badge being used.
-    // 1. Figure out what is setting that value now.
-    // 2. Figure out what is using that value now.
-    // 3. Figure out how to make the setters and getters use an object instead
-    // 4. Use that object to check, not if 'response.result.values' exists but
-    //    instead if the value at key badge exists.
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
       responseObj[badgeCode] = value;
       gapi.client.sheets.spreadsheets.values.update({
