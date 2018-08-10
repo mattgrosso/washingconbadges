@@ -500,6 +500,26 @@ function confirmGameReturned(success) {
 
 // Start Utility Functions
 
+function getFromGoogle(range) {
+  return gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: range
+  });
+}
+
+function postToGoogle(range, content) {
+  return gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId: sheetId,
+    range: range,
+    valueInputOption: 'USER_ENTERED',
+    resource: {
+        values: [
+          [content]
+        ]
+      }
+  });
+}
+
 /**
  * Adds value to array of values in single cell
  */
