@@ -277,19 +277,7 @@ function buildBadgeCodeInputs(registrationEntry) {
 
   userBadges.innerHTML = inputs;
   checkLocks();
-}
-
-function checkLocks() {
   document.querySelectorAll('.locked-input').forEach(function (each) {
-
-    if (each.previousElementSibling.value) {
-      each.classList.value = 'locked-input fas fa-lock';
-      each.previousElementSibling.setAttribute('disabled', true);
-    } else {
-      each.classList.value = 'locked-input fas fa-unlock';
-      each.previousElementSibling.removeAttribute('disabled');
-    }
-
     each.addEventListener('click', function (event) {
       event.preventDefault();
 
@@ -301,6 +289,18 @@ function checkLocks() {
         this.previousElementSibling.setAttribute('disabled', true);
       }
     });
+  });
+}
+
+function checkLocks() {
+  document.querySelectorAll('.locked-input').forEach(function (each) {
+    if (each.previousElementSibling.value) {
+      each.classList.value = 'locked-input fas fa-lock';
+      each.previousElementSibling.setAttribute('disabled', true);
+    } else {
+      each.classList.value = 'locked-input fas fa-unlock';
+      each.previousElementSibling.removeAttribute('disabled');
+    }
   });
 }
 
