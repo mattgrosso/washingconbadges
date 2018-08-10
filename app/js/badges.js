@@ -132,6 +132,7 @@ function toggleOptions() {
 /**
  * Adds event to form submit to find user in spreadsheet and return user data
  */
+// TODO: This needs to check to see if this person has already checked in. (Think through what we need to do if that comes up)
 document.querySelector('#find-person').addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -148,10 +149,7 @@ document.querySelector('#find-person').addEventListener('click', function (event
  *                                // TODO: We also need to account for different formats and last name only should be an option
  */
 function findUser(searchString) {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `A:E` // TODO: This is basically a magic number. Is there a way to make it less magical?
-  }).then(function (response) {
+  getFromGoogle('A:E').then(function (response) {
     const data = response.result.values;
     let registrationEntry;
 
@@ -233,10 +231,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
 });
 
 function confirmAllBadgesEntered(userRow, count) {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `F${userRow}` // TODO: This is basically a magic number. Is there a way to make it less magical?
-  }).then(function (response) {
+  getFromGoogle(`F${userRow}`).then(function (response) {
     const cellValue = response.result.values[0][0];
     const badgeInputs = document.querySelectorAll('.badge-input');
     const badgeValues = [];
@@ -337,10 +332,7 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
  * Goes and finds badge number among all the rows in the Sheet
  */
 function postValueToPersonRow(badgeCode, gameCode) {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: 'F:F' // TODO: This is another magic number. Can we make it less magical?
-  }).then(function (response) {
+  getFromGoogle('F:F').then(function (response) {
     // response is every value in column F
     const entryRow = findValueInNestedArrays(badgeCode, response.result.values);
     // entryRow will be just the row in the DB that contains the badgeCode
@@ -378,10 +370,7 @@ function findValueInNestedArrays(value, array) {
  */
 function postValueToRowAndColumn(value, badgeCode, row, column) {
   // Check what value is in that cell
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: `${column}${row}`
-  }).then(function (response) {
+  getFromGoogle(`${column}${row}`).then(function (response) {
     let responseObj;
 
     if (response.result.values) {
@@ -391,16 +380,7 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
     }
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
       responseObj[badgeCode] = value;
-      gapi.client.sheets.spreadsheets.values.update({
-        spreadsheetId: sheetId,
-        range: `${column}${row}`,
-        valueInputOption: 'USER_ENTERED',
-        resource: {
-            values: [
-              [JSON.stringify(responseObj)]
-            ]
-          }
-      }).then(function () {
+      postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
         doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, confirmGameCheckout);
       });
 
@@ -450,10 +430,7 @@ function findUserRow(badgeCode, gameCode) {
     return code === badgeCode;
   }
 
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: 'F:G' // TODO: This is another magic number. Can we make it less magical?
-  }).then(function (response) {
+  getFromGoogle('F:G').then(function (response) {
     const values = response.result.values;
     let userRow;
     let rowNumber;
@@ -501,6 +478,7 @@ function confirmGameReturned(success) {
 // Start Utility Functions
 
 function getFromGoogle(range) {
+  console.log(`Retrieving ${range} from database.`);
   return gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
     range: range
@@ -508,6 +486,7 @@ function getFromGoogle(range) {
 }
 
 function postToGoogle(range, content) {
+  console.log(`Posting ${content} to ${range} in database.`);
   return gapi.client.sheets.spreadsheets.values.update({
     spreadsheetId: sheetId,
     range: range,
@@ -526,26 +505,14 @@ function postToGoogle(range, content) {
 function addValueToArrayCell(value, cell) {
   let jsonArray;
 
-  return gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: cell
-  }).then(function (response) {
+  return getFromGoogle(cell).then(function (response) {
     let cellArray = [];
     if (response.result.values) {
       cellArray = JSON.parse(response.result.values[0]);
     }
     cellArray.push(value);
     jsonArray = JSON.stringify(cellArray);
-    gapi.client.sheets.spreadsheets.values.update({
-      spreadsheetId: sheetId,
-      range: cell,
-      valueInputOption: 'USER_ENTERED',
-      resource: {
-          values: [
-            [jsonArray]
-          ]
-        }
-    }).then(function () {
+    postToGoogle(cell, jsonArray).then(function () {
       doubleCheckEntry(jsonArray, cell, confirmGameReturned);
     });
   });
@@ -561,10 +528,7 @@ function addValueToArrayCell(value, cell) {
 function doubleCheckEntry(value, cell, callBack, loopCount) {
   let loopCountForPassing = loopCount || 0;
 
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: cell
-  }).then(function (response) {
+  getFromGoogle(cell).then(function (response) {
     const responseValue = response.result.values;
 
     if (!responseValue && value === '') {
@@ -584,16 +548,7 @@ function doubleCheckEntry(value, cell, callBack, loopCount) {
 }
 
 function clearCell(cell) {
-  gapi.client.sheets.spreadsheets.values.update({
-    spreadsheetId: sheetId,
-    range: cell,
-    valueInputOption: 'USER_ENTERED',
-    resource: {
-        values: [
-          ['']
-        ]
-      }
-  }).then(function (response) {
+  postToGoogle(cell, '').then(function (response) {
     doubleCheckEntry('', cell, console.log);
   });
 }
@@ -601,23 +556,11 @@ function clearCell(cell) {
 function clearValueFromObjectInCell(key, cell) {
   let valueObj;
 
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: sheetId,
-    range: cell
-  }).then(function (response) {
+  getFromGoogle(cell).then(function (response) {
     valueObj = JSON.parse(response.result.values[0][0] || {});
     valueObj[key] = '';
 
-    gapi.client.sheets.spreadsheets.values.update({
-      spreadsheetId: sheetId,
-      range: cell,
-      valueInputOption: 'USER_ENTERED',
-      resource: {
-          values: [
-            [JSON.stringify(valueObj)]
-          ]
-        }
-    }).then(function (response) {
+    postToGoogle(cell, JSON.stringify(valueObj)).then(function (response) {
       doubleCheckEntry(valueObj, cell, console.log);
     });
   });
