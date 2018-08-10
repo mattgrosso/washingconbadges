@@ -94,7 +94,7 @@ navLinks.forEach(function (each) {
 window.addEventListener('keydown', function (event) {
   const shift = event.shiftKey;
   const cmd = event.metaKey;
-  const one = event.keyCode === 49;
+  const one = event.which === 49;
   if (cmd && shift && one) {
     event.preventDefault();
     toggleOptions();
@@ -125,10 +125,12 @@ function toggleOptions() {
 // End Nav functions
 
 // Start Registration functions
+
+// TODO: I will need to figure out what to do with people who buy their badges at the door
+// TODO: It might also be nice to have people get their shirts here... not sure though. That may clog things too much.
+
 /**
  * Adds event to form submit to find user in spreadsheet and return user data
- * @param  {[type]} event [description]
- * @return {[type]}       [description]
  */
 document.querySelector('#find-person').addEventListener('click', function (event) {
   event.preventDefault();
@@ -152,6 +154,7 @@ function findUser(searchString) {
   }).then(function (response) {
     const data = response.result.values;
     let registrationEntry;
+
     data.forEach(function (each, i) {
       if (each.includes(searchString)) {
         registrationEntry = {
@@ -172,6 +175,9 @@ function findUser(searchString) {
       document.querySelector('.registration-section form').classList.add('hidden');
     } else {
       document.querySelector('.not-found-message').classList.remove('hidden');
+      setTimeout(function () {
+        document.querySelector('.not-found-message').classList.add('hidden');
+      }, 3000);
     }
   });
 }
@@ -206,7 +212,7 @@ function buildBadgeCodeInputs(registrationEntry) {
  * Adds event to enter key press on badge inputs (mostly triggered by scanner)
  */
 document.querySelector('.user-badges').addEventListener('keydown', function (event) {
-  if (event.keyCode === 13) {
+  if (event.which === 13 || event.which === 9) {
     event.preventDefault();
     const target = event.target;
     const badgeCode = target.value;
@@ -216,11 +222,11 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const lastInput = inputNumber === inputCount;
 
     addValueToArrayCell(badgeCode, `F${userRow}`);
-    // TODO: It would be cool if each input turned green when it was confirmed
-    // TODO: I should have the focus clear once you enter the third one
+
     if (!lastInput) {
       target.nextElementSibling.nextElementSibling.focus();
     } else {
+      target.blur();
       confirmAllBadgesEntered(userRow, inputCount);
     }
   }
@@ -244,7 +250,6 @@ function confirmAllBadgesEntered(userRow, count) {
       displaySuccess();
     } else if (loopCount > 10) {
       displayFailure(`F${userRow}`);
-      // TODO: We need to give them some procedure for fixing this failure.
     } else {
       loopCount++;
       setTimeout(function () {
@@ -292,6 +297,11 @@ function tryEntryAgain(cell) {
   });
 }
 
+document.querySelector('.next-guest').addEventListener('click', function (event) {
+  event.preventDefault();
+  window.location.reload();
+});
+
 // End Registration functions
 
 // Start Library functions
@@ -304,7 +314,7 @@ const noEnters = document.querySelectorAll('.enter-to-next-sibling');
 
 noEnters.forEach(function (el) {
   el.addEventListener('keydown', function (event) {
-    if (event.keyCode === 13) {
+    if (event.which === 13) {
       event.preventDefault();
       this.nextElementSibling.focus();
     }
@@ -370,7 +380,7 @@ function postValueToRowAndColumn(value, row, column) {
     spreadsheetId: sheetId,
     range: `${column}${row}`
   }).then(function (response) {
-    // TODO: Start here. You need to figure out how to check that each individual badge that someone has, has out one game and no more.
+    // TODO: You need to figure out how to check that each individual badge that someone has, has out one game and no more.
     if (!response.result.values) {
       gapi.client.sheets.spreadsheets.values.update({
         spreadsheetId: sheetId,
@@ -382,13 +392,25 @@ function postValueToRowAndColumn(value, row, column) {
             ]
           }
       }).then(function () {
-        doubleCheckEntry(value, `${column}${row}`);
+        doubleCheckEntry(value, `${column}${row}`, 0, confirmGameCheckout);
       });
     } else {
-      // TODO: We need to do something else with this.
-      console.log('Cell Full');
+      const message = `Please return ${response.result.values[0][0]} before checking out another game.`;
+
+      document.querySelector('.checkout-failure').classList.remove('hidden');
+      document.querySelector('.checkout-failure').textContent = message;
+      document.querySelector('.checkout-success').classList.add('hidden');
     }
   });
+}
+
+function confirmGameCheckout(success) {
+  if (success) {
+    document.querySelector('.checkout-failure').classList.add('hidden');
+    document.querySelector('.checkout-success').classList.remove('hidden');
+  } else {
+    console.log('It failed');
+  }
 }
 
 /**
@@ -489,7 +511,8 @@ function addValueToArrayCell(value, cell) {
  * Checks to make sure that the value we just added to the cell was in fact added.
  * Will loop for 5 seconds before giving up.
  */
-function doubleCheckEntry(value, cell, loopCount) {
+// TODO: We need to go back and add a callBack for every place that I'm using this Fn.
+function doubleCheckEntry(value, cell, loopCount, success) {
   let loopCountForPassing = loopCount || 0;
 
   gapi.client.sheets.spreadsheets.values.get({
@@ -500,15 +523,16 @@ function doubleCheckEntry(value, cell, loopCount) {
 
     if (!responseValue && value === '') {
       console.log(`Confirm that ${cell} is empty`);
+      success(true);
     } else if (responseValue[0][0] !== value) {
       loopCountForPassing++;
       setTimeout(function () {
         doubleCheckEntry(value, cell, loopCountForPassing);
       }, 500);
     } else if (loopCountForPassing >= 10) {
-      console.log('Giving up');
+      success(false);
     } else {
-      console.log(`Confirm that ${cell} does contain ${value}`);
+      success(true);
     }
   });
 }

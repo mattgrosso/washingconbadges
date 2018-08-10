@@ -25,9 +25,9 @@
     </header>
 
     <main>
-      <section class="registration-section">
+      <section class="registration-section hidden">
         <form class="search-form">
-          <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="off" value="Matthew Grosso">
+          <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="off">
           <button id="find-person">Find</button>
         </form>
 
@@ -45,7 +45,10 @@
             <!-- I should figure out how to indicate here if someone bought a Sunday only badge -->
 
             <div class="entry-status-message">
-              <h3 class="success-message hidden">All badges entered!</h3>
+              <h3 class="success-message hidden">
+                All badges entered!
+                <button class="next-guest">Next Guest</button>
+              </h3>
               <h3 class="failure-message hidden">
                 There was an error entering badges.
                 <button class="try-again">Try Again</button>
@@ -59,12 +62,18 @@
         </div>
       </section>
 
-      <section class="checkout-section hidden">
+      <section class="checkout-section">
         <form>
           <input id="checkout-badge-barcode" class="enter-to-next-sibling" type="text" placeholder="Badge Code">
           <input id="checkout-game-barcode" type="text" placeholder="Game Code">
           <button id="checkout-game">Checkout</button>
         </form>
+        <div class="checkout-success hidden">
+          <h2>All set!</h2>
+        </div>
+        <div class="checkout-failure hidden">
+          <h2>Sorry, you already have a game out.</h2>
+        </div>
       </section>
 
       <section class="returns-section hidden">
