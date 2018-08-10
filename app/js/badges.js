@@ -341,8 +341,10 @@ function postValueToPersonRow(badgeCode, gameCode) {
     spreadsheetId: sheetId,
     range: 'F:F' // TODO: This is another magic number. Can we make it less magical?
   }).then(function (response) {
+    // response is every value in column F
     const entryRow = findValueInNestedArrays(badgeCode, response.result.values);
-    postValueToRowAndColumn(gameCode, entryRow, 'G');
+    // entryRow will be just the row in the DB that contains the badgeCode
+    postValueToRowAndColumn(gameCode, badgeCode, entryRow, 'G');
   });
 }
 
@@ -374,32 +376,57 @@ function findValueInNestedArrays(value, array) {
  * Retrieves data from given cell and, if it's empty, puts the given value there.
  * Otherwise, it logs that the cell is already full.
  */
-function postValueToRowAndColumn(value, row, column) {
+function postValueToRowAndColumn(value, badgeCode, row, column) {
   // Check what value is in that cell
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
     range: `${column}${row}`
   }).then(function (response) {
+    let responseObj;
+
+    if (response.result.values) {
+      responseObj = JSON.parse(response.result.values[0][0]);
+    } else {
+      responseObj = {};
+    }
     // TODO: You need to figure out how to check that each individual badge that someone has, has out one game and no more.
-    if (!response.result.values) {
+    // Instead of checking if the cell is empty, we need to check if the cell
+    // has out more games than this row has badges, right? What's the worst that
+    // could happen?
+    // Ooooh, I have a better idea. What if the value in column G were an object?
+    // Then I could look up on that object what game was checked out for the key
+    // that matched the badge being used.
+    // 1. Figure out what is setting that value now.
+    // 2. Figure out what is using that value now.
+    // 3. Figure out how to make the setters and getters use an object instead
+    // 4. Use that object to check, not if 'response.result.values' exists but
+    //    instead if the value at key badge exists.
+    if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
+      responseObj[badgeCode] = value;
       gapi.client.sheets.spreadsheets.values.update({
         spreadsheetId: sheetId,
         range: `${column}${row}`,
         valueInputOption: 'USER_ENTERED',
         resource: {
             values: [
-              [value]
+              [JSON.stringify(responseObj)]
             ]
           }
       }).then(function () {
-        doubleCheckEntry(value, `${column}${row}`, 0, confirmGameCheckout);
+        doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, 0, confirmGameCheckout);
       });
-    } else {
-      const message = `Please return ${response.result.values[0][0]} before checking out another game.`;
+
+    } else { // The object does have a value at a key matching the badge number
+
+      const message = `Please return ${responseObj[badgeCode]} before checking out another game.`;
 
       document.querySelector('.checkout-failure').classList.remove('hidden');
       document.querySelector('.checkout-failure').textContent = message;
       document.querySelector('.checkout-success').classList.add('hidden');
+      setTimeout(function () {
+        document.querySelector('.checkout-failure').classList.add('hidden');
+      }, 3000);
+
     }
   });
 }
@@ -409,7 +436,7 @@ function confirmGameCheckout(success) {
     document.querySelector('.checkout-failure').classList.add('hidden');
     document.querySelector('.checkout-success').classList.remove('hidden');
   } else {
-    console.log('It failed');
+    console.log('We tried to post a checkout but it did not match when we double checked it');
   }
 }
 
@@ -430,6 +457,7 @@ function returnGame(badgeCode, gameCode) {
   findUserRow(badgeCode, gameCode);
 }
 
+// TODO: This function will be broken now because I've changed the values in the games column to objects instead of strings
 function findUserRow(badgeCode, gameCode) {
   function containsCode(code) {
     return code === badgeCode;
@@ -510,6 +538,8 @@ function addValueToArrayCell(value, cell) {
 /**
  * Checks to make sure that the value we just added to the cell was in fact added.
  * Will loop for 5 seconds before giving up.
+ * When it is done checking it will call the given callback function with either
+ * a true or a false.
  */
 // TODO: We need to go back and add a callBack for every place that I'm using this Fn.
 function doubleCheckEntry(value, cell, loopCount, success) {
