@@ -126,7 +126,6 @@ function toggleOptions() {
 
 // Start Registration functions
 
-// TODO: I will need to figure out what to do with people who buy their badges at the door
 // TODO: It might also be nice to have people get their shirts here... not sure though. That may clog things too much.
 // TODO: Consider removing all doublechecks as a way to avoid the rate limit at google.
 
@@ -140,6 +139,28 @@ document.querySelector('#find-person').addEventListener('click', function (event
   const searchString = document.querySelector('#search-name').value;
 
   findUser(searchString);
+});
+
+document.querySelector('#toggle-add-badges-form').addEventListener('click', function (event) {
+  event.preventDefault();
+
+  document.querySelector('.add-badges-form').classList.toggle('hidden');
+});
+
+document.querySelector('#add-badges').addEventListener('click', function (event) {
+  event.preventDefault();
+
+  const userData = JSON.parse(document.querySelector('.user-data').dataset.userData);
+  const currentQuantity = parseInt(userData.quantity);
+  const badgesToAdd = parseInt(document.querySelector('.add-badges-form input').value);
+  const newQuantity = currentQuantity + badgesToAdd;
+  const userRow = userData.row;
+  const userName = userData.name;
+
+  postToGoogle(`C${userRow}`, newQuantity).then(function (response) {
+    document.querySelector('.add-badges-form').classList.add('hidden');
+    findUser(userName);
+  });
 });
 
 document.querySelector('#register-new-guest').addEventListener('click', function (event) {
@@ -222,9 +243,10 @@ function findUser(searchString) {
 }
 
 /**
- * Adds text content to user profile in registration view.
+ * Adds data content to user profile in registration view.
  */
 function buildUserView(registrationEntry) {
+  document.querySelector('.user-data').setAttribute('data-user-data', JSON.stringify(registrationEntry));
   addTextToElement('.user-view .user-name', registrationEntry.name);
   addTextToElement('.user-view .user-orderId', `#${registrationEntry.orderId}`);
   addTextToElement('.user-view .user-email', registrationEntry.email);
