@@ -401,7 +401,7 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
             ]
           }
       }).then(function () {
-        doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, 0, confirmGameCheckout);
+        doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, confirmGameCheckout);
       });
 
     } else { // The object does have a value at a key matching the badge number
@@ -440,12 +440,11 @@ document.querySelector('#returns-game').addEventListener('click', function (even
   returnGame(badgeCode, gameCode);
 });
 
-
+// TODO: What is the point of this?
 function returnGame(badgeCode, gameCode) {
   findUserRow(badgeCode, gameCode);
 }
 
-// TODO: This function will be broken now because I've changed the values in the games column to objects instead of strings
 function findUserRow(badgeCode, gameCode) {
   function containsCode(code) {
     return code === badgeCode;
@@ -469,23 +468,32 @@ function findUserRow(badgeCode, gameCode) {
       }
     });
 
-    checkCorrectGame(gameCode, userRow, rowNumber);
+    checkCorrectGame(badgeCode, gameCode, userRow, rowNumber);
   });
 }
 
-function checkCorrectGame(gameCode, userRow, rowNumber) {
-  if (userRow[1] === gameCode) {
+function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
+  const checkedOut = JSON.parse(userRow[1]);
+  if (checkedOut[badgeCode] === gameCode) {
     const cell = `G${rowNumber}`;
-    addGameToHistory(rowNumber, gameCode);
+    addGameToHistory(badgeCode, rowNumber, gameCode);
   } else {
     console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1]} checked out.`);
   }
 }
 
-function addGameToHistory(rowNumber, gameCode) {
+function addGameToHistory(badgeCode, rowNumber, gameCode) {
   addValueToArrayCell(gameCode, `H${rowNumber}`).then(function () {
-    clearCell(`G${rowNumber}`);
+    clearValueFromObjectInCell(badgeCode, `G${rowNumber}`);
   });
+}
+
+function confirmGameReturned(success) {
+  if (success) {
+    console.log('Game returned');
+  } else {
+    console.log('Something went wrong, the game was not returned');
+  }
 }
 
 // End Library Funtions
@@ -518,7 +526,7 @@ function addValueToArrayCell(value, cell) {
           ]
         }
     }).then(function () {
-      doubleCheckEntry(jsonArray, cell);
+      doubleCheckEntry(jsonArray, cell, confirmGameReturned);
     });
   });
 }
@@ -530,7 +538,7 @@ function addValueToArrayCell(value, cell) {
  * a true or a false.
  */
 // TODO: We need to go back and add a callBack for every place that I'm using this Fn.
-function doubleCheckEntry(value, cell, loopCount, success) {
+function doubleCheckEntry(value, cell, callBack, loopCount) {
   let loopCountForPassing = loopCount || 0;
 
   gapi.client.sheets.spreadsheets.values.get({
@@ -541,16 +549,16 @@ function doubleCheckEntry(value, cell, loopCount, success) {
 
     if (!responseValue && value === '') {
       console.log(`Confirm that ${cell} is empty`);
-      success(true);
+      callBack(true);
     } else if (responseValue[0][0] !== value) {
       loopCountForPassing++;
       setTimeout(function () {
-        doubleCheckEntry(value, cell, loopCountForPassing);
+        doubleCheckEntry(value, cell, callBack, loopCountForPassing);
       }, 500);
     } else if (loopCountForPassing >= 10) {
-      success(false);
+      callBack(false);
     } else {
-      success(true);
+      callBack(true);
     }
   });
 }
@@ -566,7 +574,32 @@ function clearCell(cell) {
         ]
       }
   }).then(function (response) {
-    doubleCheckEntry('', cell);
+    doubleCheckEntry('', cell, console.log);
+  });
+}
+
+function clearValueFromObjectInCell(key, cell) {
+  let valueObj;
+
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: cell
+  }).then(function (response) {
+    valueObj = JSON.parse(response.result.values[0][0] || {});
+    valueObj[key] = '';
+
+    gapi.client.sheets.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: cell,
+      valueInputOption: 'USER_ENTERED',
+      resource: {
+          values: [
+            [JSON.stringify(valueObj)]
+          ]
+        }
+    }).then(function (response) {
+      doubleCheckEntry(valueObj, cell, console.log);
+    });
   });
 }
 
