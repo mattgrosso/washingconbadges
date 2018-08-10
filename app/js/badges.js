@@ -222,7 +222,7 @@ function findUser(searchString) {
           quantity: each[2],
           name: each[3],
           phone: each[4],
-          badges: JSON.parse(each[5])
+          badges: JSON.parse(each[5] || false)
         };
       }
     });
@@ -262,10 +262,46 @@ function buildBadgeCodeInputs(registrationEntry) {
   const userBadges = document.querySelector('.user-view .user-badges');
   let inputs = '';
   for (var i = 0; i < inputCount; i++) {
-    inputs = `${inputs}<p>Badge #${i + 1}</p><input class="badge-input" type="text" value="${registrationEntry.badges[i] || ''}" data-email="${registrationEntry.email}" data-inputnumber="${i+1}" data-inputcount="${inputCount}" data-row="${registrationEntry.row}">`;
+    inputs = `${inputs}\
+              <p>Badge #${i + 1}</p>\
+              <input \
+                class="badge-input"\
+                type="text" \
+                value="${registrationEntry.badges[i] || ''}" \
+                data-email="${registrationEntry.email}" \
+                data-inputnumber="${i+1}" \
+                data-inputcount="${inputCount}" \
+                data-row="${registrationEntry.row}">
+              <i class="locked-input fas fa-unlock"></i>`;
   }
 
   userBadges.innerHTML = inputs;
+  checkLocks();
+}
+
+function checkLocks() {
+  document.querySelectorAll('.locked-input').forEach(function (each) {
+
+    if (each.previousElementSibling.value) {
+      each.classList.value = 'locked-input fas fa-lock';
+      each.previousElementSibling.setAttribute('disabled', true);
+    } else {
+      each.classList.value = 'locked-input fas fa-unlock';
+      each.previousElementSibling.removeAttribute('disabled');
+    }
+
+    each.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      this.classList.toggle('fa-lock');
+      this.classList.toggle('fa-unlock');
+      if (this.previousElementSibling.hasAttribute('disabled')) {
+        this.previousElementSibling.removeAttribute('disabled');
+      } else {
+        this.previousElementSibling.setAttribute('disabled', true);
+      }
+    });
+  });
 }
 
 /**
@@ -279,12 +315,19 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const userRow = target.dataset.row;
     const inputNumber = target.dataset.inputnumber;
     const inputCount = target.dataset.inputcount;
-    const lastInput = inputNumber === inputCount;
+    let emptyCount = parseInt(inputCount);
 
+    target.parentNode.querySelectorAll('.badge-input').forEach(function (each) {
+      if (each.value) {
+        emptyCount--;
+      }
+    });
+
+    checkLocks();
     addValueToArrayCell(badgeCode, `F${userRow}`, parseInt(inputNumber) - 1);
 
-    if (!lastInput) {
-      target.nextElementSibling.nextElementSibling.focus();
+    if (emptyCount) {
+      target.nextElementSibling.nextElementSibling.nextElementSibling.focus();
     } else {
       target.blur();
       displaySuccess();
