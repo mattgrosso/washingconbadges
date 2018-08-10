@@ -126,7 +126,6 @@ function toggleOptions() {
 
 // Start Registration functions
 
-// TODO: It might also be nice to have people get their shirts here... not sure though. That may clog things too much.
 // TODO: Consider removing all doublechecks as a way to avoid the rate limit at google.
 
 /**
@@ -210,7 +209,7 @@ function addNewUserToDatabase(user) {
  *                                // TODO: We also need to account for different formats and last name only should be an option
  */
 function findUser(searchString) {
-  getFromGoogle('A:E').then(function (response) {
+  getFromGoogle('A:F').then(function (response) {
     const data = response.result.values;
     let registrationEntry;
 
@@ -222,7 +221,8 @@ function findUser(searchString) {
           email: each[1],
           quantity: each[2],
           name: each[3],
-          phone: each[4]
+          phone: each[4],
+          badges: JSON.parse(each[5])
         };
       }
     });
@@ -261,9 +261,8 @@ function buildBadgeCodeInputs(registrationEntry) {
   let inputCount = registrationEntry.quantity;
   const userBadges = document.querySelector('.user-view .user-badges');
   let inputs = '';
-
   for (var i = 0; i < inputCount; i++) {
-    inputs = `${inputs}<p>Badge #${i + 1}</p><input class="badge-input" type="text" data-email="${registrationEntry.email}" data-inputnumber="${i+1}" data-inputcount="${inputCount}" data-row="${registrationEntry.row}">`;
+    inputs = `${inputs}<p>Badge #${i + 1}</p><input class="badge-input" type="text" value="${registrationEntry.badges[i] || ''}" data-email="${registrationEntry.email}" data-inputnumber="${i+1}" data-inputcount="${inputCount}" data-row="${registrationEntry.row}">`;
   }
 
   userBadges.innerHTML = inputs;
@@ -282,7 +281,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const inputCount = target.dataset.inputcount;
     const lastInput = inputNumber === inputCount;
 
-    addValueToArrayCell(badgeCode, `F${userRow}`);
+    addValueToArrayCell(badgeCode, `F${userRow}`, parseInt(inputNumber) - 1);
 
     if (!lastInput) {
       target.nextElementSibling.nextElementSibling.focus();
@@ -582,7 +581,7 @@ function postRowToGoogle(range, contentArray) {
 /**
  * Adds value to array of values in single cell
  */
-function addValueToArrayCell(value, cell) {
+function addValueToArrayCell(value, cell, index) {
   let jsonArray;
 
   return getFromGoogle(cell).then(function (response) {
@@ -590,7 +589,11 @@ function addValueToArrayCell(value, cell) {
     if (response.result.values) {
       cellArray = JSON.parse(response.result.values[0]);
     }
-    cellArray.push(value);
+    if (index || index === 0) {
+      cellArray[index] = value;
+    } else {
+      cellArray.push(value);
+    }
     jsonArray = JSON.stringify(cellArray);
     postToGoogle(cell, jsonArray).then(function () {
       doubleCheckEntry(jsonArray, cell, confirmGameReturned);
