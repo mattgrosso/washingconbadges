@@ -147,9 +147,39 @@ document.querySelector('#register-new-guest').addEventListener('click', function
 
   document.querySelector('.registration-start-screen').classList.add('hidden');
   document.querySelector('.new-registration-view').classList.remove('hidden');
+});
+
+document.querySelector('#submit-new-registration').addEventListener('click', function (event) {
+  event.preventDefault();
 
   // TODO: Add the new user to the database and then toggle findUser on them. That should drop us right into the normal flow.
+  const name = document.querySelector('.new-registration-form-name').value;
+  const email = document.querySelector('.new-registration-form-email').value;
+  const phone = document.querySelector('.new-registration-form-phone').value;
+  const badgecount = document.querySelector('.new-registration-form-badgecount').value;
+  const id = `registered-day-of-${uuid()}`;
+
+  const newUser = [
+    id,
+    email,
+    badgecount,
+    name,
+    phone
+  ];
+
+  addNewUserToDatabase(newUser);
 });
+
+function addNewUserToDatabase(user) {
+  let nextRow;
+  getFromGoogle('B:B').then(function (response) {
+    nextRow = response.result.values.length + 1;
+
+    postRowToGoogle(`${nextRow}:${nextRow}`, user).then(function (response) {
+      findUser(user[1]);
+    });
+  });
+}
 
 /**
  * Retrieves user data for user that contains matching textContent
@@ -181,6 +211,7 @@ function findUser(searchString) {
       buildBadgeCodeInputs(registrationEntry);
       document.querySelector('.not-found-message').classList.add('hidden');
       document.querySelector('.registration-start-screen').classList.add('hidden');
+      document.querySelector('.new-registration-view').classList.add('hidden');
     } else {
       document.querySelector('.not-found-message').classList.remove('hidden');
       setTimeout(function () {
@@ -235,7 +266,10 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
       target.nextElementSibling.nextElementSibling.focus();
     } else {
       target.blur();
-      confirmAllBadgesEntered(userRow, inputCount);
+      displaySuccess();
+      // TODO: There is an issue with confirmAllBadgesEntered(). Figure out what
+      // it is and solve it.
+      // confirmAllBadgesEntered(userRow, inputCount);
     }
   }
 });
@@ -509,6 +543,20 @@ function postToGoogle(range, content) {
   });
 }
 
+function postRowToGoogle(range, contentArray) {
+  return gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId: sheetId,
+    range: range,
+    valueInputOption: 'USER_ENTERED'
+  },
+  {
+    majorDimension: 'ROWS',
+    values: [
+      contentArray
+    ]
+  });
+}
+
 /**
  * Adds value to array of values in single cell
  */
@@ -591,6 +639,19 @@ function prettifyPhoneNumber(phoneNumberString) {
   prettyPhone.join(' ');
 
   return prettyPhone.join('');
+}
+
+function uuid() {
+  let uuid = "", i, random;
+  for (i = 0; i < 32; i++) {
+    random = Math.random() * 16 | 0;
+
+    if (i == 8 || i == 12 || i == 16 || i == 20) {
+      uuid += "-";
+    }
+    uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+  }
+  return uuid;
 }
 
 // End Utility Functions

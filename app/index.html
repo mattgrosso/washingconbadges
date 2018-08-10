@@ -35,6 +35,16 @@
           <button id="register-new-guest">New Guest</button>
         </div>
 
+        <div class="new-registration-view hidden">
+          <form class="new-registration-form">
+            <input class="new-registration-form-name" type="text" placeholder="Full Name" autocomplete="disabled">
+            <input class="new-registration-form-email" type="email" placeholder="Email Address" autocomplete="disabled">
+            <input class="new-registration-form-phone" type="tel" placeholder="Phone Number" autocomplete="disabled">
+            <input class="new-registration-form-badgecount" type="number" placeholder="Number of Badges" autocomplete="disabled">
+            <button id="submit-new-registration">Submit</button>
+          </form>
+        </div>
+
         <div class="not-found-message hidden">
           <h2>Order not found. Try again.</h2>
           <p>Maybe check spelling or try searching with a different parameter (email, phone, etc.)</p>
@@ -62,16 +72,6 @@
           </div>
           <form class="user-badge-form">
             <div class="user-badges"></div>
-          </form>
-        </div>
-
-        <div class="new-registration-view hidden">
-          <form class="new-registration-form">
-            <input type="text" placeholder="Full Name" autocomplete="disabled">
-            <input type="email" placeholder="Email Address" autocomplete="disabled">
-            <input type="tel" placeholder="Phone Number" autocomplete="disabled">
-            <input type="number" placeholder="Number of Badges" autocomplete="disabled">
-            <button id="submit-new-registration">Submit</button>
           </form>
         </div>
       </section>
