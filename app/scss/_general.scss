@@ -12,6 +12,33 @@ main {
   padding: 30px 50px;
 }
 
+button {
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 2px 2px 8px 0px $french-grey;
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    box-shadow: 2px 2px 8px 0px $black;
+    outline: none;
+  }
+}
+
+input {
+  border: 1px solid $french-grey;
+  border-radius: 2px;
+  font-size: 2rem;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+section {
+  padding: 150px 50px;
+}
+
 .hidden {
   display: none !important;
 }

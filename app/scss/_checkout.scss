@@ -1,0 +1,35 @@
+.checkout-section {
+  form {
+    display: flex;
+    justify-content: center;
+
+    input {
+      line-height: 2;
+      margin: 0 10px;
+      padding: 0 25px;
+      text-align: center;
+      width: 450px;
+
+      &::placeholder {
+        transition: color .15s ease-out;
+        text-align: center;
+      }
+
+      &:focus {
+        text-align: left;
+
+        &::placeholder {
+          color: transparent;
+        }
+      }
+    }
+
+    button {
+      background: $fern-green;
+      color: $white;
+      font-size: 2rem;
+      margin: 0 20px;
+      padding: 5px 40px;
+    }
+  }
+}
