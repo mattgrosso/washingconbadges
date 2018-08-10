@@ -25,11 +25,15 @@
     </header>
 
     <main>
-      <section class="registration-section hidden">
-        <form class="search-form">
-          <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="off">
-          <button id="find-person">Find</button>
-        </form>
+      <section class="registration-section">
+        <div class="registration-start-screen">
+          <form class="search-form">
+            <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="disabled">
+            <button id="find-person">Find</button>
+          </form>
+
+          <button id="register-new-guest">New Guest</button>
+        </div>
 
         <div class="not-found-message hidden">
           <h2>Order not found. Try again.</h2>
@@ -60,9 +64,19 @@
             <div class="user-badges"></div>
           </form>
         </div>
+
+        <div class="new-registration-view hidden">
+          <form class="new-registration-form">
+            <input type="text" placeholder="Full Name" autocomplete="disabled">
+            <input type="email" placeholder="Email Address" autocomplete="disabled">
+            <input type="tel" placeholder="Phone Number" autocomplete="disabled">
+            <input type="number" placeholder="Number of Badges" autocomplete="disabled">
+            <button id="submit-new-registration">Submit</button>
+          </form>
+        </div>
       </section>
 
-      <section class="checkout-section">
+      <section class="checkout-section hidden">
         <form>
           <input id="checkout-badge-barcode" class="enter-to-next-sibling" type="text" placeholder="Badge Code">
           <input id="checkout-game-barcode" type="text" placeholder="Game Code">

@@ -128,6 +128,7 @@ function toggleOptions() {
 
 // TODO: I will need to figure out what to do with people who buy their badges at the door
 // TODO: It might also be nice to have people get their shirts here... not sure though. That may clog things too much.
+// TODO: Consider removing all doublechecks as a way to avoid the rate limit at google.
 
 /**
  * Adds event to form submit to find user in spreadsheet and return user data
@@ -139,6 +140,15 @@ document.querySelector('#find-person').addEventListener('click', function (event
   const searchString = document.querySelector('#search-name').value;
 
   findUser(searchString);
+});
+
+document.querySelector('#register-new-guest').addEventListener('click', function (event) {
+  event.preventDefault();
+
+  document.querySelector('.registration-start-screen').classList.add('hidden');
+  document.querySelector('.new-registration-view').classList.remove('hidden');
+
+  // TODO: Add the new user to the database and then toggle findUser on them. That should drop us right into the normal flow.
 });
 
 /**
@@ -170,7 +180,7 @@ function findUser(searchString) {
       buildUserView(registrationEntry);
       buildBadgeCodeInputs(registrationEntry);
       document.querySelector('.not-found-message').classList.add('hidden');
-      document.querySelector('.registration-section form').classList.add('hidden');
+      document.querySelector('.registration-start-screen').classList.add('hidden');
     } else {
       document.querySelector('.not-found-message').classList.remove('hidden');
       setTimeout(function () {
@@ -524,7 +534,6 @@ function addValueToArrayCell(value, cell) {
  * When it is done checking it will call the given callback function with either
  * a true or a false.
  */
-// TODO: We need to go back and add a callBack for every place that I'm using this Fn.
 function doubleCheckEntry(value, cell, callBack, loopCount) {
   let loopCountForPassing = loopCount || 0;
 
