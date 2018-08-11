@@ -69,7 +69,7 @@ button {
 input {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
-  font-size: 2rem; }
+  font-size: 1.8rem; }
   input:focus {
     outline: none; }
 
@@ -128,17 +128,31 @@ header {
       font-size: 2rem;
       text-decoration: underline; }
 
+.registration-section .registration-start-screen {
+  align-items: center;
+  display: flex;
+  justify-content: space-around; }
+  .registration-section .registration-start-screen #register-new-guest {
+    background: none;
+    color: #487943; }
+
+.registration-section button {
+  background: #487943;
+  border: #487943 solid 2px;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 5px 40px; }
+
 .registration-section .search-form {
   align-items: center;
   display: flex;
-  justify-content: center;
-  margin-bottom: 50px; }
+  justify-content: center; }
   .registration-section .search-form input {
     line-height: 2;
     margin: 0 20px;
     padding: 0 25px;
     text-align: center;
-    width: 450px; }
+    width: 400px; }
     .registration-section .search-form input::placeholder {
       transition: color .15s ease-out;
       text-align: center; }
@@ -146,11 +160,21 @@ header {
       text-align: left; }
       .registration-section .search-form input:focus::placeholder {
         color: transparent; }
-  .registration-section .search-form button {
-    background: #487943;
-    color: #fff;
-    font-size: 2rem;
-    padding: 5px 40px; }
+
+.registration-section .new-registration-view .new-registration-form {
+  margin: 0 auto;
+  width: 50%; }
+  .registration-section .new-registration-view .new-registration-form fieldset {
+    margin: 15px 0; }
+  .registration-section .new-registration-view .new-registration-form input {
+    box-sizing: border-box;
+    display: block;
+    margin-top: 7px;
+    padding: 5px 20px;
+    width: 100%; }
+  .registration-section .new-registration-view .new-registration-form button {
+    float: right;
+    margin: 15px 0; }
 
 .registration-section .not-found-message {
   padding: 0 7vw; }

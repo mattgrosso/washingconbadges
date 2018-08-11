@@ -33,15 +33,27 @@
             <button id="find-person">Find</button>
           </form>
 
-          <button id="register-new-guest">New Guest</button>
+          <button id="register-new-guest">Add New</button>
         </div>
 
         <div class="new-registration-view hidden">
           <form class="new-registration-form">
-            <input class="new-registration-form-name" type="text" placeholder="Full Name" autocomplete="disabled">
-            <input class="new-registration-form-email" type="email" placeholder="Email Address" autocomplete="disabled">
-            <input class="new-registration-form-phone" type="tel" placeholder="Phone Number" autocomplete="disabled">
-            <input class="new-registration-form-badgecount" type="number" placeholder="Number of Badges" autocomplete="disabled">
+            <fieldset>
+              <label>Full Name</label>
+              <input class="new-registration-form-name" type="text" placeholder="Jane Doe" autocomplete="disabled">
+            </fieldset>
+            <fieldset>
+              <label>Email</label>
+              <input class="new-registration-form-email" type="email" placeholder="jane@doe.com" autocomplete="disabled">
+            </fieldset>
+            <fieldset>
+              <label>Phone</label>
+              <input class="new-registration-form-phone" type="tel" placeholder="111-222-3333" autocomplete="disabled">
+            </fieldset>
+            <fieldset>
+              <label>Number of Badges</label>
+              <input class="new-registration-form-badgecount" type="number" autocomplete="disabled">
+            </fieldset>
             <button id="submit-new-registration">Submit</button>
           </form>
         </div>
@@ -51,7 +63,7 @@
           <p>Maybe check spelling or try searching with a different parameter (email, phone, etc.)</p>
         </div>
 
-        <div class="user-view">
+        <div class="user-view hidden">
           <div class="user-data">
             <h2 class="user-name"></h2>
             <p class="user-orderId"></p>
