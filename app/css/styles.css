@@ -161,6 +161,16 @@ header {
       .registration-section .search-form input:focus::placeholder {
         color: transparent; }
 
+.registration-section .new-registration-view .cancel-new-registration {
+  color: #bdbdbd;
+  font-size: 1.5rem;
+  margin: 0 auto;
+  text-align: right;
+  width: 60%; }
+  .registration-section .new-registration-view .cancel-new-registration i:hover {
+    color: black;
+    cursor: pointer; }
+
 .registration-section .new-registration-view .new-registration-form {
   margin: 0 auto;
   width: 50%; }

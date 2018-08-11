@@ -169,6 +169,13 @@ document.querySelector('#register-new-guest').addEventListener('click', function
   document.querySelector('.new-registration-view').classList.remove('hidden');
 });
 
+document.querySelector('.cancel-new-registration i').addEventListener('click', function (event) {
+  event.preventDefault();
+
+  document.querySelector('.registration-start-screen').classList.remove('hidden');
+  document.querySelector('.new-registration-view').classList.add('hidden');
+});
+
 document.querySelector('#submit-new-registration').addEventListener('click', function (event) {
   event.preventDefault();
 
