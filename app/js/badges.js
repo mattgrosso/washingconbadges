@@ -167,13 +167,18 @@ document.querySelector('#register-new-guest').addEventListener('click', function
 
   document.querySelector('.registration-start-screen').classList.add('hidden');
   document.querySelector('.new-registration-view').classList.remove('hidden');
+  document.querySelector('.cancel').classList.remove('hidden');
 });
 
-document.querySelector('.cancel-new-registration i').addEventListener('click', function (event) {
+document.querySelector('.cancel i').addEventListener('click', function (event) {
   event.preventDefault();
 
-  document.querySelector('.registration-start-screen').classList.remove('hidden');
-  document.querySelector('.new-registration-view').classList.add('hidden');
+  document.querySelectorAll('.visible-at-start').forEach(function (each) {
+    each.classList.remove('hidden');
+  });
+  document.querySelectorAll('.hidden-at-start').forEach(function (each) {
+    each.classList.add('hidden');
+  });
 });
 
 document.querySelector('#submit-new-registration').addEventListener('click', function (event) {
@@ -240,11 +245,13 @@ function findUser(searchString) {
       document.querySelector('.not-found-message').classList.add('hidden');
       document.querySelector('.registration-start-screen').classList.add('hidden');
       document.querySelector('.new-registration-view').classList.add('hidden');
+      document.querySelector('.user-view').classList.remove('hidden');
+      document.querySelector('.cancel').classList.remove('hidden');
     } else {
       document.querySelector('.not-found-message').classList.remove('hidden');
       setTimeout(function () {
         document.querySelector('.not-found-message').classList.add('hidden');
-      }, 3000);
+      }, 5000);
     }
   });
 }
@@ -323,6 +330,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const inputNumber = target.dataset.inputnumber;
     const inputCount = target.dataset.inputcount;
     let emptyCount = parseInt(inputCount);
+    const lastInput = inputCount === inputNumber;
 
     target.parentNode.querySelectorAll('.badge-input').forEach(function (each) {
       if (each.value) {

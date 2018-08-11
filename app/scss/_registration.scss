@@ -1,6 +1,4 @@
 .registration-section {
-  padding: 120px 50px;
-
   .registration-start-screen {
     align-items: center;
     display: flex;
@@ -69,19 +67,6 @@
   }
 
   .new-registration-view {
-    .cancel-new-registration {
-      color: $french-grey;
-      font-size: 1.5rem;
-      margin: 0 auto;
-      text-align: right;
-      width: 60%;
-
-      i:hover {
-        color: black;
-        cursor: pointer;
-      }
-    }
-
     .new-registration-form {
       margin: 0 auto;
       width: 50%;

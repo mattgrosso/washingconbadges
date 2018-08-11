@@ -74,10 +74,19 @@ input {
     outline: none; }
 
 section {
-  padding: 150px 50px; }
+  padding: 100px 50px; }
 
 .hidden {
   display: none !important; }
+
+.cancel {
+  color: #bdbdbd;
+  font-size: 1.5rem;
+  margin: 0 auto;
+  text-align: right; }
+  .cancel i:hover {
+    color: black;
+    cursor: pointer; }
 
 header {
   align-items: center;
@@ -128,125 +137,119 @@ header {
       font-size: 2rem;
       text-decoration: underline; }
 
-.registration-section {
-  padding: 120px 50px; }
-  .registration-section .registration-start-screen {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around; }
-    .registration-section .registration-start-screen .register-new-guest-wrapper {
-      text-align: center;
-      width: 100%; }
-      .registration-section .registration-start-screen .register-new-guest-wrapper #register-new-guest {
-        background: none;
-        color: #487943; }
-    .registration-section .registration-start-screen .or-divider {
-      border-top: 1px solid #bdbdbd;
-      font-size: 1.25rem;
-      margin: 40px 0 25px;
-      text-align: center;
-      width: 50%; }
-      .registration-section .registration-start-screen .or-divider span {
-        background: white;
-        padding: 0 10px;
-        position: relative;
-        top: -13px; }
-  .registration-section button {
-    background: #487943;
-    border: #487943 solid 2px;
-    color: #fff;
-    font-size: 1.5rem;
-    padding: 5px 40px; }
-  .registration-section .search-form {
-    align-items: center;
-    display: flex;
-    justify-content: center; }
-    .registration-section .search-form input {
-      line-height: 2;
-      margin: 0 20px;
-      padding: 0 25px;
-      text-align: center;
-      width: 400px; }
-      .registration-section .search-form input::placeholder {
-        transition: color .15s ease-out;
-        text-align: center; }
-      .registration-section .search-form input:focus {
-        text-align: left; }
-        .registration-section .search-form input:focus::placeholder {
-          color: transparent; }
-  .registration-section .new-registration-view .cancel-new-registration {
-    color: #bdbdbd;
-    font-size: 1.5rem;
-    margin: 0 auto;
-    text-align: right;
-    width: 60%; }
-    .registration-section .new-registration-view .cancel-new-registration i:hover {
-      color: black;
-      cursor: pointer; }
-  .registration-section .new-registration-view .new-registration-form {
-    margin: 0 auto;
+.registration-section .registration-start-screen {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; }
+  .registration-section .registration-start-screen .register-new-guest-wrapper {
+    text-align: center;
+    width: 100%; }
+    .registration-section .registration-start-screen .register-new-guest-wrapper #register-new-guest {
+      background: none;
+      color: #487943; }
+  .registration-section .registration-start-screen .or-divider {
+    border-top: 1px solid #bdbdbd;
+    font-size: 1.25rem;
+    margin: 40px 0 25px;
+    text-align: center;
     width: 50%; }
-    .registration-section .new-registration-view .new-registration-form fieldset {
-      margin: 15px 0; }
-    .registration-section .new-registration-view .new-registration-form input {
-      box-sizing: border-box;
-      display: block;
-      margin-top: 7px;
-      padding: 5px 20px;
-      width: 100%; }
-    .registration-section .new-registration-view .new-registration-form button {
-      float: right;
-      margin: 15px 0; }
-  .registration-section .not-found-message {
-    padding: 0 7vw; }
-    .registration-section .not-found-message h2 {
-      font-size: 2.5rem;
-      margin: 15px 0; }
-    .registration-section .not-found-message p {
-      font-size: 1.1rem; }
-  .registration-section .user-view {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; }
-    .registration-section .user-view form {
-      margin: 0 25px; }
-      .registration-section .user-view form .user-badges {
-        display: flex;
-        flex-direction: column; }
-        .registration-section .user-view form .user-badges input {
-          line-height: 1.5;
-          margin: 10px 0;
-          padding: 5px 20px;
-          width: 350px; }
-          .registration-section .user-view form .user-badges input:focus {
-            border: solid 1px #000; }
-    .registration-section .user-view .user-data {
-      flex-grow: 1;
-      margin: 0 25px; }
-      .registration-section .user-view .user-data h2 {
-        font-size: 2rem;
-        margin: 15px 0;
-        text-decoration: underline; }
-      .registration-section .user-view .user-data p {
-        font-size: 1.15rem;
-        margin: 10px 0; }
-      .registration-section .user-view .user-data .entry-status-message h3 {
-        color: #fff;
-        font-size: 1.5rem;
-        margin-top: 60px;
-        padding: 35px; }
-        .registration-section .user-view .user-data .entry-status-message h3 button {
-          background: #fff;
-          color: #000;
-          display: block;
-          font-size: 1.4rem;
-          margin: 30px auto 0;
-          padding: 7px 40px; }
-      .registration-section .user-view .user-data .entry-status-message .success-message {
-        background-color: #487943; }
-      .registration-section .user-view .user-data .entry-status-message .failure-message {
-        background-color: #CB2128; }
+    .registration-section .registration-start-screen .or-divider span {
+      background: white;
+      padding: 0 10px;
+      position: relative;
+      top: -13px; }
+
+.registration-section button {
+  background: #487943;
+  border: #487943 solid 2px;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 5px 40px; }
+
+.registration-section .search-form {
+  align-items: center;
+  display: flex;
+  justify-content: center; }
+  .registration-section .search-form input {
+    line-height: 2;
+    margin: 0 20px;
+    padding: 0 25px;
+    text-align: center;
+    width: 400px; }
+    .registration-section .search-form input::placeholder {
+      transition: color .15s ease-out;
+      text-align: center; }
+    .registration-section .search-form input:focus {
+      text-align: left; }
+      .registration-section .search-form input:focus::placeholder {
+        color: transparent; }
+
+.registration-section .new-registration-view .new-registration-form {
+  margin: 0 auto;
+  width: 50%; }
+  .registration-section .new-registration-view .new-registration-form fieldset {
+    margin: 15px 0; }
+  .registration-section .new-registration-view .new-registration-form input {
+    box-sizing: border-box;
+    display: block;
+    margin-top: 7px;
+    padding: 5px 20px;
+    width: 100%; }
+  .registration-section .new-registration-view .new-registration-form button {
+    float: right;
+    margin: 15px 0; }
+
+.registration-section .not-found-message {
+  padding: 0 7vw; }
+  .registration-section .not-found-message h2 {
+    font-size: 2.5rem;
+    margin: 15px 0; }
+  .registration-section .not-found-message p {
+    font-size: 1.1rem; }
+
+.registration-section .user-view {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; }
+  .registration-section .user-view form {
+    margin: 0 25px; }
+    .registration-section .user-view form .user-badges {
+      display: flex;
+      flex-direction: column; }
+      .registration-section .user-view form .user-badges input {
+        line-height: 1.5;
+        margin: 10px 0;
+        padding: 5px 20px;
+        width: 350px; }
+        .registration-section .user-view form .user-badges input:focus {
+          border: solid 1px #000; }
+  .registration-section .user-view .user-data {
+    flex-grow: 1;
+    margin: 0 25px; }
+    .registration-section .user-view .user-data h2 {
+      font-size: 2rem;
+      margin: 15px 0;
+      text-decoration: underline; }
+    .registration-section .user-view .user-data p {
+      font-size: 1.15rem;
+      margin: 10px 0; }
+    .registration-section .user-view .user-data .entry-status-message h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-top: 60px;
+      padding: 35px; }
+      .registration-section .user-view .user-data .entry-status-message h3 button {
+        background: #fff;
+        color: #000;
+        display: block;
+        font-size: 1.4rem;
+        margin: 30px auto 0;
+        padding: 7px 40px; }
+    .registration-section .user-view .user-data .entry-status-message .success-message {
+      background-color: #487943; }
+    .registration-section .user-view .user-data .entry-status-message .failure-message {
+      background-color: #CB2128; }
 
 .checkout-section form {
   display: flex;

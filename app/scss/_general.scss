@@ -36,9 +36,21 @@ input {
 }
 
 section {
-  padding: 150px 50px;
+  padding: 100px 50px;
 }
 
 .hidden {
   display: none !important;
+}
+
+.cancel {
+  color: $french-grey;
+  font-size: 1.5rem;
+  margin: 0 auto;
+  text-align: right;
+
+  i:hover {
+    color: black;
+    cursor: pointer;
+  }
 }
