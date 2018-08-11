@@ -227,6 +227,7 @@ header {
       padding: 35px; }
       .registration-section .user-view .user-data .entry-status-message h3 button {
         background: #fff;
+        color: #000;
         display: block;
         font-size: 1.4rem;
         margin: 30px auto 0;
