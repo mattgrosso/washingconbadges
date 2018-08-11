@@ -1,18 +1,41 @@
 .registration-section {
+  padding: 120px 50px;
+
   .registration-start-screen {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
 
-    #register-new-guest {
-      background: none;
-      color: $fern-green;
+    .register-new-guest-wrapper {
+      text-align: center;
+      width: 100%;
+
+      #register-new-guest {
+        background: none;
+        color: $fern-green;
+      }
+    }
+
+    .or-divider {
+      border-top: 1px solid $french-grey;
+      font-size: 1.25rem;
+      margin: 40px 0 25px;
+      text-align: center;
+      width: 50%;
+
+      span {
+        background: white;
+        padding: 0 10px;
+        position: relative;
+        top: -13px;
+      }
     }
   }
 
   button {
     background: $fern-green;
-    border: #487943 solid 2px;
+    border: $fern-green solid 2px;
     color: $white;
     font-size: 1.5rem;
     padding: 5px 40px;
