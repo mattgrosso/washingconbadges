@@ -164,6 +164,7 @@
 
         #toggle-add-badges-form {
           align-items: center;
+          cursor: pointer;
           display: flex;
           font-size: 1.5rem;
           justify-content: center;
@@ -218,28 +219,34 @@
       }
 
       .entry-status-message {
-        h3 {
-          color: $white;
-          font-size: 1.5rem;
-          margin-top: 60px;
-          padding: 35px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: 75px;
 
-          button {
-            background: $white;
-            color: $black;
-            display: block;
-            font-size: 1.4rem;
-            margin: 30px auto 0;
-            padding: 7px 40px;
-          }
+        h3 {
+          font-size: 1.25rem;
         }
 
         .success-message {
-          background-color: $fern-green;
+          color: $fern-green;
         }
 
         .failure-message {
-          background-color: $washingcon-red;
+          color: $washingcon-red;
+        }
+      }
+
+      .next-guest {
+        background: $white;
+        color: $black;
+        display: block;
+        font-size: 1.4rem;
+        margin: 0 auto;
+        padding: 7px 40px;
+
+        &:hover {
+          box-shadow: 2px 2px 8px 0px $concord;
         }
       }
     }

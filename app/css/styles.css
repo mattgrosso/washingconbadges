@@ -255,6 +255,7 @@ header {
       width: 100%; }
       .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form {
         align-items: center;
+        cursor: pointer;
         display: flex;
         font-size: 1.5rem;
         justify-content: center;
@@ -289,22 +290,26 @@ header {
     .registration-section .user-view .user-data p {
       font-size: 1.15rem;
       margin: 10px 0; }
-    .registration-section .user-view .user-data .entry-status-message h3 {
-      color: #fff;
-      font-size: 1.5rem;
-      margin-top: 60px;
-      padding: 35px; }
-      .registration-section .user-view .user-data .entry-status-message h3 button {
-        background: #fff;
-        color: #000;
-        display: block;
-        font-size: 1.4rem;
-        margin: 30px auto 0;
-        padding: 7px 40px; }
-    .registration-section .user-view .user-data .entry-status-message .success-message {
-      background-color: #487943; }
-    .registration-section .user-view .user-data .entry-status-message .failure-message {
-      background-color: #CB2128; }
+    .registration-section .user-view .user-data .entry-status-message {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      min-height: 75px; }
+      .registration-section .user-view .user-data .entry-status-message h3 {
+        font-size: 1.25rem; }
+      .registration-section .user-view .user-data .entry-status-message .success-message {
+        color: #487943; }
+      .registration-section .user-view .user-data .entry-status-message .failure-message {
+        color: #CB2128; }
+    .registration-section .user-view .user-data .next-guest {
+      background: #fff;
+      color: #000;
+      display: block;
+      font-size: 1.4rem;
+      margin: 0 auto;
+      padding: 7px 40px; }
+      .registration-section .user-view .user-data .next-guest:hover {
+        box-shadow: 2px 2px 8px 0px #7d7d7d; }
 
 .checkout-section form {
   display: flex;

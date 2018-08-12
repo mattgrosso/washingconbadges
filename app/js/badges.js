@@ -395,27 +395,6 @@ function displayFailure(cell) {
     .classList.remove('hidden');
 }
 
-document.querySelector('.try-again').addEventListener('click', function (event) {
-  event.preventDefault();
-  const badgesCell = event.target.dataset.cell;
-
-  tryEntryAgain(badgesCell);
-});
-
-function tryEntryAgain(cell) {
-  clearCell(cell);
-  const badgeInputs = document.querySelectorAll('.badge-input');
-
-  badgeInputs.forEach(function (each) {
-    each.value = "";
-  });
-  badgeInputs[0].focus();
-
-  document.querySelectorAll('.entry-status-message h3').forEach(function (each) {
-    each.classList.add('hidden');
-  });
-}
-
 document.querySelector('.next-guest').addEventListener('click', function (event) {
   event.preventDefault();
   window.location.reload();
