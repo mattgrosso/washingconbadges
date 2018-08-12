@@ -144,6 +144,7 @@ document.querySelector('#toggle-add-badges-form').addEventListener('click', func
   event.preventDefault();
 
   document.querySelector('.add-badges-form').classList.toggle('hidden');
+  document.querySelector('#toggle-add-badges-form').classList.toggle('rotated');
 });
 
 document.querySelector('#add-badges').addEventListener('click', function (event) {

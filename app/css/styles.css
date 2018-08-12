@@ -52,6 +52,7 @@ body {
   background-size: 103%;
   font-family: 'Lato', sans-serif;
   height: 100vh;
+  overflow: hidden;
   padding: 0; }
 
 main {
@@ -212,18 +213,72 @@ header {
   display: flex;
   justify-content: center;
   align-items: flex-start; }
-  .registration-section .user-view form {
-    margin: 0 25px; }
-    .registration-section .user-view form .user-badges {
+  .registration-section .user-view .user-badge-form {
+    height: 55vh;
+    margin: 0 25px;
+    overflow: hidden;
+    width: 60%; }
+    .registration-section .user-view .user-badge-form .user-badges-scroll-wrapper {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      padding-right: 17px;
+      width: 100%; }
+    .registration-section .user-view .user-badge-form .user-badges {
       display: flex;
-      flex-direction: column; }
-      .registration-section .user-view form .user-badges input {
+      flex-wrap: wrap;
+      margin: auto;
+      width: 100%; }
+      .registration-section .user-view .user-badge-form .user-badges p {
+        width: 100%; }
+      .registration-section .user-view .user-badge-form .user-badges input {
+        box-sizing: border-box;
         line-height: 1.5;
-        margin: 10px 0;
+        margin: 5px 0 15px;
         padding: 5px 20px;
-        width: 350px; }
-        .registration-section .user-view form .user-badges input:focus {
+        width: 85%; }
+        .registration-section .user-view .user-badge-form .user-badges input:focus {
           border: solid 1px #000; }
+      .registration-section .user-view .user-badge-form .user-badges i {
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
+        font-size: 1.25rem;
+        justify-content: center;
+        margin: 5px 0 15px;
+        width: 15%; }
+    .registration-section .user-view .user-badge-form .add-badges-wrapper {
+      display: flex;
+      flex-direction: row-reverse;
+      height: 91px;
+      margin: 0 auto;
+      width: 100%; }
+      .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form {
+        align-items: center;
+        display: flex;
+        font-size: 1.5rem;
+        justify-content: center;
+        transform: rotate(45deg);
+        width: 15%; }
+        .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form.rotated {
+          transform: rotate(0deg); }
+      .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form {
+        align-items: center;
+        display: flex;
+        justify-content: flex-end;
+        width: 85%; }
+        .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form fieldset {
+          width: 80%; }
+          .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form fieldset input {
+            box-sizing: border-box;
+            line-height: 1.5;
+            margin: 5px 0 15px;
+            padding: 5px 20px; }
+        .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form button {
+          font-size: 1.3rem;
+          margin-bottom: 2px;
+          padding: 3px;
+          width: 20%; }
   .registration-section .user-view .user-data {
     flex-grow: 1;
     margin: 0 25px; }

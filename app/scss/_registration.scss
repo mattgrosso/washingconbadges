@@ -108,21 +108,95 @@
     justify-content: center;
     align-items: flex-start;
 
-    form {
+    .user-badge-form {
+      height: 55vh;
       margin: 0 25px;
+      overflow: hidden;
+      width: 60%;
+
+      .user-badges-scroll-wrapper {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding-right: 17px;
+        width: 100%;
+      }
 
       .user-badges {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        margin: auto;
+        width: 100%;
+
+        p {
+          width: 100%;
+        }
 
         input {
+          box-sizing: border-box;
           line-height: 1.5;
-          margin: 10px 0;
+          margin: 5px 0 15px;
           padding: 5px 20px;
-          width: 350px;
+          width: 85%;
 
           &:focus {
             border: solid 1px $black;
+          }
+        }
+
+        i {
+          align-items: center;
+          box-sizing: border-box;
+          display: flex;
+          font-size: 1.25rem;
+          justify-content: center;
+          margin: 5px 0 15px;
+          width: 15%;
+        }
+      }
+
+      .add-badges-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+        height: 91px;
+        margin: 0 auto;
+        width: 100%;
+
+        #toggle-add-badges-form {
+          align-items: center;
+          display: flex;
+          font-size: 1.5rem;
+          justify-content: center;
+          transform: rotate(45deg);
+          width: 15%;
+
+          &.rotated {
+            transform: rotate(0deg);
+          }
+        }
+
+        .add-badges-form {
+          align-items: center;
+          display: flex;
+          justify-content: flex-end;
+          width: 85%;
+
+          fieldset {
+            width: 80%;
+
+            input {
+              box-sizing: border-box;
+              line-height: 1.5;
+              margin: 5px 0 15px;
+              padding: 5px 20px;
+            }
+          }
+
+          button {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+            padding: 3px;
+            width: 20%;
           }
         }
       }

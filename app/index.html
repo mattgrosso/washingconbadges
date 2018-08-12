@@ -92,11 +92,18 @@
             </div>
           </div>
           <form class="user-badge-form">
-            <div class="user-badges"></div>
-            <button id="toggle-add-badges-form">+</button>
-            <div class="add-badges-form hidden-at-start hidden">
-              <input type="number">
-              <button id="add-badges">Add Badges</button>
+            <div class="user-badges-scroll-wrapper">
+              <div class="user-badges"></div>
+              <div class="add-badges-wrapper">
+                <i id="toggle-add-badges-form" class="far fa-times-circle"></i>
+                <div class="add-badges-form hidden-at-start hidden">
+                  <fieldset>
+                    <label>Number of Badges To Add</label>
+                    <input type="number">
+                  </fieldset>
+                  <button id="add-badges">Add</button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
