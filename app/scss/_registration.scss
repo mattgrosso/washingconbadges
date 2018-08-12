@@ -218,11 +218,14 @@
         margin: 10px 0;
       }
 
+      hr {
+        margin: 30px;
+      }
+
       .entry-status-message {
-        align-items: center;
         display: flex;
         justify-content: center;
-        min-height: 75px;
+        min-height: 50px;
 
         h3 {
           font-size: 1.25rem;

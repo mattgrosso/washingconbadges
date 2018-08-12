@@ -290,11 +290,12 @@ header {
     .registration-section .user-view .user-data p {
       font-size: 1.15rem;
       margin: 10px 0; }
+    .registration-section .user-view .user-data hr {
+      margin: 30px; }
     .registration-section .user-view .user-data .entry-status-message {
-      align-items: center;
       display: flex;
       justify-content: center;
-      min-height: 75px; }
+      min-height: 50px; }
       .registration-section .user-view .user-data .entry-status-message h3 {
         font-size: 1.25rem; }
       .registration-section .user-view .user-data .entry-status-message .success-message {
