@@ -313,8 +313,10 @@ header {
         box-shadow: 2px 2px 8px 0px #7d7d7d; }
 
 .checkout-section form {
+  align-items: center;
   display: flex;
-  justify-content: center; }
+  justify-content: center;
+  margin-bottom: 50px; }
   .checkout-section form input {
     line-height: 2;
     margin: 0 10px;
@@ -331,6 +333,10 @@ header {
   .checkout-section form button {
     background: #487943;
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin: 0 20px;
     padding: 5px 40px; }
+
+.checkout-section h2 {
+  font-size: 3rem;
+  text-align: center; }

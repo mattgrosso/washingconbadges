@@ -428,7 +428,9 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
   const badgeCode = document.querySelector('#checkout-badge-barcode').value;
   const gameCode = document.querySelector('#checkout-game-barcode').value;
 
-  postValueToPersonRow(badgeCode, gameCode);
+  if (badgeCode && gameCode) {
+    postValueToPersonRow(badgeCode, gameCode);
+  }
 });
 
 /**
@@ -492,7 +494,7 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
       const message = `Please return ${responseObj[badgeCode]} before checking out another game.`;
 
       document.querySelector('.checkout-failure').classList.remove('hidden');
-      document.querySelector('.checkout-failure').textContent = message;
+      document.querySelector('.checkout-failure h2').textContent = message;
       document.querySelector('.checkout-success').classList.add('hidden');
       setTimeout(function () {
         document.querySelector('.checkout-failure').classList.add('hidden');
