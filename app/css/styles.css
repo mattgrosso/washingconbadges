@@ -247,6 +247,8 @@ header {
         justify-content: center;
         margin: 5px 0 15px;
         width: 15%; }
+      .registration-section .user-view .user-badge-form .user-badges .fa-lock {
+        color: #CB2128; }
     .registration-section .user-view .user-badge-form .add-badges-wrapper {
       display: flex;
       flex-direction: row-reverse;
