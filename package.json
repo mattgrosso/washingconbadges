@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "http-serve app",
+    "deploy": "cd app && surge"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,8 @@
     "gulp": "^3.9.1",
     "gulp-notify": "^3.2.0",
     "gulp-sass": "^4.0.1"
+  },
+  "dependencies": {
+    "http-serve": "^1.0.1"
   }
 }
