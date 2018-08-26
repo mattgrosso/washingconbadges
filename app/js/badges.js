@@ -184,8 +184,6 @@ document.querySelector('.cancel i').addEventListener('click', function (event) {
 
 document.querySelector('#submit-new-registration').addEventListener('click', function (event) {
   event.preventDefault();
-
-  // TODO: Add the new user to the database and then toggle findUser on them. That should drop us right into the normal flow.
   const name = document.querySelector('.new-registration-form-name').value;
   const email = document.querySelector('.new-registration-form-email').value;
   const phone = document.querySelector('.new-registration-form-phone').value;
@@ -649,6 +647,7 @@ function addValueToArrayCell(value, cell, index) {
  */
 function doubleCheckEntry(value, cell, callBack, loopCount) {
   let loopCountForPassing = loopCount || 0;
+  console.log('loopCountForPassing: ', loopCountForPassing);
 
   getFromGoogle(cell).then(function (response) {
     const responseValue = response.result.values;
@@ -683,7 +682,7 @@ function clearValueFromObjectInCell(key, cell) {
     valueObj[key] = '';
 
     postToGoogle(cell, JSON.stringify(valueObj)).then(function (response) {
-      doubleCheckEntry(valueObj, cell, console.log);
+      doubleCheckEntry(JSON.stringify(valueObj), cell, console.log);
     });
   });
 }
