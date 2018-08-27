@@ -201,12 +201,15 @@ header {
     float: right;
     margin: 15px 0; }
 
-.registration-section .not-found-message {
+.registration-section .not-found-message,
+.registration-section .too-many-found-message {
   padding: 0 7vw; }
-  .registration-section .not-found-message h2 {
+  .registration-section .not-found-message h2,
+  .registration-section .too-many-found-message h2 {
     font-size: 2.5rem;
     margin: 15px 0; }
-  .registration-section .not-found-message p {
+  .registration-section .not-found-message p,
+  .registration-section .too-many-found-message p {
     font-size: 1.1rem; }
 
 .registration-section .user-view {
@@ -314,31 +317,38 @@ header {
       .registration-section .user-view .user-data .next-guest:hover {
         box-shadow: 2px 2px 8px 0px #7d7d7d; }
 
-.checkout-section form {
+.checkout-section form,
+.returns-section form {
   align-items: center;
   display: flex;
   justify-content: center;
   margin-bottom: 50px; }
-  .checkout-section form input {
+  .checkout-section form input,
+  .returns-section form input {
     line-height: 2;
     margin: 0 10px;
     padding: 0 25px;
     text-align: center;
     width: 450px; }
-    .checkout-section form input::placeholder {
+    .checkout-section form input::placeholder,
+    .returns-section form input::placeholder {
       transition: color .15s ease-out;
       text-align: center; }
-    .checkout-section form input:focus {
+    .checkout-section form input:focus,
+    .returns-section form input:focus {
       text-align: left; }
-      .checkout-section form input:focus::placeholder {
+      .checkout-section form input:focus::placeholder,
+      .returns-section form input:focus::placeholder {
         color: transparent; }
-  .checkout-section form button {
+  .checkout-section form button,
+  .returns-section form button {
     background: #487943;
     color: #fff;
     font-size: 1.5rem;
     margin: 0 20px;
     padding: 5px 40px; }
 
-.checkout-section h2 {
+.checkout-section h2,
+.returns-section h2 {
   font-size: 3rem;
   text-align: center; }

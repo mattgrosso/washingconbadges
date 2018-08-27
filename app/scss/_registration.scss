@@ -90,7 +90,8 @@
     }
   }
 
-  .not-found-message {
+  .not-found-message,
+  .too-many-found-message {
     padding: 0 7vw;
 
     h2 {
