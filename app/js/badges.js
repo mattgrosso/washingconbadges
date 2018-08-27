@@ -215,30 +215,54 @@ function addNewUserToDatabase(user) {
 /**
  * Retrieves user data for user that contains matching textContent
  * @param  {string} searchString  This is the query string from the form. It can
- *                                be name, email, or phone.
- *                                // TODO: It would be nice if this could find partial matches and could return multiple options to choose from.
- *                                // TODO: We also need to account for different formats and last name only should be an option
+ *                                be name, email, phone, or order number.
+ *                                // TODO: It would be nice if, when this found multiple options it would let you choose between them.
  */
 function findUser(searchString) {
+  const lowerCaseString = searchString.toLowerCase();
+
   getFromGoogle('A:F').then(function (response) {
     const data = response.result.values;
     let registrationEntry;
+    let matchingRows = 0;
 
     data.forEach(function (each, i) {
-      if (each.includes(searchString)) {
-        registrationEntry = {
-          row: i + 1,
-          orderId: each[0],
-          email: each[1],
-          quantity: each[2],
-          name: each[3],
-          phone: each[4],
-          badges: JSON.parse(each[5] || false)
-        };
+      let foundMatch = false;
+      const lowerCaseRow = each.map(function (arrayValue) {
+        try {
+          return arrayValue.toLowerCase();
+        } catch (e) {
+          console.log('You tried to make all the values in an array lowerCase but instead this happened:');
+          console.log(e);
+        }
+      });
+
+      lowerCaseRow.forEach(function (cell) {
+        if (cell.includes(lowerCaseString)) {
+          foundMatch = true;
+          registrationEntry = {
+            row: i + 1,
+            orderId: each[0],
+            email: each[1],
+            quantity: each[2],
+            name: each[3],
+            phone: each[4],
+            badges: JSON.parse(each[5] || false)
+          };
+        }
+      });
+
+      if (foundMatch) {
+        matchingRows++;
       }
     });
 
-    if (registrationEntry) {
+    if (matchingRows > 1) {
+      document.querySelector('.too-many-found-message').classList.remove('hidden');
+      setTimeout(function () {
+        document.querySelector('.too-many-found-message').classList.add('hidden');
+      }, 5000);
+    } else if (registrationEntry) {
       buildUserView(registrationEntry);
       buildBadgeCodeInputs(registrationEntry);
       document.querySelector('.not-found-message').classList.add('hidden');
