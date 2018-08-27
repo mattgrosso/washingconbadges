@@ -1,4 +1,8 @@
 .registration-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
   .registration-start-screen {
     align-items: center;
     display: flex;
@@ -11,14 +15,14 @@
 
       #register-new-guest {
         background: none;
-        color: $fern-green;
+        color: $black;
       }
     }
 
     .or-divider {
       border-top: 1px solid $french-grey;
       font-size: 1.25rem;
-      margin: 40px 0 25px;
+      margin: 40px 25% 25px;
       text-align: center;
       width: 50%;
 
@@ -87,20 +91,6 @@
         float: right;
         margin: 15px 0;
       }
-    }
-  }
-
-  .not-found-message,
-  .too-many-found-message {
-    padding: 0 7vw;
-
-    h2 {
-      font-size: 2.5rem;
-      margin: 15px 0;
-    }
-
-    p {
-      font-size: 1.1rem;
     }
   }
 
@@ -225,24 +215,6 @@
 
       hr {
         margin: 30px;
-      }
-
-      .entry-status-message {
-        display: flex;
-        justify-content: center;
-        min-height: 50px;
-
-        h3 {
-          font-size: 1.25rem;
-        }
-
-        .success-message {
-          color: $fern-green;
-        }
-
-        .failure-message {
-          color: $washingcon-red;
-        }
       }
 
       .next-guest {

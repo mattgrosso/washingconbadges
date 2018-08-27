@@ -10,7 +10,7 @@ body {
 }
 
 main {
-  padding: 30px 50px;
+  padding: 0 50px;
 }
 
 button {
@@ -36,10 +36,6 @@ input {
   }
 }
 
-section {
-  padding: 100px 50px;
-}
-
 .hidden {
   display: none !important;
 }
@@ -53,5 +49,26 @@ section {
   i:hover {
     color: black;
     cursor: pointer;
+  }
+}
+
+.message-pane {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100px;
+  padding: 35px;
+
+  .message-content {
+    padding: 0 7vw;
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
   }
 }

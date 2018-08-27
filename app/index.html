@@ -30,18 +30,34 @@
         <i class="far fa-times-circle"></i>
       </div>
 
+      <div class="message-pane visible-at-start">
+        <div class="message-content">
+          <h2></h2>
+          <p></p>
+        </div>
+        <div class="not-found-message hidden-at-start hidden">
+          <h2>Order not found. Try again.</h2>
+          <p>Maybe check spelling or try searching with a different parameter (email, phone, etc.)</p>
+        </div>
+
+        <div class="too-many-found-message hidden-at-start hidden">
+          <h2>Too Many Matching Orders</h2>
+          <p>Try searching with a different parameter (email, phone, etc.)</p>
+        </div>
+      </div>
+
       <section class="registration-section visible-at-start">
         <div class="registration-start-screen visible-at-start">
-          <div class="register-new-guest-wrapper">
-            <button id="register-new-guest">New Registration</button>
-          </div>
-          <div class="or-divider">
-            <span>or</span>
-          </div>
           <form class="search-form">
             <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="disabled">
             <button id="find-person">Find</button>
           </form>
+          <div class="or-divider">
+            <span>or</span>
+          </div>
+          <div class="register-new-guest-wrapper">
+            <button id="register-new-guest">New Registration</button>
+          </div>
         </div>
 
         <div class="new-registration-view hidden-at-start hidden">
@@ -66,16 +82,6 @@
           </form>
         </div>
 
-        <div class="not-found-message hidden-at-start hidden">
-          <h2>Order not found. Try again.</h2>
-          <p>Maybe check spelling or try searching with a different parameter (email, phone, etc.)</p>
-        </div>
-
-        <div class="too-many-found-message hidden-at-start hidden">
-          <h2>Too Many Matching Orders</h2>
-          <p>Try searching with a different parameter (email, phone, etc.)</p>
-        </div>
-
         <div class="user-view hidden-at-start hidden">
           <div class="user-data">
             <h2 class="user-name"></h2>
@@ -83,16 +89,7 @@
             <p class="user-email"></p>
             <p class="user-phone"></p>
             <hr>
-            <!-- I should figure out how to indicate here if someone bought a Sunday only badge -->
-
-            <div class="entry-status-message">
-              <h3 class="success-message hidden-at-start hidden">
-                All badges entered!
-              </h3>
-              <h3 class="failure-message hidden-at-start hidden">
-                There was an error entering badges.
-              </h3>
-            </div>
+            <!--TODO: I should figure out how to indicate here if someone bought a Sunday only badge -->
 
             <button class="next-guest">Next Guest</button>
 
@@ -121,12 +118,6 @@
           <input id="checkout-game-barcode" type="text" placeholder="Game Code">
           <button id="checkout-game">Checkout</button>
         </form>
-        <div class="checkout-success hidden-at-start hidden">
-          <h2>All set!</h2>
-        </div>
-        <div class="checkout-failure hidden-at-start hidden">
-          <h2>Sorry, you already have a game out.</h2>
-        </div>
       </section>
 
       <section class="returns-section hidden-at-start hidden">

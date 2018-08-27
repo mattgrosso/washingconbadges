@@ -258,23 +258,22 @@ function findUser(searchString) {
     });
 
     if (matchingRows > 1) {
-      document.querySelector('.too-many-found-message').classList.remove('hidden');
-      setTimeout(function () {
-        document.querySelector('.too-many-found-message').classList.add('hidden');
-      }, 5000);
+      displayMessage(
+        "Too Many Matching Orders",
+        "Try searching with a different parameter (email, phone, etc.)"
+      );
     } else if (registrationEntry) {
       buildUserView(registrationEntry);
       buildBadgeCodeInputs(registrationEntry);
-      document.querySelector('.not-found-message').classList.add('hidden');
+      document.querySelector('.message-content').classList.add('hidden');
       document.querySelector('.registration-start-screen').classList.add('hidden');
       document.querySelector('.new-registration-view').classList.add('hidden');
       document.querySelector('.user-view').classList.remove('hidden');
       document.querySelector('.cancel').classList.remove('hidden');
     } else {
-      document.querySelector('.not-found-message').classList.remove('hidden');
-      setTimeout(function () {
-        document.querySelector('.not-found-message').classList.add('hidden');
-      }, 5000);
+      displayMessage(
+        "Order not found. Try again.",
+        "Maybe check spelling or try searching with a different parameter (email, phone, etc.)");
     }
   });
 }
@@ -368,7 +367,10 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
       target.nextElementSibling.nextElementSibling.nextElementSibling.focus();
     } else {
       target.blur();
-      displaySuccess();
+      displayMessage(
+        "All badges entered!",
+        "Click 'Next Guest'."
+      );
       // TODO: There is an issue with confirmAllBadgesEntered(). Figure out what
       // it is and solve it.
       // confirmAllBadgesEntered(userRow, inputCount);
@@ -388,9 +390,15 @@ function confirmAllBadgesEntered(userRow, count) {
     });
 
     if (cellValue === JSON.stringify(badgeValues)) {
-      displaySuccess();
+      displayMessage(
+        "All badges entered!",
+        "Click 'Next Guest'."
+      );
     } else if (loopCount > 10) {
-      displayFailure(`F${userRow}`);
+      displayMessage(
+        "There was an error with the entry.",
+        `The error was at F${userRow}. Please try again.`
+      );
     } else {
       loopCount++;
       setTimeout(function () {
@@ -398,23 +406,6 @@ function confirmAllBadgesEntered(userRow, count) {
       }, 10);
     }
   });
-}
-
-function displaySuccess() {
-  document.querySelectorAll('.entry-status-message h3').forEach(function (each) {
-    each.classList.add('hidden');
-  });
-  document.querySelector('.entry-status-message .success-message')
-    .classList.remove('hidden');
-}
-
-function displayFailure(cell) {
-  document.querySelectorAll('.entry-status-message h3').forEach(function (each) {
-    each.classList.add('hidden');
-  });
-  document.querySelector('.try-again').setAttribute('data-cell', cell);
-  document.querySelector('.entry-status-message .failure-message')
-    .classList.remove('hidden');
 }
 
 document.querySelector('.next-guest').addEventListener('click', function (event) {
@@ -508,28 +499,30 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
       responseObj[badgeCode] = value;
       postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
+
+        getFromGoogle(`D${row}`).then(function (response) {
+          localStorage.setItem('recentUser', JSON.stringify(response.result.values[0][0]));
+        });
+
         doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, confirmGameCheckout);
       });
 
     } else { // The object does have a value at a key matching the badge number
-
-      const message = `Please return ${responseObj[badgeCode]} before checking out another game.`;
-
-      document.querySelector('.checkout-failure').classList.remove('hidden');
-      document.querySelector('.checkout-failure h2').textContent = message;
-      document.querySelector('.checkout-success').classList.add('hidden');
-      setTimeout(function () {
-        document.querySelector('.checkout-failure').classList.add('hidden');
-      }, 3000);
-
+      displayMessage(
+        `Please return ${responseObj[badgeCode]} before checking out another game.`
+      );
     }
   });
 }
 
 function confirmGameCheckout(success) {
   if (success) {
-    document.querySelector('.checkout-failure').classList.add('hidden');
-    document.querySelector('.checkout-success').classList.remove('hidden');
+    const recentUser = JSON.parse(localStorage.getItem('recentUser'));
+    displayMessage(
+      "All set!",
+      `Enjoy the game ${recentUser}`
+    );
+    localStorage.setItem('recentUser', JSON.stringify(undefined));
   } else {
     console.log('We tried to post a checkout but it did not match when we double checked it');
   }
@@ -671,7 +664,6 @@ function addValueToArrayCell(value, cell, index) {
  */
 function doubleCheckEntry(value, cell, callBack, loopCount) {
   let loopCountForPassing = loopCount || 0;
-  console.log('loopCountForPassing: ', loopCountForPassing);
 
   getFromGoogle(cell).then(function (response) {
     const responseValue = response.result.values;
@@ -742,4 +734,18 @@ function uuid() {
   return uuid;
 }
 
+function displayMessage(headLine, detailLine, timer) {
+  const messageContent = document.querySelector('.message-content');
+  const messageContentHeadline = document.querySelector('.message-content > h2');
+  const messageContentDetail = document.querySelector('.message-content > p');
+  const timerSet = timer || 5000;
+
+  messageContentHeadline.innerText = headLine;
+  messageContentDetail.innerText = detailLine || '';
+
+  messageContent.classList.remove('hidden');
+  setTimeout(function () {
+    messageContent.classList.add('hidden');
+  }, timerSet);
+}
 // End Utility Functions

@@ -56,7 +56,7 @@ body {
   padding: 0; }
 
 main {
-  padding: 30px 50px; }
+  padding: 0 50px; }
 
 button {
   border: 0;
@@ -74,9 +74,6 @@ input {
   input:focus {
     outline: none; }
 
-section {
-  padding: 100px 50px; }
-
 .hidden {
   display: none !important; }
 
@@ -88,6 +85,20 @@ section {
   .cancel i:hover {
     color: black;
     cursor: pointer; }
+
+.message-pane {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100px;
+  padding: 35px; }
+  .message-pane .message-content {
+    padding: 0 7vw; }
+    .message-pane .message-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px; }
+    .message-pane .message-content p {
+      font-size: 1.1rem; }
 
 header {
   align-items: center;
@@ -138,184 +149,163 @@ header {
       font-size: 2rem;
       text-decoration: underline; }
 
-.registration-section .registration-start-screen {
-  align-items: center;
+.registration-section {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; }
-  .registration-section .registration-start-screen .register-new-guest-wrapper {
-    text-align: center;
-    width: 100%; }
-    .registration-section .registration-start-screen .register-new-guest-wrapper #register-new-guest {
-      background: none;
-      color: #487943; }
-  .registration-section .registration-start-screen .or-divider {
-    border-top: 1px solid #bdbdbd;
-    font-size: 1.25rem;
-    margin: 40px 0 25px;
-    text-align: center;
-    width: 50%; }
-    .registration-section .registration-start-screen .or-divider span {
-      background: white;
-      padding: 0 10px;
-      position: relative;
-      top: -13px; }
-
-.registration-section button {
-  background: #487943;
-  border: #487943 solid 2px;
-  color: #fff;
-  font-size: 1.5rem;
-  padding: 5px 40px; }
-
-.registration-section .search-form {
-  align-items: center;
-  display: flex;
   justify-content: center; }
-  .registration-section .search-form input {
-    line-height: 2;
-    margin: 0 20px;
-    padding: 0 25px;
-    text-align: center;
-    width: 400px; }
-    .registration-section .search-form input::placeholder {
-      transition: color .15s ease-out;
-      text-align: center; }
-    .registration-section .search-form input:focus {
-      text-align: left; }
-      .registration-section .search-form input:focus::placeholder {
-        color: transparent; }
-
-.registration-section .new-registration-view .new-registration-form {
-  margin: 0 auto;
-  width: 50%; }
-  .registration-section .new-registration-view .new-registration-form fieldset {
-    margin: 15px 0; }
-  .registration-section .new-registration-view .new-registration-form input {
-    box-sizing: border-box;
-    display: block;
-    margin-top: 7px;
-    padding: 5px 20px;
-    width: 100%; }
-  .registration-section .new-registration-view .new-registration-form button {
-    float: right;
-    margin: 15px 0; }
-
-.registration-section .not-found-message,
-.registration-section .too-many-found-message {
-  padding: 0 7vw; }
-  .registration-section .not-found-message h2,
-  .registration-section .too-many-found-message h2 {
-    font-size: 2.5rem;
-    margin: 15px 0; }
-  .registration-section .not-found-message p,
-  .registration-section .too-many-found-message p {
-    font-size: 1.1rem; }
-
-.registration-section .user-view {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; }
-  .registration-section .user-view .user-badge-form {
-    height: 55vh;
-    margin: 0 25px;
-    overflow: hidden;
-    width: 60%; }
-    .registration-section .user-view .user-badge-form .user-badges-scroll-wrapper {
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: scroll;
-      padding-right: 17px;
+  .registration-section .registration-start-screen {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; }
+    .registration-section .registration-start-screen .register-new-guest-wrapper {
+      text-align: center;
       width: 100%; }
-    .registration-section .user-view .user-badge-form .user-badges {
-      display: flex;
-      flex-wrap: wrap;
-      margin: auto;
-      width: 100%; }
-      .registration-section .user-view .user-badge-form .user-badges p {
-        width: 100%; }
-      .registration-section .user-view .user-badge-form .user-badges input {
-        box-sizing: border-box;
-        line-height: 1.5;
-        margin: 5px 0 15px;
-        padding: 5px 20px;
-        width: 85%; }
-        .registration-section .user-view .user-badge-form .user-badges input:focus {
-          border: solid 1px #000; }
-      .registration-section .user-view .user-badge-form .user-badges i {
-        align-items: center;
-        box-sizing: border-box;
-        display: flex;
-        font-size: 1.25rem;
-        justify-content: center;
-        margin: 5px 0 15px;
-        width: 15%; }
-      .registration-section .user-view .user-badge-form .user-badges .fa-lock {
-        color: #CB2128; }
-    .registration-section .user-view .user-badge-form .add-badges-wrapper {
-      display: flex;
-      flex-direction: row-reverse;
-      height: 91px;
-      margin: 0 auto;
-      width: 100%; }
-      .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form {
-        align-items: center;
-        cursor: pointer;
-        display: flex;
-        font-size: 1.5rem;
-        justify-content: center;
-        transform: rotate(45deg);
-        width: 15%; }
-        .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form.rotated {
-          transform: rotate(0deg); }
-      .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form {
-        align-items: center;
-        display: flex;
-        justify-content: flex-end;
-        width: 85%; }
-        .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form fieldset {
-          width: 80%; }
-          .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form fieldset input {
-            box-sizing: border-box;
-            line-height: 1.5;
-            margin: 5px 0 15px;
-            padding: 5px 20px; }
-        .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form button {
-          font-size: 1.3rem;
-          margin-bottom: 2px;
-          padding: 3px;
-          width: 20%; }
-  .registration-section .user-view .user-data {
-    flex-grow: 1;
-    margin: 0 25px; }
-    .registration-section .user-view .user-data h2 {
-      font-size: 2rem;
-      margin: 15px 0;
-      text-decoration: underline; }
-    .registration-section .user-view .user-data p {
-      font-size: 1.15rem;
-      margin: 10px 0; }
-    .registration-section .user-view .user-data hr {
-      margin: 30px; }
-    .registration-section .user-view .user-data .entry-status-message {
-      display: flex;
-      justify-content: center;
-      min-height: 50px; }
-      .registration-section .user-view .user-data .entry-status-message h3 {
-        font-size: 1.25rem; }
-      .registration-section .user-view .user-data .entry-status-message .success-message {
-        color: #487943; }
-      .registration-section .user-view .user-data .entry-status-message .failure-message {
-        color: #CB2128; }
-    .registration-section .user-view .user-data .next-guest {
-      background: #fff;
-      color: #000;
+      .registration-section .registration-start-screen .register-new-guest-wrapper #register-new-guest {
+        background: none;
+        color: #000; }
+    .registration-section .registration-start-screen .or-divider {
+      border-top: 1px solid #bdbdbd;
+      font-size: 1.25rem;
+      margin: 40px 25% 25px;
+      text-align: center;
+      width: 50%; }
+      .registration-section .registration-start-screen .or-divider span {
+        background: white;
+        padding: 0 10px;
+        position: relative;
+        top: -13px; }
+  .registration-section button {
+    background: #487943;
+    border: #487943 solid 2px;
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 5px 40px; }
+  .registration-section .search-form {
+    align-items: center;
+    display: flex;
+    justify-content: center; }
+    .registration-section .search-form input {
+      line-height: 2;
+      margin: 0 20px;
+      padding: 0 25px;
+      text-align: center;
+      width: 400px; }
+      .registration-section .search-form input::placeholder {
+        transition: color .15s ease-out;
+        text-align: center; }
+      .registration-section .search-form input:focus {
+        text-align: left; }
+        .registration-section .search-form input:focus::placeholder {
+          color: transparent; }
+  .registration-section .new-registration-view .new-registration-form {
+    margin: 0 auto;
+    width: 50%; }
+    .registration-section .new-registration-view .new-registration-form fieldset {
+      margin: 15px 0; }
+    .registration-section .new-registration-view .new-registration-form input {
+      box-sizing: border-box;
       display: block;
-      font-size: 1.4rem;
-      margin: 0 auto;
-      padding: 7px 40px; }
-      .registration-section .user-view .user-data .next-guest:hover {
-        box-shadow: 2px 2px 8px 0px #7d7d7d; }
+      margin-top: 7px;
+      padding: 5px 20px;
+      width: 100%; }
+    .registration-section .new-registration-view .new-registration-form button {
+      float: right;
+      margin: 15px 0; }
+  .registration-section .user-view {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; }
+    .registration-section .user-view .user-badge-form {
+      height: 55vh;
+      margin: 0 25px;
+      overflow: hidden;
+      width: 60%; }
+      .registration-section .user-view .user-badge-form .user-badges-scroll-wrapper {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding-right: 17px;
+        width: 100%; }
+      .registration-section .user-view .user-badge-form .user-badges {
+        display: flex;
+        flex-wrap: wrap;
+        margin: auto;
+        width: 100%; }
+        .registration-section .user-view .user-badge-form .user-badges p {
+          width: 100%; }
+        .registration-section .user-view .user-badge-form .user-badges input {
+          box-sizing: border-box;
+          line-height: 1.5;
+          margin: 5px 0 15px;
+          padding: 5px 20px;
+          width: 85%; }
+          .registration-section .user-view .user-badge-form .user-badges input:focus {
+            border: solid 1px #000; }
+        .registration-section .user-view .user-badge-form .user-badges i {
+          align-items: center;
+          box-sizing: border-box;
+          display: flex;
+          font-size: 1.25rem;
+          justify-content: center;
+          margin: 5px 0 15px;
+          width: 15%; }
+        .registration-section .user-view .user-badge-form .user-badges .fa-lock {
+          color: #CB2128; }
+      .registration-section .user-view .user-badge-form .add-badges-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+        height: 91px;
+        margin: 0 auto;
+        width: 100%; }
+        .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form {
+          align-items: center;
+          cursor: pointer;
+          display: flex;
+          font-size: 1.5rem;
+          justify-content: center;
+          transform: rotate(45deg);
+          width: 15%; }
+          .registration-section .user-view .user-badge-form .add-badges-wrapper #toggle-add-badges-form.rotated {
+            transform: rotate(0deg); }
+        .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form {
+          align-items: center;
+          display: flex;
+          justify-content: flex-end;
+          width: 85%; }
+          .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form fieldset {
+            width: 80%; }
+            .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form fieldset input {
+              box-sizing: border-box;
+              line-height: 1.5;
+              margin: 5px 0 15px;
+              padding: 5px 20px; }
+          .registration-section .user-view .user-badge-form .add-badges-wrapper .add-badges-form button {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+            padding: 3px;
+            width: 20%; }
+    .registration-section .user-view .user-data {
+      flex-grow: 1;
+      margin: 0 25px; }
+      .registration-section .user-view .user-data h2 {
+        font-size: 2rem;
+        margin: 15px 0;
+        text-decoration: underline; }
+      .registration-section .user-view .user-data p {
+        font-size: 1.15rem;
+        margin: 10px 0; }
+      .registration-section .user-view .user-data hr {
+        margin: 30px; }
+      .registration-section .user-view .user-data .next-guest {
+        background: #fff;
+        color: #000;
+        display: block;
+        font-size: 1.4rem;
+        margin: 0 auto;
+        padding: 7px 40px; }
+        .registration-section .user-view .user-data .next-guest:hover {
+          box-shadow: 2px 2px 8px 0px #7d7d7d; }
 
 .checkout-section form,
 .returns-section form {
