@@ -48,7 +48,7 @@
 
       <section class="registration-section visible-at-start">
         <div class="registration-start-screen visible-at-start">
-          <form class="search-form">
+          <form autocomplete="off" class="search-form">
             <input id="search-name" type="text" placeholder="name, email, phone, or order#" autocomplete="disabled">
             <button id="find-person">Find</button>
           </form>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="new-registration-view hidden-at-start hidden">
-          <form class="new-registration-form">
+          <form class="new-registration-form" autocomplete="off">
             <fieldset>
               <label>Full Name</label>
               <input class="new-registration-form-name" type="text" autocomplete="disabled">
@@ -85,6 +85,7 @@
         <div class="user-view hidden-at-start hidden">
           <div class="user-data">
             <h2 class="user-name"></h2>
+            <hr>
             <p class="user-orderId"></p>
             <p class="user-email"></p>
             <p class="user-phone"></p>
@@ -94,7 +95,7 @@
             <button class="next-guest">Next Guest</button>
 
           </div>
-          <form class="user-badge-form">
+          <form class="user-badge-form" autocomplete="off">
             <div class="user-badges-scroll-wrapper">
               <div class="user-badges"></div>
               <div class="add-badges-wrapper">
@@ -113,7 +114,7 @@
       </section>
 
       <section class="checkout-section hidden-at-start hidden">
-        <form>
+        <form autocomplete="off">
           <input id="checkout-badge-barcode" class="enter-to-next-sibling" type="text" placeholder="Badge Code">
           <input id="checkout-game-barcode" type="text" placeholder="Game Code">
           <button id="checkout-game">Checkout</button>
@@ -121,7 +122,7 @@
       </section>
 
       <section class="returns-section hidden-at-start hidden">
-        <form>
+        <form autocomplete="off">
           <input id="returns-badge-barcode" class="enter-to-next-sibling" type="text" placeholder="Badge Code">
           <input id="returns-game-barcode" type="text" placeholder="Game Code">
           <button id="returns-game">Return</button>

@@ -157,6 +157,8 @@ document.querySelector('#add-badges').addEventListener('click', function (event)
   const userRow = userData.row;
   const userName = userData.name;
 
+  document.querySelector('#toggle-add-badges-form').classList.toggle('rotated');
+
   postToGoogle(`C${userRow}`, newQuantity).then(function (response) {
     document.querySelector('.add-badges-form').classList.add('hidden');
     findUser(userName);
@@ -184,21 +186,35 @@ document.querySelector('.cancel i').addEventListener('click', function (event) {
 
 document.querySelector('#submit-new-registration').addEventListener('click', function (event) {
   event.preventDefault();
-  const name = document.querySelector('.new-registration-form-name').value;
-  const email = document.querySelector('.new-registration-form-email').value;
-  const phone = document.querySelector('.new-registration-form-phone').value;
-  const badgecount = document.querySelector('.new-registration-form-badgecount').value;
-  const id = `registered-day-of-${uuid()}`;
+  const newRegistrationInputs = document.querySelectorAll('.new-registration-form input');
+  let validForm = true;
 
-  const newUser = [
-    id,
-    email,
-    badgecount,
-    name,
-    phone
-  ];
+  newRegistrationInputs.forEach(function (each) {
+    each.classList.remove('invalid-input');
 
-  addNewUserToDatabase(newUser);
+    if (!each.value) {
+      each.classList.add('invalid-input');
+      validForm = false;
+    }
+  });
+
+  if (validForm) {
+    const name = document.querySelector('.new-registration-form-name').value;
+    const email = document.querySelector('.new-registration-form-email').value;
+    const phone = document.querySelector('.new-registration-form-phone').value;
+    const badgecount = document.querySelector('.new-registration-form-badgecount').value;
+    const id = `registered-day-of-${uuid()}`;
+
+    const newUser = [
+      id,
+      email,
+      badgecount,
+      name,
+      phone
+    ];
+
+    addNewUserToDatabase(newUser);
+  }
 });
 
 function addNewUserToDatabase(user) {

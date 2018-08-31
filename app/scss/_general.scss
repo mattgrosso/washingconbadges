@@ -29,7 +29,7 @@ button {
 input {
   border: 1px solid $french-grey;
   border-radius: 2px;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 
   &:focus {
     outline: none;
@@ -46,9 +46,13 @@ input {
   margin: 0 auto;
   text-align: right;
 
-  i:hover {
-    color: black;
-    cursor: pointer;
+  i {
+    margin: 20px 0;
+
+    &:hover {
+      color: black;
+      cursor: pointer;
+    }
   }
 }
 

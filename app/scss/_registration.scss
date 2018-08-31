@@ -14,7 +14,7 @@
       width: 100%;
 
       #register-new-guest {
-        background: none;
+        background: white;
         color: $black;
       }
     }
@@ -39,7 +39,7 @@
     background: $fern-green;
     border: $fern-green solid 2px;
     color: $white;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     padding: 5px 40px;
   }
 
@@ -71,6 +71,8 @@
   }
 
   .new-registration-view {
+    width: 50%;
+
     .new-registration-form {
       margin: 0 auto;
       width: 50%;
@@ -85,6 +87,10 @@
         margin-top: 7px;
         padding: 5px 20px;
         width: 100%;
+
+        &.invalid-input {
+          border: 1px solid $washingcon-red;
+        }
       }
 
       button {
@@ -205,7 +211,6 @@
       h2 {
         font-size: 2rem;
         margin: 15px 0;
-        text-decoration: underline;
       }
 
       p {
