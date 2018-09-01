@@ -524,7 +524,7 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
       });
 
     } else { // The object does have a value at a key matching the badge number
-      const gameTitle = findGameTitle(parseInt(responseObj[badgeCode]));
+      const gameTitle = findGameTitle(responseObj[badgeCode]);
       displayMessage(
         `Please return ${gameTitle} before checking out another game.`
       );
@@ -770,13 +770,6 @@ function displayMessage(headLine, detailLine, timer) {
 
 // Takes in the barcode from a demo library game and returns the title of the game
 function findGameTitle(barcode) {
-  let gameTitle = "Not Found";
-  demoGames.forEach(function (each) {
-    if (each["Demo ID"] === barcode) {
-      gameTitle = each["Demo Name"];
-    }
-  });
-
-  return gameTitle;
+  return demoGames[barcode];
 }
 // End Utility Functions
