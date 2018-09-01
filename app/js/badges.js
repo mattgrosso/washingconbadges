@@ -468,22 +468,24 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
 function postValueToPersonRow(badgeCode, gameCode) {
   getFromGoogle('F:F').then(function (response) {
     // response is every value in column F
-    const entryRow = findValueInNestedArrays(badgeCode, response.result.values);
+    const entryRow = findBadgeCode(badgeCode, response.result.values);
     // entryRow will be just the row in the DB that contains the badgeCode
-    postValueToRowAndColumn(gameCode, badgeCode, entryRow, 'G');
+    if (entryRow) {
+      postValueToRowAndColumn(gameCode, badgeCode, entryRow, 'G');
+    }
   });
 }
 
 /**
  * Searches nested arrays for value and returns the row number of the correct user
  */
-function findValueInNestedArrays(value, array) {
+function findBadgeCode(badgeCode, array) {
   let index;
 
   array.forEach(function (eachRow, i) {
     if (eachRow.length && eachRow[0][0] === "[") {
       JSON.parse(eachRow[0]).forEach(function (eachCode) {
-        if (eachCode === value) {
+        if (eachCode === badgeCode) {
           index = i;
         }
       });
@@ -494,7 +496,10 @@ function findValueInNestedArrays(value, array) {
     // The ''+ 1' is there to convert a 0-index array to a 1-index sheet
     return index + 1;
   } else {
-    return "Person Not Found";
+    displayMessage('Badge not registered');
+    return false;
+    // TODO: When we don't find the badge, we are still trying to retrieve the
+    // data from the database. We need to fix this somewhere upstream from here
   }
 }
 
@@ -515,11 +520,6 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
       responseObj[badgeCode] = value;
       postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
-
-        getFromGoogle(`D${row}`).then(function (response) {
-          localStorage.setItem('recentUser', JSON.stringify(response.result.values[0][0]));
-        });
-
         doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, confirmGameCheckout);
       });
 
@@ -534,14 +534,13 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
 
 function confirmGameCheckout(success) {
   if (success) {
-    // TODO: Not sure what this local storage play is getting us
-    const recentUser = JSON.parse(localStorage.getItem('recentUser')) || "";
     displayMessage(
       "All set!",
-      `Enjoy the game ${recentUser}`
+      'Enjoy the game!'
     );
-    localStorage.setItem('recentUser', JSON.stringify(undefined));
-    // TODO: I should clear the inputs here
+    setTimeout(function () {
+      window.location.reload();
+    }, 2000);
   } else {
     console.log('We tried to post a checkout but it did not match when we double checked it');
   }
@@ -559,7 +558,6 @@ document.querySelector('#returns-game').addEventListener('click', function (even
   returnGame(badgeCode, gameCode);
 });
 
-// TODO: What is the point of this?
 function returnGame(badgeCode, gameCode) {
   findUserRow(badgeCode, gameCode);
 }
