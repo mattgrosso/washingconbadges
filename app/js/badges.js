@@ -524,8 +524,9 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
       });
 
     } else { // The object does have a value at a key matching the badge number
+      const gameTitle = findGameTitle(parseInt(responseObj[badgeCode]));
       displayMessage(
-        `Please return ${responseObj[badgeCode]} before checking out another game.`
+        `Please return ${gameTitle} before checking out another game.`
       );
     }
   });
@@ -533,12 +534,14 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
 
 function confirmGameCheckout(success) {
   if (success) {
-    const recentUser = JSON.parse(localStorage.getItem('recentUser'));
+    // TODO: Not sure what this local storage play is getting us
+    const recentUser = JSON.parse(localStorage.getItem('recentUser')) || "";
     displayMessage(
       "All set!",
       `Enjoy the game ${recentUser}`
     );
     localStorage.setItem('recentUser', JSON.stringify(undefined));
+    // TODO: I should clear the inputs here
   } else {
     console.log('We tried to post a checkout but it did not match when we double checked it');
   }
@@ -763,5 +766,17 @@ function displayMessage(headLine, detailLine, timer) {
   setTimeout(function () {
     messageContent.classList.add('hidden');
   }, timerSet);
+}
+
+// Takes in the barcode from a demo library game and returns the title of the game
+function findGameTitle(barcode) {
+  let gameTitle = "Not Found";
+  demoGames.forEach(function (each) {
+    if (each["Demo ID"] === barcode) {
+      gameTitle = each["Demo Name"];
+    }
+  });
+
+  return gameTitle;
 }
 // End Utility Functions
