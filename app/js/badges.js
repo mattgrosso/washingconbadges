@@ -68,6 +68,10 @@ function handleSignoutClick(event) {
 
 // Start of my own code
 
+// TODO: Maybe I should have a place to look up any given badge. It could include
+// who it is registered to and what games they have out right now. As well as
+// contact info.
+
 const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
 // Start Nav functions
@@ -540,7 +544,7 @@ function confirmGameCheckout(success) {
     );
     setTimeout(function () {
       window.location.reload();
-    }, 2000);
+    }, 3000);
   } else {
     console.log('We tried to post a checkout but it did not match when we double checked it');
   }
@@ -549,7 +553,7 @@ function confirmGameCheckout(success) {
 /**
  * Adds event for when returns form is submitted.
  */
-document.querySelector('#returns-game').addEventListener('click', function (event) {
+document.querySelector('#return-game').addEventListener('click', function (event) {
   event.preventDefault();
 
   const badgeCode = document.querySelector('#returns-badge-barcode').value;
@@ -597,14 +601,19 @@ function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
 }
 
 function addGameToHistory(badgeCode, rowNumber, gameCode) {
-  addValueToArrayCell(gameCode, `H${rowNumber}`).then(function () {
-    clearValueFromObjectInCell(badgeCode, `G${rowNumber}`);
-  });
+  addValueToArrayCell(gameCode, `H${rowNumber}`, null, confirmGameReturned)
+    .then(function () {
+      clearValueFromObjectInCell(badgeCode, `G${rowNumber}`);
+    });
 }
 
 function confirmGameReturned(success) {
   if (success) {
     console.log('Game returned');
+    displayMessage('Hope you enjoyed the game!');
+    setTimeout(function () {
+      window.location.reload();
+    }, 3000);
   } else {
     console.log('Something went wrong, the game was not returned');
   }
@@ -653,7 +662,7 @@ function postRowToGoogle(range, contentArray) {
 /**
  * Adds value to array of values in single cell
  */
-function addValueToArrayCell(value, cell, index) {
+function addValueToArrayCell(value, cell, index, callBack) {
   let jsonArray;
 
   return getFromGoogle(cell).then(function (response) {
@@ -668,7 +677,7 @@ function addValueToArrayCell(value, cell, index) {
     }
     jsonArray = JSON.stringify(cellArray);
     postToGoogle(cell, jsonArray).then(function () {
-      doubleCheckEntry(jsonArray, cell, confirmGameReturned);
+      doubleCheckEntry(jsonArray, cell, callBack);
     });
   });
 }
@@ -679,24 +688,25 @@ function addValueToArrayCell(value, cell, index) {
  * When it is done checking it will call the given callback function with either
  * a true or a false.
  */
-function doubleCheckEntry(value, cell, callBack, loopCount) {
+function doubleCheckEntry(value, cell, callback, loopCount) {
   let loopCountForPassing = loopCount || 0;
+  const callBackCatch = callback || console.log;
 
   getFromGoogle(cell).then(function (response) {
     const responseValue = response.result.values;
 
     if (!responseValue && value === '') {
       console.log(`Confirm that ${cell} is empty`);
-      callBack(true);
+      callBackCatch(true);
     } else if (responseValue[0][0] !== value) {
       loopCountForPassing++;
       setTimeout(function () {
-        doubleCheckEntry(value, cell, callBack, loopCountForPassing);
+        doubleCheckEntry(value, cell, callBackCatch, loopCountForPassing);
       }, 500);
     } else if (loopCountForPassing >= 10) {
-      callBack(false);
+      callBackCatch(false);
     } else {
-      callBack(true);
+      callBackCatch(true);
     }
   });
 }
