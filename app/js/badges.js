@@ -430,7 +430,7 @@ function confirmAllBadgesEntered(userRow, count) {
 
 document.querySelector('.next-guest').addEventListener('click', function (event) {
   event.preventDefault();
-  window.location.reload();
+  backToStartOf('registration');
 });
 
 // End Registration functions
@@ -543,7 +543,7 @@ function confirmGameCheckout(success) {
       'Enjoy the game!'
     );
     setTimeout(function () {
-      window.location.reload();
+      backToStartOf('checkout');
     }, 3000);
   } else {
     console.log('We tried to post a checkout but it did not match when we double checked it');
@@ -612,7 +612,7 @@ function confirmGameReturned(success) {
     console.log('Game returned');
     displayMessage('Hope you enjoyed the game!');
     setTimeout(function () {
-      window.location.reload();
+      backToStartOf('returns');
     }, 3000);
   } else {
     console.log('Something went wrong, the game was not returned');
@@ -779,5 +779,30 @@ function displayMessage(headLine, detailLine, timer) {
 // Takes in the barcode from a demo library game and returns the title of the game
 function findGameTitle(barcode) {
   return demoGames[barcode];
+}
+
+// Clears the site and returns the user to the given page
+function backToStartOf(startPoint) {
+  document.querySelectorAll('input').forEach(function (each) {
+    each.value = null;
+  });
+
+  document.querySelectorAll('section').forEach(function (each) {
+    each.classList.add('hidden');
+  });
+
+  if (startPoint === "registration") {
+    document.querySelector('.registration-section').classList.remove('hidden');
+    document.querySelector('.registration-section .starting-point').focus();
+  } else if (startPoint === "checkout") {
+    document.querySelector('.checkout-section').classList.remove('hidden');
+    document.querySelector('.checkout-section .starting-point').focus();
+  } else if (startPoint === "returns") {
+    document.querySelector('.returns-section').classList.remove('hidden');
+    document.querySelector('.returns-section .starting-point').focus();
+  } else {
+    document.querySelector('.registration-section').classList.remove('hidden');
+    document.querySelector('.registration-section .starting-point').focus();
+  }
 }
 // End Utility Functions
