@@ -313,30 +313,36 @@ header {
           box-shadow: 2px 2px 8px 0px #7d7d7d; }
 
 .checkout-section form,
-.returns-section form {
+.returns-section form,
+.user-lookup-section form {
   align-items: center;
   display: flex;
   justify-content: center;
   margin-bottom: 50px; }
   .checkout-section form input,
-  .returns-section form input {
+  .returns-section form input,
+  .user-lookup-section form input {
     line-height: 2;
     margin: 0 10px;
     padding: 0 25px;
     text-align: center;
     width: 450px; }
     .checkout-section form input::placeholder,
-    .returns-section form input::placeholder {
+    .returns-section form input::placeholder,
+    .user-lookup-section form input::placeholder {
       transition: color .15s ease-out;
       text-align: center; }
     .checkout-section form input:focus,
-    .returns-section form input:focus {
+    .returns-section form input:focus,
+    .user-lookup-section form input:focus {
       text-align: left; }
       .checkout-section form input:focus::placeholder,
-      .returns-section form input:focus::placeholder {
+      .returns-section form input:focus::placeholder,
+      .user-lookup-section form input:focus::placeholder {
         color: transparent; }
   .checkout-section form button,
-  .returns-section form button {
+  .returns-section form button,
+  .user-lookup-section form button {
     background: #487943;
     color: #fff;
     font-size: 1.5rem;
@@ -344,6 +350,7 @@ header {
     padding: 5px 40px; }
 
 .checkout-section h2,
-.returns-section h2 {
+.returns-section h2,
+.user-lookup-section h2 {
   font-size: 3rem;
   text-align: center; }

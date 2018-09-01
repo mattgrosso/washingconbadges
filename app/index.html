@@ -16,6 +16,7 @@
           <a id="registration-link" class="advanced-options active" data-section="registration-section">Registration</a>
           <a id="checkout-link" class="advanced-options" data-section="checkout-section">Game Checkouts</a>
           <a id="returns-link" class="advanced-options" data-section="returns-section">Game Returns</a>
+          <a id="user-lookup-link" class="advanced-options" data-section="user-lookup-section">User Lookup</a>
         </div>
 
         <div class="auth-buttons advanced-options hidden">
@@ -127,6 +128,25 @@
           <input id="returns-game-barcode" type="text" placeholder="Game Code">
           <button id="return-game">Return</button>
         </form>
+      </section>
+
+      <section class="user-lookup-section hidden-at-start hidden">
+        <form autocomplete="off">
+          <input id="user-lookup-badge-barcode" class="starting-point" type="text" placeholder="Badge Code">
+          <button id="lookup-user">Return</button>
+        </form>
+        <div class="user-lookup-results hidden-at-start hidden">
+          <h2 class="user-lookup-name"></h2>
+          <hr>
+          <p class="user-lookup-orderId"></p>
+          <p class="user-lookup-email"></p>
+          <p class="user-lookup-phone"></p>
+          <hr>
+          <h3>Checkout Status</h3>
+          <div class="user-lookup-checkout-status">
+            <ul></ul>
+          </div>
+        </div>
       </section>
     </main>
 

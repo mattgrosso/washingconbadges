@@ -71,6 +71,7 @@ function handleSignoutClick(event) {
 // TODO: Maybe I should have a place to look up any given badge. It could include
 // who it is registered to and what games they have out right now. As well as
 // contact info.
+// TODO: I also need to create the play-to-win winners generator
 
 const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
@@ -391,6 +392,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
         "All badges entered!",
         "Click 'Next Guest'."
       );
+      // TODO: The Next Guest button isn't working
       // TODO: There is an issue with confirmAllBadgesEntered(). Figure out what
       // it is and solve it.
       // confirmAllBadgesEntered(userRow, inputCount);
@@ -481,7 +483,7 @@ function postValueToPersonRow(badgeCode, gameCode) {
 }
 
 /**
- * Searches nested arrays for value and returns the row number of the correct user
+ * Searches nested arrays for badgecode and returns the row number of the correct user
  */
 function findBadgeCode(badgeCode, array) {
   let index;
@@ -591,12 +593,21 @@ function findUserRow(badgeCode, gameCode) {
 }
 
 function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
-  const checkedOut = JSON.parse(userRow[1]);
-  if (checkedOut[badgeCode] === gameCode) {
-    const cell = `G${rowNumber}`;
-    addGameToHistory(badgeCode, rowNumber, gameCode);
-  } else {
-    console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1]} checked out.`);
+  try {
+    const checkedOut = JSON.parse(userRow[1]);
+
+    if (checkedOut[badgeCode] === gameCode) {
+      const cell = `G${rowNumber}`;
+      addGameToHistory(badgeCode, rowNumber, gameCode);
+    } else {
+      console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1]} checked out.`);
+    }
+  } catch (e) {
+    displayMessage(
+      'Something went wrong.',
+      'Probably the badge or the game scanned badly. Please check values and try again. If this issue persists, contact Matt Grosso on Slack',
+      8000);
+    console.log(e);
   }
 }
 
@@ -620,6 +631,89 @@ function confirmGameReturned(success) {
 }
 
 // End Library Funtions
+
+
+// Start User Lookup Functions
+document.querySelector('#lookup-user').addEventListener('click', function (event) {
+  event.preventDefault();
+  document.querySelector('.user-lookup-results').classList.add('hidden');
+
+
+  let badgeCode = document.querySelector('.user-lookup-section form input').value;
+
+  findRowForBadge(badgeCode);
+});
+
+function findRowForBadge(badgeCode) {
+  getFromGoogle('F:F').then(function (response) {
+    // response is every value in column F
+    const entryRow = findBadgeCode(badgeCode, response.result.values);
+    // entryRow will be just the row in the DB that contains the badgeCode
+    if (entryRow) {
+      getUserData(entryRow).then(function (response) {
+        displayUserData(response);
+      });
+    }
+  });
+}
+
+function getUserData(row) {
+  return getFromGoogle(`${row}:${row}`).then(function (response) {
+
+    const userArray = response.result.values[0];
+    const user = {
+      order_id: userArray[0],
+      email: userArray[1],
+      name: userArray[3],
+      phone: userArray[4],
+      badges: {
+        badgeCodes: JSON.parse(userArray[5]),
+        purchased: parseInt(userArray[2]),
+        activated: JSON.parse(userArray[5]).length,
+        allActivated: parseInt(userArray[2]) === JSON.parse(userArray[5]).length,
+        currentStatus: JSON.parse(userArray[6])
+      },
+      history: userArray[7]
+    };
+
+    return user;
+  });
+}
+
+function displayUserData(user) {
+  const userLookupName = document.querySelector('.user-lookup-name');
+  const userLookupOrderId = document.querySelector('.user-lookup-orderId');
+  const userLookupEmail = document.querySelector('.user-lookup-email');
+  const userLookupPhone = document.querySelector('.user-lookup-phone');
+  const userLookupStatusList = document.querySelector('.user-lookup-checkout-status ul');
+
+  userLookupName.innerText = user.name;
+  userLookupOrderId.innerText = user.order_id;
+  userLookupEmail.innerText = user.email;
+  userLookupPhone.innerText = user.phone;
+
+  let badgeCount = user.badges.activated;
+  let badgeSatuses = '';
+  for (var i = 0; i < badgeCount; i++) {
+    const badge = user.badges.badgeCodes[i];
+    const game = user.badges.currentStatus[badge];
+
+    badgeSatuses += `<li>\
+                      <h4>Badge:</h4>\
+                      <p>${badge}</p>\
+                      <h4>Game Out:</h4>\
+                      <p>${game}</p>\
+                    </li>`;
+
+  }
+
+  userLookupStatusList.innerHTML = badgeSatuses;
+
+  document.querySelector('.user-lookup-section form input').value = null;
+  document.querySelector('.user-lookup-results').classList.remove('hidden');
+}
+// End User Lookup Functions
+
 
 // Start Utility Functions
 
