@@ -84,7 +84,7 @@ input {
   line-height: 2;
   padding: 0 25px;
   text-align: center;
-  width: 400px; }
+  width: 370px; }
   input:focus {
     outline: none;
     text-align: left; }
@@ -258,9 +258,16 @@ header {
           border: solid 1px #000; }
         .registration-section .user-view .user-badge-form .user-badges i {
           align-items: center;
+          cursor: pointer;
           display: flex;
           font-size: 1.25rem;
-          margin-top: 33px; }
+          margin: 33px 10px 0 0; }
+          .registration-section .user-view .user-badge-form .user-badges i:nth-child(3n) {
+            margin-right: 0; }
+          .registration-section .user-view .user-badge-form .user-badges i:hover {
+            color: #CB2128; }
+          .registration-section .user-view .user-badge-form .user-badges i[disabled="true"] {
+            pointer-events: none; }
         .registration-section .user-view .user-badge-form .user-badges .fa-lock {
           color: #CB2128; }
       .registration-section .user-view .user-badge-form .add-badges-wrapper {

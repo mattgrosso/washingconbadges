@@ -108,9 +108,23 @@
 
         i {
           align-items: center;
+          cursor: pointer;
           display: flex;
           font-size: 1.25rem;
-          margin-top: 33px;
+          margin: 33px 10px 0 0;
+
+          &:nth-child(3n) {
+            // This is a bit fragile. If I add anymore elements to that div it will break
+            margin-right: 0;
+          }
+
+          &:hover {
+            color: $washingcon-red;
+          }
+
+          &[disabled="true"] {
+            pointer-events: none;
+          }
         }
 
         .fa-lock {

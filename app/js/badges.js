@@ -313,7 +313,8 @@ function buildBadgeCodeInputs(registrationEntry) {
                 data-inputcount="${inputCount}" \
                 data-row="${registrationEntry.row}">
               </fieldset>\
-              <i class="locked-input fas fa-unlock"></i>`;
+              <i class="locked-input fas fa-unlock"></i>
+              <i class="delete-badge-input fas fa-trash-alt"></i>`;
               // TODO: It would be nice if I could delete a badge here (safely)
   }
 
@@ -325,25 +326,54 @@ function buildBadgeCodeInputs(registrationEntry) {
 
       this.classList.toggle('fa-lock');
       this.classList.toggle('fa-unlock');
-      if (this.previousElementSibling.hasAttribute('disabled')) {
-        this.previousElementSibling.removeAttribute('disabled');
+      if (this.previousElementSibling.firstElementChild.nextElementSibling.hasAttribute('disabled')) {
+        this.previousElementSibling.firstElementChild.nextElementSibling.removeAttribute('disabled');
+        this.nextElementSibling.removeAttribute('disabled', true);
       } else {
-        this.previousElementSibling.setAttribute('disabled', true);
+        this.previousElementSibling.firstElementChild.nextElementSibling.setAttribute('disabled', true);
+        this.nextElementSibling.setAttribute('disabled', true);
       }
     });
   });
+
+  document.querySelectorAll('.delete-badge-input').forEach(function (each) {
+    each.addEventListener('click', function (event) {
+      event.preventDefault();
+      const correspondingInputData =
+        event.target.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.dataset;
+      const dataRow = correspondingInputData.row;
+      const dataIndex = parseInt(correspondingInputData.inputnumber) - 1;
+
+      getFromGoogle(`F${dataRow}`).then(function (response) {
+        const badgeArray = JSON.parse(response.result.values[0]);
+        badgeArray.splice(dataIndex, 1);
+
+        postToGoogle(`F${dataRow}`, JSON.stringify(badgeArray)).then(function (resp) {
+          console.log('correspondingInputData: ', correspondingInputData);
+          postToGoogle(`C${dataRow}`, parseInt(correspondingInputData.inputcount) - 1).then(function () {
+            findUser(correspondingInputData.email);
+          });
+        });
+      });
+    });
+  });
+
 }
 
 function checkLocks() {
   document.querySelectorAll('.locked-input').forEach(function (each) {
-    if (each.previousElementSibling.value) {
+    if (each.previousElementSibling.firstElementChild.nextElementSibling.value) {
       each.classList.value = 'locked-input fas fa-lock';
-      each.previousElementSibling.setAttribute('disabled', true);
+      each.previousElementSibling.firstElementChild.nextElementSibling.setAttribute('disabled', true);
     } else {
       each.classList.value = 'locked-input fas fa-unlock';
-      each.previousElementSibling.removeAttribute('disabled');
+      each.previousElementSibling.firstElementChild.nextElementSibling.removeAttribute('disabled');
     }
   });
+}
+
+function deleteBadge(badgeIndex, userRow) {
+  debugger
 }
 
 /**
@@ -362,7 +392,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     let emptyCount = parseInt(inputCount);
     const lastInput = inputCount === inputNumber;
 
-    target.parentNode.querySelectorAll('.badge-input').forEach(function (each) {
+    target.parentNode.parentNode.querySelectorAll('.badge-input').forEach(function (each) {
       if (each.value) {
         emptyCount--;
       }
@@ -372,7 +402,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     addValueToArrayCell(badgeCode, `F${userRow}`, parseInt(inputNumber) - 1);
 
     if (emptyCount) {
-      target.parentNode.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.focus();
+      target.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       target.blur();
       displayMessage(
