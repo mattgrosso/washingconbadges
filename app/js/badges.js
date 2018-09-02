@@ -102,30 +102,13 @@ window.addEventListener('keydown', function (event) {
   const one = event.which === 49;
   if (cmd && shift && one) {
     event.preventDefault();
-    toggleOptions();
+    toggleAuth();
   }
 });
 
-function toggleOptions() {
-  const elements = document.querySelectorAll('.advanced-options');
-  const navButtonsState = document.querySelector('.nav-buttons').classList;
-
-  elements.forEach(function (each) {
-    const currentState = each.classList;
-    const active = currentState.contains('active');
-
-    if (currentState.contains('hidden')) {
-      currentState.remove('hidden');
-    } else if (!active) {
-      currentState.add('hidden');
-    }
-  });
-
-  if (navButtonsState.contains('advanced-nav')) {
-    navButtonsState.remove('advanced-nav');
-  } else {
-    navButtonsState.add('advanced-nav');
-  }
+function toggleAuth() {
+  const authButton = document.querySelector('.auth-buttons');
+  authButton.classList.toggle('hidden');
 }
 // End Nav functions
 

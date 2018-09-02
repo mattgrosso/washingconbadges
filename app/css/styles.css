@@ -116,23 +116,11 @@ header {
     margin: 0 10px; }
   header .nav-buttons {
     display: flex; }
-    header .nav-buttons.advanced-nav a {
-      color: black;
-      cursor: pointer;
-      font-size: 1.25rem;
-      text-decoration: none;
-      transition: color .125s ease-out; }
-      header .nav-buttons.advanced-nav a.active, header .nav-buttons.advanced-nav a:hover {
-        color: #CB2128;
-        text-decoration: underline; }
-    header .nav-buttons.advanced-nav > div {
-      align-items: center;
-      display: flex; }
-    header .nav-buttons.advanced-nav .auth-buttons {
+    header .nav-buttons .auth-buttons {
       border-left: 2px solid #c3c3c3;
       margin-left: 20px;
       padding-left: 20px; }
-      header .nav-buttons.advanced-nav .auth-buttons button {
+      header .nav-buttons .auth-buttons button {
         background: #CB2128;
         border: none;
         border-radius: 2px;
@@ -143,13 +131,20 @@ header {
         font-size: 1rem;
         padding: 7px 20px;
         transition: box-shadow .125s ease-out; }
-        header .nav-buttons.advanced-nav .auth-buttons button:hover {
+        header .nav-buttons .auth-buttons button:hover {
           box-shadow: 1px 1px 4px 0px #000; }
     header .nav-buttons a {
-      color: #CB2128;
-      cursor: default;
-      font-size: 2rem;
-      text-decoration: underline; }
+      color: black;
+      cursor: pointer;
+      font-size: 1.25rem;
+      text-decoration: none;
+      transition: color .125s ease-out; }
+      header .nav-buttons a.active, header .nav-buttons a:hover {
+        color: #CB2128;
+        text-decoration: underline; }
+    header .nav-buttons > div {
+      align-items: center;
+      display: flex; }
 
 .registration-section {
   display: flex;
