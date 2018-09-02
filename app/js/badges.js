@@ -91,8 +91,9 @@ navLinks.forEach(function (each) {
     sections.forEach(function (eachSection) {
       eachSection.classList.add('hidden');
     });
-    const thisSection = document.querySelector(`main > section.${this.dataset.section}`);
-    thisSection.classList.remove('hidden');
+
+    const sectionName = this.dataset.section;
+    backToStartOf(sectionName.replace('-section', ''));
   });
 });
 
@@ -930,6 +931,9 @@ function backToStartOf(startPoint) {
   } else if (startPoint === "returns") {
     document.querySelector('.returns-section').classList.remove('hidden');
     document.querySelector('.returns-section .starting-point').focus();
+  } else if (startPoint === "user-lookup") {
+    document.querySelector('.user-lookup-section').classList.remove('hidden');
+    document.querySelector('.user-lookup-section .starting-point').focus();
   } else {
     document.querySelector('.registration-section').classList.remove('hidden');
     document.querySelector('.registration-section .starting-point').focus();
