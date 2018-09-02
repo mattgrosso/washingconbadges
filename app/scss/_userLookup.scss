@@ -1,0 +1,52 @@
+.user-lookup-section {
+  .user-lookup-results{
+    display: flex;
+    justify-content: center;
+    padding: 0 20%;
+
+    .user-lookup-info-wrapper {
+      border-right: solid 1px grey;
+      padding: 15px 20px;
+      width: 40%;
+
+      p {
+        margin: 10px 0;
+      }
+    }
+
+    .user-lookup-status-wrapper {
+      padding: 15px 20px;
+      width: 60%;
+
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+
+        li {
+          border-bottom: solid 1px $french-grey;
+          display: flex;
+          justify-content: space-between;
+          margin: 5px 0;
+          padding-bottom: 3px;
+          width: 100%;
+
+          &.headers {
+            border: 0;
+
+            p {
+              font-weight: bold;
+            }
+          }
+
+          p {
+            margin: 0 25px 0 5px;
+          }
+
+          div {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+}

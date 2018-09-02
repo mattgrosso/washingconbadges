@@ -681,19 +681,17 @@ function displayUserData(user) {
   userLookupPhone.innerText = user.phone;
 
   let badgeCount = user.badges.activated;
-  let badgeSatuses = '';
+  let badgeSatuses = '<li class="headers"><p>Badge</p><p>Game</p></li>';
   for (var i = 0; i < badgeCount; i++) {
-    const badge = user.badges.badgeCodes[i];
-    const game = user.badges.currentStatus[badge];
+    const badge = user.badges.badgeCodes[i] || 'Not Activated';
+    const game = user.badges.currentStatus[badge] || '-';
 
     badgeSatuses += `<li>\
-                      <h4>Badge:</h4>\
                       <p>${badge}</p>\
-                      <h4>Game Out:</h4>\
                       <p>${game}</p>\
                     </li>`;
-
   }
+  // TODO: I should make all badge and game numbers clickable
 
   userLookupStatusList.innerHTML = badgeSatuses;
 
