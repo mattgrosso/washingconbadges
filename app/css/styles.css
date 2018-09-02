@@ -165,6 +165,7 @@ header {
         cursor: pointer;
         font-family: 'Lato', sans-serif;
         font-size: 1rem;
+        margin-left: 15px;
         padding: 7px 20px;
         transition: box-shadow .125s ease-out; }
         header .nav-buttons .auth-buttons button:hover {

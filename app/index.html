@@ -19,7 +19,8 @@
           <a id="user-lookup-link" class="advanced-options" data-section="user-lookup-section">User Lookup</a>
         </div>
 
-        <div class="auth-buttons advanced-options hidden">
+        <div class="auth-buttons hidden">
+          <a id="winners-link" class="advanced-options" data-section="winners-section">Winners</a>
           <button id="authorize-button" style="display: none;">Authorize</button>
           <button id="signout-button" style="display: none;">Sign Out</button>
         </div>
@@ -176,6 +177,11 @@
             <div class="user-lookup-spacer"></div>
           </div>
         </div>
+      </section>
+
+      <section class="winners-section hidden-at-start hidden">
+        <button id="generate-winners">Draw for Winners</button>
+        <ul id="winners-list"></ul>
       </section>
     </main>
 

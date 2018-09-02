@@ -75,7 +75,7 @@ const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 document.querySelector('#search-name').focus();
 
 // Start Nav functions
-const navLinks = document.querySelectorAll('.section-select-buttons a');
+const navLinks = document.querySelectorAll('a.advanced-options');
 const sections = document.querySelectorAll('main > section');
 
 /**
@@ -92,6 +92,7 @@ navLinks.forEach(function (each) {
     });
 
     const sectionName = this.dataset.section;
+    console.log(this.dataset.section);
     backToStartOf(sectionName.replace('-section', ''));
   });
 });
@@ -912,6 +913,8 @@ function backToStartOf(startPoint) {
   } else if (startPoint === "user-lookup") {
     document.querySelector('.user-lookup-section').classList.remove('hidden');
     document.querySelector('.user-lookup-section .starting-point').focus();
+  } else if (startPoint === "winners") {
+    document.querySelector('.winners-section').classList.remove('hidden');
   } else {
     document.querySelector('.registration-section').classList.remove('hidden');
     document.querySelector('.registration-section .starting-point').focus();
