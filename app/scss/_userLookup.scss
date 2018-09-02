@@ -1,24 +1,43 @@
 .user-lookup-section {
   .user-lookup-results{
+    position: relative;
     height: 40vh;
     margin: 0 auto;
     overflow: hidden;
     width: 60%;
 
+    .fade-overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      background-image: linear-gradient(to top, white, transparent 30%);
+    }
+
     .user-lookup-scroll-wrapper {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       height: 100%;
       overflow-x: hidden;
       overflow-y: scroll;
       padding-right: 17px;
       width: 100%;
+
+      .user-lookup-spacer {
+        box-sizing: border-box;
+        height: 100px;
+        width: 100%;
+      }
     }
 
     .user-lookup-info-wrapper {
       border-right: solid 1px $french-grey;
+      box-sizing: border-box;
       padding: 15px 20px;
-      width: 35%;
+      width: 30%;
 
       p {
         margin: 10px 0;
@@ -28,6 +47,7 @@
     .user-lookup-status-wrapper,
     .user-lookup-history {
       border-right: solid 1px $french-grey;
+      box-sizing: border-box;
       padding: 15px 20px;
       width: 50%;
 
@@ -60,6 +80,10 @@
           }
         }
       }
+    }
+
+    .user-lookup-history {
+      border: 0;
     }
 
     .user-lookup-history {
