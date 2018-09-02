@@ -372,8 +372,6 @@ function checkLocks() {
 /**
  * Adds event to enter key press on badge inputs (mostly triggered by scanner)
  */
-// TODO: I should make it so that the first badge is focused on load. Really I
-// should make it so that the first input is focused on all pages.
 document.querySelector('.user-badges').addEventListener('keydown', function (event) {
   if (event.which === 13 || event.which === 9) {
     event.preventDefault();
@@ -513,8 +511,6 @@ function findBadgeCode(badgeCode, array) {
   } else {
     displayMessage('Badge not registered');
     return false;
-    // TODO: When we don't find the badge, we are still trying to retrieve the
-    // data from the database. We need to fix this somewhere upstream from here
   }
 }
 
@@ -709,7 +705,6 @@ function displayUserData(user) {
                       <p>${game}</p>\
                     </li>`;
   }
-  // TODO: I should make all badge and game numbers clickable
 
   userLookupStatusList.innerHTML = badgeSatuses;
 
