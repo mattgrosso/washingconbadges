@@ -119,7 +119,6 @@ function toggleAuth() {
 /**
  * Adds event to form submit to find user in spreadsheet and return user data
  */
-// TODO: This needs to check to see if this person has already checked in. (Think through what we need to do if that comes up)
 document.querySelector('#find-person').addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -315,7 +314,7 @@ function buildBadgeCodeInputs(registrationEntry) {
                 data-row="${registrationEntry.row}">
               </fieldset>\
               <i class="locked-input fas fa-unlock"></i>`;
-              // TODO: It would be nice if I could delte a badge here (safely)
+              // TODO: It would be nice if I could delete a badge here (safely)
   }
 
   userBadges.innerHTML = inputs;
@@ -380,7 +379,6 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
         "All badges entered!",
         "Click 'Next Guest'."
       );
-      // TODO: The Next Guest button isn't working
     }
   }
 });
@@ -417,6 +415,7 @@ function confirmAllBadgesEntered(userRow, count) {
 
 document.querySelector('.next-guest').addEventListener('click', function (event) {
   event.preventDefault();
+  console.log('triggered');
   backToStartOf('registration');
 });
 
@@ -527,7 +526,8 @@ function confirmGameCheckout(success) {
   if (success) {
     displayMessage(
       "All set!",
-      'Enjoy the game!'
+      'Enjoy the game!',
+      3000
     );
     setTimeout(function () {
       backToStartOf('checkout');
@@ -606,7 +606,10 @@ function addGameToHistory(badgeCode, rowNumber, gameCode) {
 function confirmGameReturned(success) {
   if (success) {
     console.log('Game returned');
-    displayMessage('Hope you enjoyed the game!');
+    displayMessage(
+      'Hope you enjoyed the game!',
+      null,
+      3000);
     setTimeout(function () {
       backToStartOf('returns');
     }, 3000);
@@ -871,6 +874,12 @@ function backToStartOf(startPoint) {
   });
 
   if (startPoint === "registration") {
+    document.querySelectorAll('.hidden-at-start').forEach(function (each) {
+      each.classList.add('hidden');
+    });
+    document.querySelectorAll('.visible-at-start').forEach(function (each) {
+      each.classList.remove('hidden');
+    });
     document.querySelector('.registration-section').classList.remove('hidden');
     document.querySelector('.registration-section .starting-point').focus();
   } else if (startPoint === "checkout") {
