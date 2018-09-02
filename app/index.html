@@ -13,6 +13,7 @@
 
       <div class="nav-buttons">
         <div class="section-select-buttons">
+          <!-- TODO: These should all link to the start point of their section -->
           <a id="registration-link" class="advanced-options active" data-section="registration-section">Registration</a>
           <a id="checkout-link" class="advanced-options" data-section="checkout-section">Game Checkouts</a>
           <a id="returns-link" class="advanced-options" data-section="returns-section">Game Returns</a>
@@ -49,8 +50,12 @@
 
       <section class="registration-section visible-at-start">
         <div class="registration-start-screen visible-at-start">
+          <!-- TODO: This form is still showing suggestions -->
           <form autocomplete="off" class="search-form">
-            <input id="search-name" class="starting-point" type="text" placeholder="name, email, phone, or order#" autocomplete="disabled">
+            <fieldset>
+              <label for="search-name">Name, email, phone, or order#</label>
+              <input id="search-name" class="starting-point" type="text" autocomplete="disabled">
+            </fieldset>
             <button id="find-person">Find</button>
           </form>
           <div class="or-divider">
@@ -100,7 +105,6 @@
             <div class="user-badges-scroll-wrapper">
               <div class="user-badges"></div>
               <div class="add-badges-wrapper">
-                <i id="toggle-add-badges-form" class="far fa-times-circle"></i>
                 <div class="add-badges-form hidden-at-start hidden">
                   <fieldset>
                     <label>Number of Badges To Add</label>
@@ -108,6 +112,7 @@
                   </fieldset>
                   <button id="add-badges">Add</button>
                 </div>
+                <i id="toggle-add-badges-form" class="far fa-times-circle"></i>
               </div>
             </div>
           </form>
@@ -116,23 +121,38 @@
 
       <section class="checkout-section hidden-at-start hidden">
         <form autocomplete="off">
-          <input id="checkout-badge-barcode" class="starting-point enter-to-next-sibling" type="text" placeholder="Badge Code">
-          <input id="checkout-game-barcode" type="text" placeholder="Game Code">
+          <fieldset>
+            <label for="checkout-badge-barcode">Badge Code</label>
+            <input id="checkout-badge-barcode" class="starting-point enter-to-next-sibling" type="text">
+          </fieldset>
+          <fieldset>
+            <label for="checkout-game-barcode">Game Code</label>
+            <input id="checkout-game-barcode" type="text">
+          </fieldset>
           <button id="checkout-game">Checkout</button>
         </form>
       </section>
 
       <section class="returns-section hidden-at-start hidden">
         <form autocomplete="off">
-          <input id="returns-badge-barcode" class="starting-point enter-to-next-sibling" type="text" placeholder="Badge Code">
-          <input id="returns-game-barcode" type="text" placeholder="Game Code">
+          <fieldset>
+            <label for="returns-badge-barcode">Badge Code</label>
+            <input id="returns-badge-barcode" class="starting-point enter-to-next-sibling" type="text" placeholder="Badge Code">
+          </fieldset>
+          <fieldset>
+            <label for="returns-game-barcode">Game Code</label>
+            <input id="returns-game-barcode" type="text" placeholder="Game Code">
+          </fieldset>
           <button id="return-game">Return</button>
         </form>
       </section>
 
       <section class="user-lookup-section hidden-at-start hidden">
         <form autocomplete="off">
-          <input id="user-lookup-badge-barcode" class="starting-point" type="text" placeholder="Badge Code">
+          <fieldset>
+            <label for="user-lookup-badge-barcode">Badge Code</label>
+            <input id="user-lookup-badge-barcode" class="starting-point" type="text">
+          </fieldset>
           <button id="lookup-user">Return</button>
         </form>
         <div class="user-lookup-results hidden-at-start hidden">

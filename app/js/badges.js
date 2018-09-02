@@ -191,7 +191,7 @@ document.querySelector('#submit-new-registration').addEventListener('click', fun
     const email = document.querySelector('.new-registration-form-email').value;
     const phone = document.querySelector('.new-registration-form-phone').value;
     const badgecount = document.querySelector('.new-registration-form-badgecount').value;
-    const id = `registered-day-of-${uuid()}`;
+    const id = `new-sale-${uuid()}`;
 
     const newUser = [
       id,
@@ -303,7 +303,8 @@ function buildBadgeCodeInputs(registrationEntry) {
   let inputs = '';
   for (var i = 0; i < inputCount; i++) {
     inputs = `${inputs}\
-              <p>Badge #${i + 1}</p>\
+              <fieldset>\
+              <label>Badge #${i + 1}</label>\
               <input \
                 class="badge-input"\
                 type="text" \
@@ -312,7 +313,9 @@ function buildBadgeCodeInputs(registrationEntry) {
                 data-inputnumber="${i+1}" \
                 data-inputcount="${inputCount}" \
                 data-row="${registrationEntry.row}">
+              </fieldset>\
               <i class="locked-input fas fa-unlock"></i>`;
+              // TODO: It would be nice if I could delte a badge here (safely)
   }
 
   userBadges.innerHTML = inputs;
@@ -347,6 +350,8 @@ function checkLocks() {
 /**
  * Adds event to enter key press on badge inputs (mostly triggered by scanner)
  */
+// TODO: I should make it so that the first badge is focused on load. Really I
+// should make it so that the first input is focused on all pages.
 document.querySelector('.user-badges').addEventListener('keydown', function (event) {
   if (event.which === 13 || event.which === 9) {
     event.preventDefault();
@@ -368,7 +373,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     addValueToArrayCell(badgeCode, `F${userRow}`, parseInt(inputNumber) - 1);
 
     if (emptyCount) {
-      target.nextElementSibling.nextElementSibling.nextElementSibling.focus();
+      target.parentNode.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       target.blur();
       displayMessage(
@@ -376,9 +381,6 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
         "Click 'Next Guest'."
       );
       // TODO: The Next Guest button isn't working
-      // TODO: There is an issue with confirmAllBadgesEntered(). Figure out what
-      // it is and solve it.
-      // confirmAllBadgesEntered(userRow, inputCount);
     }
   }
 });

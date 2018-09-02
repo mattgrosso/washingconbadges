@@ -26,13 +26,33 @@ button {
   }
 }
 
+fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 15px 0;
+
+  label {
+    margin: 10px 20px;
+  }
+
+  input {
+    margin: 0 20px;
+  }
+}
+
 input {
   border: 1px solid $french-grey;
   border-radius: 2px;
   font-size: 1.5rem;
+  line-height: 2;
+  padding: 0 25px;
+  text-align: center;
+  width: 400px;
 
   &:focus {
     outline: none;
+    text-align: left;
   }
 }
 
@@ -42,8 +62,10 @@ input {
 
 .cancel {
   color: $french-grey;
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin: 0 auto;
+  position: absolute;
+  right: 30px;
   text-align: right;
 
   i {
