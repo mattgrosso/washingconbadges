@@ -674,6 +674,7 @@ function displayUserData(user) {
   const userLookupEmail = document.querySelector('.user-lookup-email');
   const userLookupPhone = document.querySelector('.user-lookup-phone');
   const userLookupStatusList = document.querySelector('.user-lookup-checkout-status ul');
+  const userLookupHistory = document.querySelector('.user-lookup-history ul');
 
   userLookupName.innerText = user.name;
   userLookupOrderId.innerText = user.order_id;
@@ -684,7 +685,7 @@ function displayUserData(user) {
   let badgeSatuses = '<li class="headers"><p>Badge</p><p>Game</p></li>';
   for (var i = 0; i < badgeCount; i++) {
     const badge = user.badges.badgeCodes[i] || 'Not Activated';
-    const game = user.badges.currentStatus[badge] || '-';
+    const game = findGameTitle(user.badges.currentStatus[badge]) || '-';
 
     badgeSatuses += `<li>\
                       <p>${badge}</p>\
@@ -694,6 +695,19 @@ function displayUserData(user) {
   // TODO: I should make all badge and game numbers clickable
 
   userLookupStatusList.innerHTML = badgeSatuses;
+
+  const historyArray = JSON.parse(user.history);
+  const historyCount = historyArray.length;
+  let history = '';
+  for (var j = 0; j < historyCount; j++) {
+    const game = findGameTitle(historyArray[j]);
+
+    history += `<li>\
+                  <p>${game}</p>\
+                </li>`;
+  }
+
+  userLookupHistory.innerHTML = history;
 
   document.querySelector('.user-lookup-section form input').value = null;
   document.querySelector('.user-lookup-results').classList.remove('hidden');
@@ -858,7 +872,7 @@ function displayMessage(headLine, detailLine, timer) {
 
 // Takes in the barcode from a demo library game and returns the title of the game
 function findGameTitle(barcode) {
-  return demoGames[barcode];
+  return demoGames[barcode] || barcode;
 }
 
 // Clears the site and returns the user to the given page

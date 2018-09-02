@@ -328,29 +328,40 @@ header {
   justify-content: center;
   padding: 0 20%; }
   .user-lookup-section .user-lookup-results .user-lookup-info-wrapper {
-    border-right: solid 1px grey;
+    border-right: solid 1px #bdbdbd;
     padding: 15px 20px;
-    width: 40%; }
+    width: 35%; }
     .user-lookup-section .user-lookup-results .user-lookup-info-wrapper p {
       margin: 10px 0; }
-  .user-lookup-section .user-lookup-results .user-lookup-status-wrapper {
+  .user-lookup-section .user-lookup-results .user-lookup-status-wrapper,
+  .user-lookup-section .user-lookup-results .user-lookup-history {
+    border-right: solid 1px #bdbdbd;
     padding: 15px 20px;
-    width: 60%; }
-    .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul {
+    width: 50%; }
+    .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul,
+    .user-lookup-section .user-lookup-results .user-lookup-history ul {
       display: flex;
       flex-wrap: wrap; }
-      .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li {
+      .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li,
+      .user-lookup-section .user-lookup-results .user-lookup-history ul li {
         border-bottom: solid 1px #bdbdbd;
         display: flex;
         justify-content: space-between;
         margin: 5px 0;
         padding-bottom: 3px;
         width: 100%; }
-        .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li.headers {
+        .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li.headers,
+        .user-lookup-section .user-lookup-results .user-lookup-history ul li.headers {
           border: 0; }
-          .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li.headers p {
+          .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li.headers p,
+          .user-lookup-section .user-lookup-results .user-lookup-history ul li.headers p {
             font-weight: bold; }
-        .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li p {
+        .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li p,
+        .user-lookup-section .user-lookup-results .user-lookup-history ul li p {
           margin: 0 25px 0 5px; }
-        .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li div {
+        .user-lookup-section .user-lookup-results .user-lookup-status-wrapper ul li div,
+        .user-lookup-section .user-lookup-results .user-lookup-history ul li div {
           display: flex; }
+  .user-lookup-section .user-lookup-results .user-lookup-history {
+    padding: 15px 20px;
+    width: 15%; }

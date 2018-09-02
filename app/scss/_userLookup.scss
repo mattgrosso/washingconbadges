@@ -5,18 +5,20 @@
     padding: 0 20%;
 
     .user-lookup-info-wrapper {
-      border-right: solid 1px grey;
+      border-right: solid 1px $french-grey;
       padding: 15px 20px;
-      width: 40%;
+      width: 35%;
 
       p {
         margin: 10px 0;
       }
     }
 
-    .user-lookup-status-wrapper {
+    .user-lookup-status-wrapper,
+    .user-lookup-history {
+      border-right: solid 1px $french-grey;
       padding: 15px 20px;
-      width: 60%;
+      width: 50%;
 
       ul {
         display: flex;
@@ -47,6 +49,11 @@
           }
         }
       }
+    }
+
+    .user-lookup-history {
+      padding: 15px 20px;
+      width: 15%;
     }
   }
 }
