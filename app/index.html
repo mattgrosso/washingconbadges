@@ -13,7 +13,6 @@
 
       <div class="nav-buttons">
         <div class="section-select-buttons">
-          <!-- TODO: These should all link to the start point of their section -->
           <a id="registration-link" class="advanced-options active" data-section="registration-section">Registration</a>
           <a id="checkout-link" class="advanced-options" data-section="checkout-section">Game Checkouts</a>
           <a id="returns-link" class="advanced-options" data-section="returns-section">Game Returns</a>
@@ -50,11 +49,10 @@
 
       <section class="registration-section visible-at-start">
         <div class="registration-start-screen visible-at-start">
-          <!-- TODO: This form is still showing suggestions -->
           <form autocomplete="off" class="search-form">
             <fieldset>
               <label for="search-name">Name, email, phone, or order#</label>
-              <input id="search-name" class="starting-point" type="text" autocomplete="disabled">
+              <input id="search-name" class="starting-point" type="text" autocomplete="off">
             </fieldset>
             <button id="find-person">Find</button>
           </form>
@@ -96,10 +94,7 @@
             <p class="user-email"></p>
             <p class="user-phone"></p>
             <hr>
-            <!--TODO: I should figure out how to indicate here if someone bought a Sunday only badge -->
-
             <button class="next-guest">Next Guest</button>
-
           </div>
           <form class="user-badge-form" autocomplete="off">
             <div class="fade-overlay"></div>
