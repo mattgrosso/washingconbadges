@@ -81,6 +81,7 @@
       height: 55vh;
       margin: 0 25px;
       overflow: hidden;
+      position: relative;
       width: 60%;
 
       .user-badges-scroll-wrapper {
@@ -129,7 +130,7 @@
           display: flex;
           font-size: 1.5rem;
           justify-content: center;
-          left: -45px;
+          left: 0;
           position: absolute;
           top: -11px;
           transform: rotate(45deg);

@@ -6,16 +6,6 @@
     overflow: hidden;
     width: 60%;
 
-    .fade-overlay {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      pointer-events: none;
-      background-image: linear-gradient(to top, white, transparent 30%);
-    }
-
     .user-lookup-scroll-wrapper {
       display: flex;
       flex-wrap: wrap;

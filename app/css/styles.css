@@ -129,6 +129,15 @@ h4 {
     .message-pane .message-content p {
       font-size: 1.1rem; }
 
+.fade-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to top, white, transparent 30%); }
+
 header {
   align-items: center;
   border-bottom: 2px solid #afafaf;
@@ -230,6 +239,7 @@ header {
       height: 55vh;
       margin: 0 25px;
       overflow: hidden;
+      position: relative;
       width: 60%; }
       .registration-section .user-view .user-badge-form .user-badges-scroll-wrapper {
         height: 100%;
@@ -264,7 +274,7 @@ header {
           display: flex;
           font-size: 1.5rem;
           justify-content: center;
-          left: -45px;
+          left: 0;
           position: absolute;
           top: -11px;
           transform: rotate(45deg);
@@ -329,14 +339,6 @@ header {
   margin: 0 auto;
   overflow: hidden;
   width: 60%; }
-  .user-lookup-section .user-lookup-results .fade-overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    pointer-events: none;
-    background-image: linear-gradient(to top, white, transparent 30%); }
   .user-lookup-section .user-lookup-results .user-lookup-scroll-wrapper {
     display: flex;
     flex-wrap: wrap;
