@@ -64,7 +64,7 @@ button {
   box-shadow: 2px 2px 8px 0px #bdbdbd;
   cursor: pointer; }
   button:focus, button:hover {
-    box-shadow: 2px 2px 8px 0px #000;
+    box-shadow: 2px 2px 8px 0px #656565;
     outline: none; }
 
 fieldset {
