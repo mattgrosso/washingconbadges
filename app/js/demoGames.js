@@ -1,7 +1,4 @@
 const demoGames = {
-  "728028398939": "Tiny Epic Western",
-  "759751002305": "Sleeping Queens",
-  "3558380020400": "Skull",
   "1": "10' to Kill",
   "2": "1000 Things For Little Children To Do On A Trip",
   "3": "12 Days",

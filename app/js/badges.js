@@ -728,6 +728,70 @@ function displayUserData(user) {
 // End User Lookup Functions
 
 
+// Start winners section Functions
+
+// Look through a list of play-to-win Games
+// For each of those games, scan the checkout histories to find the names of people who checked it out.
+// Return each game and the info for the winner in a list
+document.querySelector('#generate-winners').addEventListener('click', function (event) {
+  event.preventDefault();
+
+  getFromGoogle('A:H').then(function (response) {
+    let allData = response.result.values;
+    let drawings = [];
+
+    Object.keys(playToWinGames).forEach(function (gameCode) {
+      let rowsInTheRunning = [];
+
+      allData.forEach(function (eachRow, index) {
+        const row = index + 1;
+
+        if (eachRow[7]) {
+          try {
+            if (JSON.parse(eachRow[7]).includes(gameCode)) {
+              rowsInTheRunning.push(row);
+            }
+          } catch (e) {
+
+          }
+        }
+      });
+
+      const randomWinnerIndex = Math.floor(Math.random() * rowsInTheRunning.length);
+      const winnersRow = rowsInTheRunning[randomWinnerIndex];
+
+      drawings.push({
+        gameTitle: findGameTitle(gameCode),
+        gameCode: gameCode,
+        entries: rowsInTheRunning,
+        winner: allData[winnersRow]
+      });
+    });
+
+    console.log(drawings);
+    const winnersList = document.querySelector('#winners-list');
+    let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
+
+    drawings.forEach(function (each) {
+      if (each.winner) {
+        listItems += `<li>
+                              <p>${each.gameTitle}</p>
+                              <div>
+                                <p>${each.winner[3]}</p>
+                                <p>${each.winner[4]}</p>
+                                <p>${each.winner[1]}</p>
+                              </div>
+                            </li>`;
+      }
+    });
+
+    winnersList.innerHTML = listItems;
+  });
+});
+
+// End winners section Functions
+
+
 // Start Utility Functions
 
 function getFromGoogle(range) {
@@ -882,7 +946,7 @@ function displayMessage(headLine, detailLine, timer) {
 
 // Takes in the barcode from a demo library game and returns the title of the game
 function findGameTitle(barcode) {
-  return demoGames[barcode] || barcode;
+  return playToWinGames[barcode] || demoGames[barcode] || barcode;
 }
 
 // Clears the site and returns the user to the given page
