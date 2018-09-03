@@ -718,6 +718,10 @@ function displayUserData(user) {
 
 // Start winners section Functions
 
+// TODO: It would be fucking amazing if I could automate the sending of the winners
+// texts using Twilio. You'll need a node server to do it but I think it's
+// possible.
+
 // Look through a list of play-to-win Games
 // For each of those games, scan the checkout histories to find the names of people who checked it out.
 // Return each game and the info for the winner in a list
