@@ -528,8 +528,6 @@ function postValueToRowAndColumn(value, badgeCode, row, column) {
       responseObj[badgeCode] = value;
       postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
         confirmGameCheckout();
-        // TODO: Remove this doubleCheckEntry if it doesn't break soon
-        // doubleCheckEntry(JSON.stringify(responseObj), `${column}${row}`, confirmGameCheckout);
       });
     } else { // The object does have a value at a key matching the badge number
       const gameTitle = findGameTitle(responseObj[badgeCode]);
@@ -839,37 +837,7 @@ function addValueToArrayCell(value, cell, index, callBack) {
       if (callBack) {
         callBack();
       }
-      // TODO: Remove this doubleCheckEntry if it doesn't break soon
-      // doubleCheckEntry(jsonArray, cell, callBack);
     });
-  });
-}
-
-/**
- * Checks to make sure that the value we just added to the cell was in fact added.
- * Will loop for 5 seconds before giving up.
- * When it is done checking it will call the given callback function with either
- * a true or a false.
- */
-// TODO: Delete this whote function if it doesn't break soon
-function doubleCheckEntry(value, cell, callback, loopCount) {
-  let loopCountForPassing = loopCount || 0;
-  const callBackCatch = callback || console.log;
-  getFromGoogle(cell).then(function (response) {
-    const responseValue = response.result.values;
-    if (!responseValue && value === '') {
-      console.log(`Confirm that ${cell} is empty`);
-      callBackCatch(true);
-    } else if (loopCountForPassing >= 10) {
-      callBackCatch(false);
-    } else if (responseValue[0][0] !== value) {
-      loopCountForPassing++;
-      setTimeout(function () {
-        doubleCheckEntry(value, cell, callBackCatch, loopCountForPassing);
-      }, 500);
-    } else {
-      callBackCatch(true);
-    }
   });
 }
 
