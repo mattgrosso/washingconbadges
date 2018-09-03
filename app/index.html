@@ -19,7 +19,7 @@
           <a id="user-lookup-link" class="advanced-options" data-section="user-lookup-section">User Lookup</a>
         </div>
 
-        <div class="auth-buttons">
+        <div class="auth-buttons hidden">
           <a id="winners-link" class="advanced-options" data-section="winners-section">Winners</a>
           <button id="authorize-button" style="display: none;">Authorize</button>
           <button id="signout-button" style="display: none;">Sign Out</button>
@@ -36,15 +36,6 @@
         <div class="message-content">
           <h2></h2>
           <p></p>
-        </div>
-        <div class="not-found-message hidden-at-start hidden">
-          <h2>Order not found. Try again.</h2>
-          <p>Maybe check spelling or try searching with a different parameter (email, phone, etc.)</p>
-        </div>
-
-        <div class="too-many-found-message hidden-at-start hidden">
-          <h2>Too Many Matching Orders</h2>
-          <p>Try searching with a different parameter (email, phone, etc.)</p>
         </div>
       </div>
 
@@ -181,7 +172,13 @@
 
       <section class="winners-section hidden-at-start hidden">
         <button id="generate-winners">Draw for Winners</button>
-        <ul id="winners-list"></ul>
+        <div class="winners-list-wrapper">
+          <div class="fade-overlay"></div>
+          <div class="winners-scroll-wrapper">
+            <ul id="winners-list"></ul>
+            <div class="winners-spacer"></div>
+          </div>
+        </div>
       </section>
     </main>
 

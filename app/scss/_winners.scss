@@ -41,4 +41,28 @@
       }
     }
   }
+
+  .winners-list-wrapper {
+    position: relative;
+    height: 40vh;
+    margin: 0 auto;
+    overflow: hidden;
+
+    .winners-scroll-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      padding-right: 17px;
+      width: 100%;
+
+      .winners-spacer {
+        box-sizing: border-box;
+        height: 100px;
+        width: 100%;
+      }
+    }
+  }
 }

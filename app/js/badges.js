@@ -68,8 +68,6 @@ function handleSignoutClick(event) {
 
 // Start of my own code
 
-// TODO: I also need to create the play-to-win winners generator
-
 const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
 document.querySelector('#search-name').focus();
@@ -217,7 +215,6 @@ function addNewUserToDatabase(user) {
  * Retrieves user data for user that contains matching textContent
  * @param  {string} searchString  This is the query string from the form. It can
  *                                be name, email, phone, or order number.
- *                                // TODO: It would be nice if, when this found multiple options it would let you choose between them.
  */
 function findUser(searchString) {
   const lowerCaseString = searchString.toLowerCase();
