@@ -18,6 +18,10 @@ button {
   border-radius: 2px;
   box-shadow: 2px 2px 8px 0px $french-grey;
   cursor: pointer;
+  background: $fern-green;
+  color: $white;
+  font-size: 1.5rem;
+  padding: 5px 40px;
 
   &:focus,
   &:hover {

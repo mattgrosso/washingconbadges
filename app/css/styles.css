@@ -62,7 +62,11 @@ button {
   border: 0;
   border-radius: 2px;
   box-shadow: 2px 2px 8px 0px #bdbdbd;
-  cursor: pointer; }
+  cursor: pointer;
+  background: #487943;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 5px 40px; }
   button:focus, button:hover {
     box-shadow: 2px 2px 8px 0px #656565;
     outline: none; }
@@ -335,11 +339,7 @@ header {
   .checkout-section form button,
   .returns-section form button,
   .user-lookup-section form button {
-    background: #487943;
-    color: #fff;
-    font-size: 1.5rem;
-    margin: 33px 20px 0;
-    padding: 5px 40px; }
+    margin: 33px 20px 0; }
 
 .user-lookup-section .user-lookup-results {
   position: relative;
@@ -402,3 +402,33 @@ header {
   .user-lookup-section .user-lookup-results .user-lookup-history {
     padding: 15px 20px;
     width: 15%; }
+
+.winners-section {
+  margin: 0 auto;
+  text-align: center;
+  width: 80%; }
+  .winners-section ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px; }
+    .winners-section ul li {
+      border-bottom: solid 1px #bdbdbd;
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      padding-bottom: 3px;
+      width: 100%; }
+      .winners-section ul li.headers {
+        border-bottom: solid 1px #656565; }
+        .winners-section ul li.headers p {
+          font-size: 1.2rem;
+          font-weight: bold; }
+      .winners-section ul li p {
+        margin: 0 25px 0 5px; }
+      .winners-section ul li div {
+        display: flex;
+        flex-wrap: wrap; }
+        .winners-section ul li div p {
+          margin-bottom: 5px;
+          text-align: right;
+          width: 100%; }

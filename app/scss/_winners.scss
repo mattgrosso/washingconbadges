@@ -1,0 +1,44 @@
+.winners-section {
+  margin: 0 auto;
+  text-align: center;
+  width: 80%;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+
+    li {
+      border-bottom: solid 1px $french-grey;
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      padding-bottom: 3px;
+      width: 100%;
+
+      &.headers {
+        border-bottom: solid 1px $steel;
+
+        p {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+
+      p {
+        margin: 0 25px 0 5px;
+      }
+
+      div {
+        display: flex;
+        flex-wrap: wrap;
+
+        p {
+          margin-bottom: 5px;
+          text-align: right;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

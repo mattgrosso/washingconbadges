@@ -92,7 +92,6 @@ navLinks.forEach(function (each) {
     });
 
     const sectionName = this.dataset.section;
-    console.log(this.dataset.section);
     backToStartOf(sectionName.replace('-section', ''));
   });
 });
@@ -222,7 +221,6 @@ function addNewUserToDatabase(user) {
  */
 function findUser(searchString) {
   const lowerCaseString = searchString.toLowerCase();
-
   getFromGoogle('A:F').then(function (response) {
     const data = response.result.values;
     let registrationEntry;
@@ -341,13 +339,11 @@ function buildBadgeCodeInputs(registrationEntry) {
         event.target.previousElementSibling.previousElementSibling.firstElementChild.nextElementSibling.dataset;
       const dataRow = correspondingInputData.row;
       const dataIndex = parseInt(correspondingInputData.inputnumber) - 1;
-
       getFromGoogle(`F${dataRow}`).then(function (response) {
         const badgeArray = JSON.parse(response.result.values[0]);
         badgeArray.splice(dataIndex, 1);
 
         postToGoogle(`F${dataRow}`, JSON.stringify(badgeArray)).then(function (resp) {
-          console.log('correspondingInputData: ', correspondingInputData);
           postToGoogle(`C${dataRow}`, parseInt(correspondingInputData.inputcount) - 1).then(function () {
             findUser(correspondingInputData.email);
           });
@@ -439,7 +435,6 @@ function confirmAllBadgesEntered(userRow, count) {
 
 document.querySelector('.next-guest').addEventListener('click', function (event) {
   event.preventDefault();
-  console.log('triggered');
   backToStartOf('registration');
 });
 
@@ -564,7 +559,6 @@ document.querySelector('#return-game').addEventListener('click', function (event
 
   const badgeCode = document.querySelector('#returns-badge-barcode').value;
   const gameCode = document.querySelector('#returns-game-barcode').value;
-
   returnGame(badgeCode, gameCode);
 });
 
@@ -576,7 +570,6 @@ function findUserRow(badgeCode, gameCode) {
   function containsCode(code) {
     return code === badgeCode;
   }
-
   getFromGoogle('F:G').then(function (response) {
     const values = response.result.values;
     let userRow;
@@ -609,14 +602,14 @@ function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
   } catch (e) {
     displayMessage(
       'Something went wrong.',
-      'Probably the badge or the game scanned badly. Please check values and try again. If this issue persists, contact Matt Grosso on Slack',
+      'Probably the badge or the game scanned badly. Please check values and try again. If this issue persists, contact @mattgrosso on Slack',
       8000);
     console.log(e);
   }
 }
 
 function addGameToHistory(badgeCode, rowNumber, gameCode) {
-  addValueToArrayCell(gameCode, `H${rowNumber}`, null, confirmGameReturned)
+  addValueToArrayCell(gameCode, `H${rowNumber}`)
     .then(function () {
       clearValueFromObjectInCell(badgeCode, `G${rowNumber}`);
     });
@@ -735,7 +728,6 @@ function displayUserData(user) {
 // Return each game and the info for the winner in a list
 document.querySelector('#generate-winners').addEventListener('click', function (event) {
   event.preventDefault();
-
   getFromGoogle('A:H').then(function (response) {
     let allData = response.result.values;
     let drawings = [];
@@ -744,12 +736,10 @@ document.querySelector('#generate-winners').addEventListener('click', function (
       let rowsInTheRunning = [];
 
       allData.forEach(function (eachRow, index) {
-        const row = index + 1;
-
         if (eachRow[7]) {
           try {
             if (JSON.parse(eachRow[7]).includes(gameCode)) {
-              rowsInTheRunning.push(row);
+              rowsInTheRunning.push(index);
             }
           } catch (e) {
 
@@ -768,7 +758,6 @@ document.querySelector('#generate-winners').addEventListener('click', function (
       });
     });
 
-    console.log(drawings);
     const winnersList = document.querySelector('#winners-list');
     let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
 
@@ -778,7 +767,7 @@ document.querySelector('#generate-winners').addEventListener('click', function (
                               <p>${each.gameTitle}</p>
                               <div>
                                 <p>${each.winner[3]}</p>
-                                <p>${each.winner[4]}</p>
+                                <p>${prettifyPhoneNumber(each.winner[4])}</p>
                                 <p>${each.winner[1]}</p>
                               </div>
                             </li>`;
@@ -835,7 +824,6 @@ function postRowToGoogle(range, contentArray) {
  */
 function addValueToArrayCell(value, cell, index, callBack) {
   let jsonArray;
-
   return getFromGoogle(cell).then(function (response) {
     let cellArray = [];
     if (response.result.values) {
@@ -864,37 +852,35 @@ function addValueToArrayCell(value, cell, index, callBack) {
  * a true or a false.
  */
 // TODO: Delete this whote function if it doesn't break soon
-// function doubleCheckEntry(value, cell, callback, loopCount) {
-//   let loopCountForPassing = loopCount || 0;
-//   const callBackCatch = callback || console.log;
-//
-//   getFromGoogle(cell).then(function (response) {
-//     const responseValue = response.result.values;
-//
-//     if (!responseValue && value === '') {
-//       console.log(`Confirm that ${cell} is empty`);
-//       callBackCatch(true);
-//     } else if (responseValue[0][0] !== value) {
-//       loopCountForPassing++;
-//       setTimeout(function () {
-//         doubleCheckEntry(value, cell, callBackCatch, loopCountForPassing);
-//       }, 500);
-//     } else if (loopCountForPassing >= 10) {
-//       callBackCatch(false);
-//     } else {
-//       callBackCatch(true);
-//     }
-//   });
-// }
+function doubleCheckEntry(value, cell, callback, loopCount) {
+  let loopCountForPassing = loopCount || 0;
+  const callBackCatch = callback || console.log;
+  getFromGoogle(cell).then(function (response) {
+    const responseValue = response.result.values;
+    if (!responseValue && value === '') {
+      console.log(`Confirm that ${cell} is empty`);
+      callBackCatch(true);
+    } else if (loopCountForPassing >= 10) {
+      callBackCatch(false);
+    } else if (responseValue[0][0] !== value) {
+      loopCountForPassing++;
+      setTimeout(function () {
+        doubleCheckEntry(value, cell, callBackCatch, loopCountForPassing);
+      }, 500);
+    } else {
+      callBackCatch(true);
+    }
+  });
+}
 
 function clearValueFromObjectInCell(key, cell) {
-  let valueObj;
-
   getFromGoogle(cell).then(function (response) {
-    valueObj = JSON.parse(response.result.values[0][0] || {});
+    let valueObj = JSON.parse(response.result.values[0][0] || {});
     valueObj[key] = '';
 
-    postToGoogle(cell, JSON.stringify(valueObj));
+    postToGoogle(cell, JSON.stringify(valueObj)).then(function (response) {
+      confirmGameReturned();
+    });
   });
 }
 
