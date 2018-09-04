@@ -766,7 +766,6 @@ document.querySelector('#generate-winners').addEventListener('click', function (
                               <p>${each.gameTitle}</p>
                               <div>
                                 <p>${each.winner[3]}</p>
-                                <p>${prettifyPhoneNumber(each.winner[4])}</p>
                                 <p>${each.winner[1]}</p>
                               </div>
                             </li>`;
