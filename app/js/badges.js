@@ -214,7 +214,7 @@ function addNewUserToDatabase(user) {
 /**
  * Retrieves user data for user that contains matching textContent
  * @param  {string} searchString  This is the query string from the form. It can
- *                                be name, email, phone, or order number.
+ *                                be name, email, or order number.
  */
 function findUser(searchString) {
   const lowerCaseString = searchString.toLowerCase();
@@ -257,7 +257,7 @@ function findUser(searchString) {
     if (matchingRows > 1) {
       displayMessage(
         "Too Many Matching Orders",
-        "Try searching with a different parameter (email, phone, etc.)"
+        "Try searching with a different parameter (email, order number, etc.)"
       );
     } else if (registrationEntry) {
       buildUserView(registrationEntry);
@@ -270,7 +270,7 @@ function findUser(searchString) {
     } else {
       displayMessage(
         "Order not found. Try again.",
-        "Maybe check spelling or try searching with a different parameter (email, phone, etc.)");
+        "Maybe check spelling or try searching with a different parameter (email, order number, etc.)");
     }
   });
 }
@@ -283,7 +283,6 @@ function buildUserView(registrationEntry) {
   addTextToElement('.user-view .user-name', registrationEntry.name);
   addTextToElement('.user-view .user-orderId', `#${registrationEntry.orderId}`);
   addTextToElement('.user-view .user-email', registrationEntry.email);
-  addTextToElement('.user-view .user-phone', prettifyPhoneNumber(registrationEntry.phone));
 }
 
 /**
@@ -857,17 +856,6 @@ function clearValueFromObjectInCell(key, cell) {
  */
 function addTextToElement(element, text) {
   document.querySelector(element).textContent = text;
-}
-
-function prettifyPhoneNumber(phoneNumberString) {
-  const prettyPhone = phoneNumberString.split('').filter(function (each) {
-    return !/[^0-9]/.test(each);
-  });
-  prettyPhone.splice(6, 0, '-');
-  prettyPhone.splice(3, 0, '-');
-  prettyPhone.join(' ');
-
-  return prettyPhone.join('');
 }
 
 function uuid() {
