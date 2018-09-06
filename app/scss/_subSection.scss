@@ -11,4 +11,37 @@
       margin: 33px 20px 0;
     }
   }
+
+  .phone-prompt {
+    border: solid 1px grey;
+    margin: 0 auto;
+    padding: 25px 25px 0;
+    width: 70%;
+
+    form {
+      flex-wrap: wrap;
+
+      &>div {
+        margin-top: 20px;
+        text-align: center;
+        width: 100%;
+
+        p {
+          margin: 10px 0;
+        }
+      }
+
+      h2 {
+        text-align: center;
+        width: 100%;
+      }
+
+      #no-phone-number {
+        background-color: $white;
+        border: solid 2px;
+        color: $black;
+        font-size: 1rem;
+      }
+    }
+  }
 }

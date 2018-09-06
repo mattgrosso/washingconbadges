@@ -341,6 +341,40 @@ header {
   .user-lookup-section form button {
     margin: 33px 20px 0; }
 
+.checkout-section .phone-prompt,
+.returns-section .phone-prompt,
+.user-lookup-section .phone-prompt {
+  border: solid 1px grey;
+  margin: 0 auto;
+  padding: 25px 25px 0;
+  width: 70%; }
+  .checkout-section .phone-prompt form,
+  .returns-section .phone-prompt form,
+  .user-lookup-section .phone-prompt form {
+    flex-wrap: wrap; }
+    .checkout-section .phone-prompt form > div,
+    .returns-section .phone-prompt form > div,
+    .user-lookup-section .phone-prompt form > div {
+      margin-top: 20px;
+      text-align: center;
+      width: 100%; }
+      .checkout-section .phone-prompt form > div p,
+      .returns-section .phone-prompt form > div p,
+      .user-lookup-section .phone-prompt form > div p {
+        margin: 10px 0; }
+    .checkout-section .phone-prompt form h2,
+    .returns-section .phone-prompt form h2,
+    .user-lookup-section .phone-prompt form h2 {
+      text-align: center;
+      width: 100%; }
+    .checkout-section .phone-prompt form #no-phone-number,
+    .returns-section .phone-prompt form #no-phone-number,
+    .user-lookup-section .phone-prompt form #no-phone-number {
+      background-color: #fff;
+      border: solid 2px;
+      color: #000;
+      font-size: 1rem; }
+
 .user-lookup-section .user-lookup-results {
   position: relative;
   height: 40vh;
