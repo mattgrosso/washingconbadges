@@ -24,7 +24,7 @@ const playToWinGames = {
     "3308589": "Cycles (ptw)",
     "4462877": "Insect Intersection (ptw)",
     "3547560": "Crazy Cats (ptw)",
-    "696859265808", "Terraforming Mars"
+    "696859265808": "Terraforming Mars"
   }
 
   // TODO: I need to figure out how to indicate that we have multiple copies of a game in here

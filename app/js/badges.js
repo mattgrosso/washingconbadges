@@ -72,6 +72,25 @@ const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
 document.querySelector('#search-name').focus();
 
+
+// TODO: Make this happen automatically on a button on the winners page.
+const query = 'number=3123439740&game=Scythe&name=Matt';
+
+document.querySelector('#send-an-sms').addEventListener('click', function (event) {
+  event.preventDefault();
+  // console.log('JSON.stringify(data): ', JSON.stringify(data));
+  fetch(`https://serene-fortress-48905.herokuapp.com/sms?${query}`, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: "This is broken anyway", // body data type must match "Content-Type" header
+  }).then(function (response) {
+    console.log('response: ', response);
+  });
+});
+
 // Start Nav functions
 const navLinks = document.querySelectorAll('a.advanced-options');
 const sections = document.querySelectorAll('main > section');
