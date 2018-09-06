@@ -756,6 +756,7 @@ function displayUserData(user) {
 // TODO: It would be fucking amazing if I could automate the sending of the winners
 // texts using Twilio. You'll need a node server to do it but I think it's
 // possible.
+// TODO: I need to figure out what to do about a game that has multiple copies in the play-to-wins
 
 // Look through a list of play-to-win Games
 // For each of those games, scan the checkout histories to find the names of people who checked it out.
