@@ -464,6 +464,11 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
 
   if (badgeCode && gameCode) {
     postValueToPersonRow(badgeCode, gameCode);
+  } else {
+    displayMessage(
+      'Missing Values',
+      'Please try again'
+    );
   }
 });
 
@@ -510,27 +515,58 @@ function findBadgeCode(badgeCode, array) {
  * Retrieves data from given cell and, if it's empty, puts the given value there.
  * Otherwise, it logs that the cell is already full.
  */
-function postValueToRowAndColumn(value, badgeCode, row, column) {
-  // Check what value is in that cell
-  getFromGoogle(`${column}${row}`).then(function (response) {
+// TODO: Update the name and description of this function. It is it less general now.
+function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
+  getFromGoogle(`${row}:${row}`).then(function (response) {
+    const userRow = response.result.values[0];
+    const gameTitle = findGameTitle(gameCode);
+    const playToWin = gameTitle.substr(gameTitle.length-5) === '(ptw)';
     let responseObj;
 
     if (response.result.values) {
-      responseObj = JSON.parse(response.result.values[0][0]);
+      responseObj = JSON.parse(userRow[6]);
     } else {
       responseObj = {};
     }
+
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
-      responseObj[badgeCode] = value;
+      responseObj[badgeCode] = gameCode;
       postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
-        confirmGameCheckout();
+        if (playToWin && !userRow[4]) {
+          promptForPhone(row);
+        } else {
+          confirmGameCheckout();
+        }
       });
     } else { // The object does have a value at a key matching the badge number
-      const gameTitle = findGameTitle(responseObj[badgeCode]);
       displayMessage(
-        `Please return ${gameTitle} before checking out another game.`
+        `${gameTitle}`,
+        'Is checked out with this badge. Please return it.'
       );
     }
+  });
+}
+
+function promptForPhone(userRow) {
+  const phonePrompt = document.querySelector('.phone-prompt');
+  const phoneInput = document.querySelector('#phone-prompt-input');
+
+  phonePrompt.classList.remove('hidden');
+
+  document.querySelector('#enter-phone').addEventListener('click', function (event) {
+    event.preventDefault();
+    postToGoogle(`E${userRow}`, phoneInput.value.replace(/\D/g,'')).then(function () {
+      confirmGameCheckout();
+      phonePrompt.classList.add('hidden');
+    });
+  });
+
+  document.querySelector('#no-phone-number').addEventListener('click', function (event) {
+    event.preventDefault();
+    postToGoogle(`E${userRow}`, 'declined').then(function () {
+      confirmGameCheckout();
+      phonePrompt.classList.add('hidden');
+    });
   });
 }
 
@@ -538,11 +574,11 @@ function confirmGameCheckout() {
   displayMessage(
     "All set!",
     'Enjoy the game!',
-    3000
+    2000
   );
   setTimeout(function () {
     backToStartOf('checkout');
-  }, 3000);
+  }, 2000);
 }
 
 /**
@@ -613,10 +649,10 @@ function confirmGameReturned() {
   displayMessage(
     'Hope you enjoyed the game!',
     null,
-    3000);
+    2000);
   setTimeout(function () {
     backToStartOf('returns');
-  }, 3000);
+  }, 2000);
 }
 
 // End Library Funtions

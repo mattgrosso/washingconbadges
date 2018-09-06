@@ -1,7 +1,7 @@
 const playToWinGames = {
-  "11111": "Run, Fight or Die",
-  "22222": "1000 Things For Old People To Do On A Trip",
-  "33333": "1200 Days",
-  "44444": "6000 Nimmt",
-  "55555": "70 Wonders"
+  "1": "Run, Fight or Die (ptw)",
+  "2": "1000 Things For Old People To Do On A Trip (ptw)",
+  "3": "1200 Days (ptw)",
+  "4": "6000 Nimmt (ptw)",
+  "5": "70 Wonders (ptw)"
 }
