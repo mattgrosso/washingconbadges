@@ -72,25 +72,6 @@ const sheetId = '1JfujUhs04UqOIS6wAjYEiI9XPGc97-WerNtnNf99paI';
 
 document.querySelector('#search-name').focus();
 
-
-// TODO: Make this happen automatically on a button on the winners page.
-const query = 'number=3123439740&game=Scythe&name=Matt';
-
-document.querySelector('#send-an-sms').addEventListener('click', function (event) {
-  event.preventDefault();
-  // console.log('JSON.stringify(data): ', JSON.stringify(data));
-  fetch(`https://serene-fortress-48905.herokuapp.com/sms?${query}`, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-          "Content-Type": "application/json",
-      },
-      body: "This is broken anyway", // body data type must match "Content-Type" header
-  }).then(function (response) {
-    console.log('response: ', response);
-  });
-});
-
 // Start Nav functions
 const navLinks = document.querySelectorAll('a.advanced-options');
 const sections = document.querySelectorAll('main > section');
@@ -543,7 +524,11 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
     let responseObj;
 
     if (response.result.values) {
-      responseObj = JSON.parse(userRow[6]);
+      try {
+        responseObj = JSON.parse(userRow[6]);
+      } catch (e) {
+        responseObj = {};
+      }
     } else {
       responseObj = {};
     }
@@ -782,6 +767,7 @@ function displayUserData(user) {
 // Return each game and the info for the winner in a list
 document.querySelector('#generate-winners').addEventListener('click', function (event) {
   event.preventDefault();
+
   getFromGoogle('A:H').then(function (response) {
     let allData = response.result.values;
     let drawings = [];
@@ -805,7 +791,7 @@ document.querySelector('#generate-winners').addEventListener('click', function (
       const winnersRow = rowsInTheRunning[randomWinnerIndex];
 
       drawings.push({
-        gameTitle: findGameTitle(gameCode),
+        gameTitle: findGameTitle(gameCode).substr(0, findGameTitle(gameCode).length-6),
         gameCode: gameCode,
         entries: rowsInTheRunning,
         winner: allData[winnersRow]
@@ -816,20 +802,55 @@ document.querySelector('#generate-winners').addEventListener('click', function (
     let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
 
     drawings.forEach(function (each) {
+      console.log(each);
       if (each.winner) {
         listItems += `<li>
-                              <p>${each.gameTitle}</p>
-                              <div>
-                                <p>${each.winner[3]}</p>
-                                <p>${each.winner[1]}</p>
-                              </div>
-                            </li>`;
+                        <p>${each.gameTitle}</p>
+                        <div>
+                          <p>${each.winner[3]}</p>
+                          <p>${prettifyPhoneNumber(each.winner[4])}</p>
+                          <p>${each.winner[1]}</p>
+                        </div>
+                      </li>`;
       }
     });
 
     winnersList.innerHTML = listItems;
+
+    document.querySelector('#generate-winners').classList.add('hidden');
+    document.querySelector('#send-an-sms').classList.remove('hidden');
+
+    document.querySelector('#send-an-sms').addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const winningDrawings = drawings.filter(function (drawing) {
+        return drawing.winner;
+      })
+
+      winningDrawings.forEach(function (each) {
+        sendSMS(each.winner[4], each.gameTitle, each.winner[3]);
+      });
+    });
+
   });
 });
+
+function sendSMS(number, game, name) {
+  const query = `number=${number}&game=${game}&name=${name}`;
+  console.log('query: ', query);
+
+// TODO: You'll need to uncomment this for the texts to work.
+  // fetch(`https://serene-fortress-48905.herokuapp.com/sms?${query}`, {
+  //     method: "POST",
+  //     mode: "no-cors",
+  //     headers: {
+  //         "Content-Type": "application/json",
+  //     },
+  //     body: "This is broken anyway",
+  // }).then(function (response) {
+  //   console.log(`${name} was notified that they won ${game} at ${number}`);
+  // });
+}
 
 // End winners section Functions
 
