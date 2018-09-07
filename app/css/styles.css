@@ -509,3 +509,27 @@ header {
         box-sizing: border-box;
         height: 100px;
         width: 100%; }
+
+.current-log-section {
+  margin: 0 auto;
+  width: 80%; }
+  .current-log-section #current-log {
+    width: 100%; }
+  .current-log-section .current-log-list-wrapper {
+    position: relative;
+    height: 40vh;
+    margin: 0 auto;
+    overflow: hidden; }
+    .current-log-section .current-log-list-wrapper .current-log-scroll-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      padding-right: 17px;
+      width: 100%; }
+      .current-log-section .current-log-list-wrapper .current-log-scroll-wrapper .current-log-spacer {
+        box-sizing: border-box;
+        height: 100px;
+        width: 100%; }
