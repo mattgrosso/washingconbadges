@@ -855,6 +855,52 @@ function sendSMS(number, game, name) {
 
 // End winners section Functions
 
+// Start Current Log Section
+
+document.querySelector('#current-log-link').addEventListener('click', function (event) {
+  event.preventDefault();
+
+  const logList = document.querySelector('#current-log');
+
+  getFromGoogle('A:H').then(function (response) {
+    const allData = response.result.values;
+    let listItems = '<li class="headers"><p>Name</p><p>Game</p><p>Checked Out</p></li>';
+
+    allData.forEach(function (eachRow, index) {
+      if (index === 0) {
+        return;
+      }
+
+      let checkoutStatus;
+      const rowNumber = index;
+
+      if (eachRow[6]) {
+        console.log(eachRow[6]);
+        checkoutStatus = JSON.parse(eachRow[6]);
+
+        Object.keys(checkoutStatus).forEach(function (eachBadge) {
+          if (checkoutStatus[eachBadge]) {
+            const guestName = allData[index][3]
+            const gameTitle = findGameTitle(checkoutStatus[eachBadge]).name;
+            const checkedOut = 'Fake Time Stamp'
+
+            listItems += `<li>
+                          <p>${guestName}</p>
+                          <div>
+                            <p>${gameTitle}</p>
+                            <p>${checkedOut}</p>
+                          </div>
+                        </li>`;
+          }
+        });
+      }
+
+      logList.innerHTML = listItems
+    });
+  });
+});
+
+// End Current Log Section
 
 // Start Utility Functions
 
@@ -999,6 +1045,8 @@ function backToStartOf(startPoint) {
     document.querySelector('.user-lookup-section .starting-point').focus();
   } else if (startPoint === "winners") {
     document.querySelector('.winners-section').classList.remove('hidden');
+  } else if (startPoint === "current-log") {
+    document.querySelector('.current-log-section').classList.remove('hidden');
   } else {
     document.querySelector('.registration-section').classList.remove('hidden');
     document.querySelector('.registration-section .starting-point').focus();
