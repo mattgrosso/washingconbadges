@@ -520,6 +520,10 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
   getFromGoogle(`${row}:${row}`).then(function (response) {
     const userRow = response.result.values[0];
     const gameTitle = findGameTitle(gameCode).name;
+    const checkoutObject = {
+      gameCode: gameCode,
+      checkedOutAt: Date.now()
+    };
     const playToWin = gameTitle.substr(gameTitle.length-5) === '(ptw)';
     let responseObj;
 
@@ -534,7 +538,7 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
     }
 
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
-      responseObj[badgeCode] = gameCode;
+      responseObj[badgeCode] = checkoutObject;
       postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
         if (playToWin && !userRow[4]) {
           promptForPhone(row);
@@ -626,12 +630,12 @@ function findUserRow(badgeCode, gameCode) {
 function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
   try {
     const checkedOut = JSON.parse(userRow[1]);
-
-    if (checkedOut[badgeCode] === gameCode) {
+    if (checkedOut[badgeCode].gameCode === gameCode) {
       const cell = `G${rowNumber}`;
       addGameToHistory(badgeCode, rowNumber, gameCode);
     } else {
-      console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1]} checked out.`);
+      console.log(userRow[1]);
+      console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1].gameCode} checked out.`);
     }
   } catch (e) {
     displayMessage(
@@ -880,15 +884,15 @@ document.querySelector('#current-log-link').addEventListener('click', function (
 
         Object.keys(checkoutStatus).forEach(function (eachBadge) {
           if (checkoutStatus[eachBadge]) {
-            const guestName = allData[index][3]
-            const gameTitle = findGameTitle(checkoutStatus[eachBadge]).name;
-            const checkedOut = 'Fake Time Stamp'
+            const guestName = allData[index][3];
+            const gameTitle = findGameTitle(checkoutStatus[eachBadge].gameCode).name;
+            const checkedOut = checkoutStatus[eachBadge].checkedOutAt;
 
             listItems += `<li>
                           <p>${guestName}</p>
                           <div>
                             <p>${gameTitle}</p>
-                            <p>${checkedOut}</p>
+                            <p>${timeStampToMinutesAgo(checkedOut)}</p>
                           </div>
                         </li>`;
           }
@@ -1074,5 +1078,9 @@ function randomNumberNotInArray(cap, array) {
   } else {
     return random;
   }
+}
+
+function timeStampToMinutesAgo(timestamp) {
+  return `${Math.floor((Date.now() - timestamp)/1000/60)} minutes ago`;
 }
 // End Utility Functions
