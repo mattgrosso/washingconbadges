@@ -519,7 +519,7 @@ function findBadgeCode(badgeCode, array) {
 function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
   getFromGoogle(`${row}:${row}`).then(function (response) {
     const userRow = response.result.values[0];
-    const gameTitle = findGameTitle(gameCode);
+    const gameTitle = findGameTitle(gameCode).name;
     const playToWin = gameTitle.substr(gameTitle.length-5) === '(ptw)';
     let responseObj;
 
@@ -544,7 +544,7 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
       });
     } else { // The object does have a value at a key matching the badge number
       displayMessage(
-        `${gameTitle}`,
+        `${findGameTitle(responseObj[badgeCode]).name}`,
         'Is checked out with this badge. Please return it.'
       );
     }
@@ -636,7 +636,7 @@ function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
   } catch (e) {
     displayMessage(
       'Something went wrong.',
-      'Probably the badge or the game scanned badly. Please check values and try again. If this issue persists, contact @mattgrosso on Slack',
+      'Probably the badge or the game scanned badly. Please check values and try again. If this issue persists, contact @mattgrosso on Slack or press the help button',
       8000);
     console.log(e);
   }
@@ -726,7 +726,7 @@ function displayUserData(user) {
   let badgeSatuses = '<li class="headers"><p>Badge</p><p>Game</p></li>';
   for (var i = 0; i < badgeCount; i++) {
     const badge = user.badges.badgeCodes[i] || 'Not Activated';
-    const game = findGameTitle(user.badges.currentStatus[badge]) || '-';
+    const game = findGameTitle(user.badges.currentStatus[badge]).name || '-';
 
     badgeSatuses += `<li>\
                       <p>${badge}</p>\
@@ -740,7 +740,7 @@ function displayUserData(user) {
   const historyCount = historyArray.length;
   let history = '';
   for (var j = 0; j < historyCount; j++) {
-    const game = findGameTitle(historyArray[j]);
+    const game = findGameTitle(historyArray[j]).name;
 
     history += `<li>\
                   <p>${game}</p>\
@@ -754,12 +754,8 @@ function displayUserData(user) {
 }
 // End User Lookup Functions
 
-
 // Start winners section Functions
 
-// TODO: It would be fucking amazing if I could automate the sending of the winners
-// texts using Twilio. You'll need a node server to do it but I think it's
-// possible.
 // TODO: I need to figure out what to do about a game that has multiple copies in the play-to-wins
 
 // Look through a list of play-to-win Games
@@ -787,15 +783,25 @@ document.querySelector('#generate-winners').addEventListener('click', function (
         }
       });
 
-      const randomWinnerIndex = Math.floor(Math.random() * rowsInTheRunning.length);
-      const winnersRow = rowsInTheRunning[randomWinnerIndex];
+      let uniqueWinners = [];
 
-      drawings.push({
-        gameTitle: findGameTitle(gameCode).substr(0, findGameTitle(gameCode).length-6),
-        gameCode: gameCode,
-        entries: rowsInTheRunning,
-        winner: allData[winnersRow]
-      });
+      for (var i = 0; i < findGameTitle(gameCode).quantity; i++) {
+        const randomWinnerIndex = randomNumberNotInArray(rowsInTheRunning.length, uniqueWinners);
+
+        if (typeof randomWinnerIndex === "number") {
+          const winnersRow = rowsInTheRunning[randomWinnerIndex];
+
+          uniqueWinners.push(randomWinnerIndex);
+          drawings.push({
+            gameTitle: findGameTitle(gameCode).name.substr(0, findGameTitle(gameCode).name.length-6),
+            gameCode: gameCode,
+            entries: rowsInTheRunning,
+            winner: allData[winnersRow]
+          });
+        } else {
+          console.log(randomWinnerIndex);
+        }
+      }
     });
 
     const winnersList = document.querySelector('#winners-list');
@@ -965,7 +971,7 @@ function displayMessage(headLine, detailLine, timer) {
 
 // Takes in the barcode from a demo library game and returns the title of the game
 function findGameTitle(barcode) {
-  return playToWinGames[barcode] || demoGames[barcode] || barcode;
+  return playToWinGames[barcode] || demoGames[barcode] || {name: barcode, quantity: 1};
 }
 
 // Clears the site and returns the user to the given page
@@ -1012,5 +1018,18 @@ function prettifyPhoneNumber(phoneNumberString) {
   prettyPhone.splice(3, 0, '-');
   prettyPhone.join(' ');
    return prettyPhone.join('');
+}
+
+function randomNumberNotInArray(cap, array) {
+  const random = Math.floor(Math.random() * cap);
+
+  if (array.length === cap) {
+    return 'No unique randoms left';
+  }
+  if (array.includes(random)) {
+    return randomNumberNotInArray(cap, array);
+  } else {
+    return random;
+  }
 }
 // End Utility Functions
