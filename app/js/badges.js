@@ -835,10 +835,16 @@ document.querySelector('#generate-winners').addEventListener('click', function (
       const winningDrawings = drawings.filter(function (drawing) {
         return drawing.winner;
       })
+      let sentCount = 0;
 
       winningDrawings.forEach(function (each) {
         sendSMS(each.winner[4], each.gameTitle, each.winner[3]);
+        sentCount++;
       });
+
+      displayMessage(
+        `${sentCount} texts were sent.`
+      )
     });
 
   });
@@ -856,6 +862,7 @@ function sendSMS(number, game, name) {
       body: "This is broken anyway",
   }).then(function (response) {
     console.log(`${name} was notified that they won ${game} at ${number}`);
+    return response;
   });
 }
 
