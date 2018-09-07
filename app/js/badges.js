@@ -982,4 +982,14 @@ function backToStartOf(startPoint) {
     document.querySelector('.registration-section .starting-point').focus();
   }
 }
+
+function prettifyPhoneNumber(phoneNumberString) {
+  const prettyPhone = phoneNumberString.split('').filter(function (each) {
+    return !/[^0-9]/.test(each);
+  });
+  prettyPhone.splice(6, 0, '-');
+  prettyPhone.splice(3, 0, '-');
+  prettyPhone.join(' ');
+   return prettyPhone.join('');
+}
 // End Utility Functions
