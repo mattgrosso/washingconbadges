@@ -1,6 +1,7 @@
 .checkout-section,
 .returns-section,
-.user-lookup-section {
+.user-lookup-section,
+.current-log-section {
   form {
     align-items: center;
     display: flex;
@@ -12,8 +13,23 @@
     }
   }
 
+  #current-log {
+    li {
+      border-bottom: 1px solid $steel;
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      padding: 3px;
+    }
+
+    .headers {
+      font-weight: bold;
+      border-bottom: 2px solid $steel;
+    }
+  }
+
   .phone-prompt {
-    border: solid 1px grey;
+    border: solid 1px $steel;
     margin: 0 auto;
     padding: 25px 25px 0;
     width: 70%;

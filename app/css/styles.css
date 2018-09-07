@@ -331,45 +331,70 @@ header {
 
 .checkout-section form,
 .returns-section form,
-.user-lookup-section form {
+.user-lookup-section form,
+.current-log-section form {
   align-items: center;
   display: flex;
   justify-content: center;
   margin-bottom: 50px; }
   .checkout-section form button,
   .returns-section form button,
-  .user-lookup-section form button {
+  .user-lookup-section form button,
+  .current-log-section form button {
     margin: 33px 20px 0; }
+
+.checkout-section #current-log li,
+.returns-section #current-log li,
+.user-lookup-section #current-log li,
+.current-log-section #current-log li {
+  border-bottom: 1px solid #656565;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  padding: 3px; }
+
+.checkout-section #current-log .headers,
+.returns-section #current-log .headers,
+.user-lookup-section #current-log .headers,
+.current-log-section #current-log .headers {
+  font-weight: bold;
+  border-bottom: 2px solid #656565; }
 
 .checkout-section .phone-prompt,
 .returns-section .phone-prompt,
-.user-lookup-section .phone-prompt {
-  border: solid 1px grey;
+.user-lookup-section .phone-prompt,
+.current-log-section .phone-prompt {
+  border: solid 1px #656565;
   margin: 0 auto;
   padding: 25px 25px 0;
   width: 70%; }
   .checkout-section .phone-prompt form,
   .returns-section .phone-prompt form,
-  .user-lookup-section .phone-prompt form {
+  .user-lookup-section .phone-prompt form,
+  .current-log-section .phone-prompt form {
     flex-wrap: wrap; }
     .checkout-section .phone-prompt form > div,
     .returns-section .phone-prompt form > div,
-    .user-lookup-section .phone-prompt form > div {
+    .user-lookup-section .phone-prompt form > div,
+    .current-log-section .phone-prompt form > div {
       margin-top: 20px;
       text-align: center;
       width: 100%; }
       .checkout-section .phone-prompt form > div p,
       .returns-section .phone-prompt form > div p,
-      .user-lookup-section .phone-prompt form > div p {
+      .user-lookup-section .phone-prompt form > div p,
+      .current-log-section .phone-prompt form > div p {
         margin: 10px 0; }
     .checkout-section .phone-prompt form h2,
     .returns-section .phone-prompt form h2,
-    .user-lookup-section .phone-prompt form h2 {
+    .user-lookup-section .phone-prompt form h2,
+    .current-log-section .phone-prompt form h2 {
       text-align: center;
       width: 100%; }
     .checkout-section .phone-prompt form #no-phone-number,
     .returns-section .phone-prompt form #no-phone-number,
-    .user-lookup-section .phone-prompt form #no-phone-number {
+    .user-lookup-section .phone-prompt form #no-phone-number,
+    .current-log-section .phone-prompt form #no-phone-number {
       background-color: #fff;
       border: solid 2px;
       color: #000;

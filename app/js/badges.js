@@ -548,7 +548,7 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
       });
     } else { // The object does have a value at a key matching the badge number
       displayMessage(
-        `${findGameTitle(responseObj[badgeCode]).name}`,
+        `${findGameTitle(responseObj[badgeCode].gameCode).name}`,
         'Is checked out with this badge. Please return it.'
       );
     }
@@ -634,8 +634,10 @@ function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
       const cell = `G${rowNumber}`;
       addGameToHistory(badgeCode, rowNumber, gameCode);
     } else {
-      console.log(userRow[1]);
-      console.log(`Wrong Game. Correct Game is ${gameCode}. You have ${userRow[1].gameCode} checked out.`);
+      displayMessage(
+        'Wrong Game.',
+        `Please return ${findGameTitle(checkedOut[badgeCode].gameCode).name}`
+      )
     }
   } catch (e) {
     displayMessage(
@@ -879,7 +881,6 @@ document.querySelector('#current-log-link').addEventListener('click', function (
       const rowNumber = index;
 
       if (eachRow[6]) {
-        console.log(eachRow[6]);
         checkoutStatus = JSON.parse(eachRow[6]);
 
         Object.keys(checkoutStatus).forEach(function (eachBadge) {
@@ -890,10 +891,8 @@ document.querySelector('#current-log-link').addEventListener('click', function (
 
             listItems += `<li>
                           <p>${guestName}</p>
-                          <div>
-                            <p>${gameTitle}</p>
-                            <p>${timeStampToMinutesAgo(checkedOut)}</p>
-                          </div>
+                          <p>${gameTitle}</p>
+                          <p>${timeStampToMinutesAgo(checkedOut)}</p>
                         </li>`;
           }
         });
