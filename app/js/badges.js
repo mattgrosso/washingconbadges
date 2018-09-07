@@ -756,8 +756,6 @@ function displayUserData(user) {
 
 // Start winners section Functions
 
-// TODO: I need to figure out what to do about a game that has multiple copies in the play-to-wins
-
 // Look through a list of play-to-win Games
 // For each of those games, scan the checkout histories to find the names of people who checked it out.
 // Return each game and the info for the winner in a list
@@ -808,7 +806,6 @@ document.querySelector('#generate-winners').addEventListener('click', function (
     let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
 
     drawings.forEach(function (each) {
-      console.log(each);
       if (each.winner) {
         listItems += `<li>
                         <p>${each.gameTitle}</p>
@@ -843,19 +840,17 @@ document.querySelector('#generate-winners').addEventListener('click', function (
 
 function sendSMS(number, game, name) {
   const query = `number=${number}&game=${game}&name=${name}`;
-  console.log('query: ', query);
 
-// TODO: You'll need to uncomment this for the texts to work.
-  // fetch(`https://serene-fortress-48905.herokuapp.com/sms?${query}`, {
-  //     method: "POST",
-  //     mode: "no-cors",
-  //     headers: {
-  //         "Content-Type": "application/json",
-  //     },
-  //     body: "This is broken anyway",
-  // }).then(function (response) {
-  //   console.log(`${name} was notified that they won ${game} at ${number}`);
-  // });
+  fetch(`https://serene-fortress-48905.herokuapp.com/sms?${query}`, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: "This is broken anyway",
+  }).then(function (response) {
+    console.log(`${name} was notified that they won ${game} at ${number}`);
+  });
 }
 
 // End winners section Functions
