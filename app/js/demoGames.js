@@ -8,8 +8,7 @@ const demoGames = {
   "DEMO7": {name: "7 Wonders Cities", quantity: 1},
   "DEMO8": {name: "7 Wonders Duel", quantity: 1},
   "DEMO9": {name: "7 Wonders Leaders", quantity: 1},
-  "DEMO10": {name: "Above and Below", quantity: 1},
-  "DEMO11": {name: "Above and Below", quantity: 1},
+  "040232261213": {name: "Above and Below", quantity: 1},
   "DEMO13": {name: "Acquire", quantity: 1},
   "DEMO14": {name: "Adventure Land", quantity: 1},
   "DEMO15": {name: "Adventure Maximus", quantity: 1},
@@ -761,7 +760,7 @@ const demoGames = {
   "DEMO762": {name: "Answers, The", quantity: 1},
   "DEMO763": {name: "Blood of An Englishman, The", quantity: 1},
   "DEMO764": {name: "Bloody Inn, The", quantity: 1},
-  "DEMO765": {name: "Boss, The", quantity: 1},
+  "856934004009": {name: "Boss, The", quantity: 1},
   "DEMO766": {name: "Builders: Antiquity, The", quantity: 1},
   "DEMO767": {name: "Castles of Burgundy Card Game, The", quantity: 1},
   "DEMO768": {name: "Castles of Burgundy Card Game, The", quantity: 1},
@@ -1488,5 +1487,6 @@ const demoGames = {
   "DEMO1505": {name: "Tea Dragon Society", quantity: 1},
   "DEMO1506": {name: "Imhotep: A New Dynasty", quantity: 1},
   "DEMO1507": {name: "The Mind", quantity: 1},
-  "DEMO1508": {name: "Nyctophobia", quantity: 1}
+  "DEMO1508": {name: "Nyctophobia", quantity: 1},
+  "689070017400": {name: "Whistlestop", quantity: 1},
 }

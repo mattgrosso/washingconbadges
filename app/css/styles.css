@@ -363,6 +363,13 @@ header {
   font-weight: bold;
   border-bottom: 2px solid #656565; }
 
+.checkout-section .confusion-solvers,
+.returns-section .confusion-solvers,
+.user-lookup-section .confusion-solvers,
+.current-log-section .confusion-solvers {
+  font-size: 2rem;
+  text-align: center; }
+
 .checkout-section .phone-prompt,
 .returns-section .phone-prompt,
 .user-lookup-section .phone-prompt,
