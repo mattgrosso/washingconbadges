@@ -60,19 +60,19 @@
           <form class="new-registration-form" autocomplete="off">
             <fieldset>
               <label>Full Name</label>
-              <input class="new-registration-form-name" type="text" autocomplete="disabled">
+              <input id="new-registration-form-full-name" class="new-registration-form-name" type="text" autocomplete="disabled"  data-next-field="new-registration-form-email">
             </fieldset>
             <fieldset>
               <label>Email</label>
-              <input class="new-registration-form-email" type="email" autocomplete="disabled">
+              <input id="new-registration-form-email" class="new-registration-form-email" type="email" autocomplete="disabled" data-next-field="new-registration-form-phone">
             </fieldset>
             <fieldset>
               <label>Phone</label>
-              <input class="new-registration-form-phone" type="tel" autocomplete="disabled">
+              <input id="new-registration-form-phone" class="new-registration-form-phone" type="tel" autocomplete="disabled" data-next-field="new-registration-form-number-of-badges">
             </fieldset>
             <fieldset>
               <label>Number of Badges</label>
-              <input class="new-registration-form-badgecount" type="number" autocomplete="disabled">
+              <input id="new-registration-form-number-of-badges" class="new-registration-form-badgecount" type="number" autocomplete="disabled">
             </fieldset>
             <button id="submit-new-registration">Submit</button>
           </form>
@@ -111,7 +111,7 @@
         <form autocomplete="off">
           <fieldset>
             <label for="checkout-badge-barcode">Badge Code</label>
-            <input id="checkout-badge-barcode" class="starting-point enter-to-next-sibling" type="text">
+            <input id="checkout-badge-barcode" class="starting-point enter-to-next-sibling" type="text" data-next-input="checkout-game-barcode">
           </fieldset>
           <fieldset>
             <label for="checkout-game-barcode">Game Code</label>
@@ -140,7 +140,7 @@
         <form autocomplete="off">
           <fieldset>
             <label for="returns-badge-barcode">Badge Code</label>
-            <input id="returns-badge-barcode" class="starting-point enter-to-next-sibling" type="text">
+            <input id="returns-badge-barcode" class="starting-point enter-to-next-sibling" type="text" data-next-input="returns-game-barcode">
           </fieldset>
           <fieldset>
             <label for="returns-game-barcode">Game Code</label>

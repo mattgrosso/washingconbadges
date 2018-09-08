@@ -229,8 +229,11 @@ header {
   .registration-section .new-registration-view {
     width: 50%; }
     .registration-section .new-registration-view .new-registration-form {
-      margin: 0 auto;
-      width: 50%; }
+      margin: 0 auto; }
+      @media screen and (max-height: 825px) {
+        .registration-section .new-registration-view .new-registration-form {
+          max-height: 43vh;
+          overflow-y: scroll; } }
       .registration-section .new-registration-view .new-registration-form input.invalid-input {
         border: 1px solid #CB2128; }
       .registration-section .new-registration-view .new-registration-form button {
@@ -245,7 +248,7 @@ header {
       margin: 0 25px;
       overflow: hidden;
       position: relative;
-      width: 60%; }
+      width: 70%; }
       .registration-section .user-view .user-badge-form .user-badges-scroll-wrapper {
         height: 100%;
         overflow-x: hidden;

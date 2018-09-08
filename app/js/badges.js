@@ -444,11 +444,11 @@ document.querySelector('.next-guest').addEventListener('click', function (event)
  */
 const noEnters = document.querySelectorAll('.enter-to-next-sibling');
 
-noEnters.forEach(function (el) {
+noEnters.forEach(function (el, index) {
   el.addEventListener('keydown', function (event) {
     if (event.which === 13) {
       event.preventDefault();
-      this.nextElementSibling.focus();
+      document.querySelector(`#${this.dataset.nextInput}`).focus();
     }
   });
 });
@@ -696,10 +696,10 @@ function getUserData(row) {
   return getFromGoogle(`${row}:${row}`).then(function (response) {
 
     const userArray = response.result.values[0];
-    const badgeCodes = userArray[5] || [];
+    const badgeCodes = userArray[5] || "[]";
     const purchased = userArray[2] || '0';
     const activated = userArray[5] || 0;
-    const currentStatus = userArray[6] || [];
+    const currentStatus = userArray[6] || "[]";
     const user = {
       order_id: userArray[0],
       email: userArray[1],
@@ -746,8 +746,11 @@ function displayUserData(user) {
 
   userLookupStatusList.innerHTML = badgeSatuses;
 
-  debugger
-  const historyArray = JSON.parse(user.history);
+  const historyArray = "";
+  try {
+    const historyArray = JSON.parse(user.history);
+  } catch (e) {}
+
   const historyCount = historyArray.length;
   let history = '';
   for (var j = 0; j < historyCount; j++) {
@@ -963,14 +966,18 @@ function addValueToArrayCell(value, cell, index, callBack) {
   return getFromGoogle(cell).then(function (response) {
     let cellArray = [];
     if (response.result.values) {
-      cellArray = JSON.parse(response.result.values[0]);
+      try {
+        cellArray = JSON.parse(response.result.values[0]);
+      } catch (e) {}
     }
     if (index || index === 0) {
       cellArray[index] = value;
     } else {
       cellArray.push(value);
     }
-    jsonArray = JSON.stringify(cellArray);
+    try {
+      jsonArray = JSON.stringify(cellArray);
+    } catch (e) {}
     postToGoogle(cell, jsonArray).then(function () {
       if (callBack) {
         callBack();

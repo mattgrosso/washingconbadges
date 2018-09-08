@@ -59,7 +59,11 @@
 
     .new-registration-form {
       margin: 0 auto;
-      width: 50%;
+
+      @media screen and (max-height: 825px) {
+        max-height: 43vh;
+        overflow-y: scroll;
+      }
 
       input.invalid-input {
         border: 1px solid $washingcon-red;
@@ -82,7 +86,7 @@
       margin: 0 25px;
       overflow: hidden;
       position: relative;
-      width: 60%;
+      width: 70%;
 
       .user-badges-scroll-wrapper {
         height: 100%;
