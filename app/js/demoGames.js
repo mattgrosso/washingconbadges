@@ -1486,5 +1486,7 @@ const demoGames = {
   "DEMO1503": {name: "Nimble", quantity: 1},
   "DEMO1504": {name: "High Society", quantity: 1},
   "DEMO1505": {name: "Tea Dragon Society", quantity: 1},
-  "DEMO1506": {name: "Imhotep: A New Dynasty", quantity: 1}
+  "DEMO1506": {name: "Imhotep: A New Dynasty", quantity: 1},
+  "DEMO1507": {name: "The Mind", quantity: 1},
+  "DEMO1508": {name: "Nyctophobia", quantity: 1}
 }
