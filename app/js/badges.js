@@ -696,17 +696,21 @@ function getUserData(row) {
   return getFromGoogle(`${row}:${row}`).then(function (response) {
 
     const userArray = response.result.values[0];
+    const badgeCodes = userArray[5] || [];
+    const purchased = userArray[2] || '0';
+    const activated = userArray[5] || 0;
+    const currentStatus = userArray[6] || [];
     const user = {
       order_id: userArray[0],
       email: userArray[1],
       name: userArray[3],
       phone: userArray[4],
       badges: {
-        badgeCodes: JSON.parse(userArray[5]),
-        purchased: parseInt(userArray[2]),
-        activated: JSON.parse(userArray[5]).length,
-        allActivated: parseInt(userArray[2]) === JSON.parse(userArray[5]).length,
-        currentStatus: JSON.parse(userArray[6])
+        badgeCodes: JSON.parse(badgeCodes),
+        purchased: parseInt(purchased),
+        activated: JSON.parse(activated).length,
+        allActivated: parseInt(purchased) === JSON.parse(activated).length,
+        currentStatus: JSON.parse(currentStatus)
       },
       history: userArray[7]
     };
@@ -742,6 +746,7 @@ function displayUserData(user) {
 
   userLookupStatusList.innerHTML = badgeSatuses;
 
+  debugger
   const historyArray = JSON.parse(user.history);
   const historyCount = historyArray.length;
   let history = '';
