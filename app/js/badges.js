@@ -897,7 +897,9 @@ document.querySelector('#current-log-link').addEventListener('click', function (
       const rowNumber = index;
 
       if (eachRow[6]) {
-        checkoutStatus = JSON.parse(eachRow[6]);
+        try {
+          checkoutStatus = JSON.parse(eachRow[6]);
+        } catch (e) {}
 
         Object.keys(checkoutStatus).forEach(function (eachBadge) {
           if (checkoutStatus[eachBadge]) {
