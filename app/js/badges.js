@@ -559,6 +559,7 @@ function promptForPhone(userRow) {
   const phonePrompt = document.querySelector('.phone-prompt');
   const phoneInput = document.querySelector('#phone-prompt-input');
 
+  phoneInput.value = null;
   phonePrompt.classList.remove('hidden');
 
   document.querySelector('#enter-phone').addEventListener('click', function (event) {
