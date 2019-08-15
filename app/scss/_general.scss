@@ -1,6 +1,6 @@
 body {
-  background-image: url(/images/hex_pattern_bottom_only.svg);
-  background-position: 50% 105%;
+  background-image: url(/images/metro_train_bottom_only.svg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: 103%;
   font-family: 'Lato', sans-serif;
@@ -103,7 +103,9 @@ h4 {
   padding: 35px;
 
   .message-content {
-    padding: 0 7vw;
+    background: white;
+    border: solid;
+    padding: 10px 7vw;
 
     h2 {
       font-size: 2.5rem;
@@ -114,6 +116,13 @@ h4 {
       font-size: 1.1rem;
     }
   }
+}
+
+.section {
+  background: white;
+  border: solid;
+  margin: 0 auto;
+  padding: 40px;
 }
 
 .fade-overlay {

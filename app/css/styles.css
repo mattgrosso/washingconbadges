@@ -46,8 +46,8 @@ table {
   border-spacing: 0; }
 
 body {
-  background-image: url(/images/hex_pattern_bottom_only.svg);
-  background-position: 50% 105%;
+  background-image: url(/images/metro_train_bottom_only.svg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: 103%;
   font-family: 'Lato', sans-serif;
@@ -126,12 +126,20 @@ h4 {
   min-height: 100px;
   padding: 35px; }
   .message-pane .message-content {
-    padding: 0 7vw; }
+    background: white;
+    border: solid;
+    padding: 10px 7vw; }
     .message-pane .message-content h2 {
       font-size: 2.5rem;
       margin-bottom: 15px; }
     .message-pane .message-content p {
       font-size: 1.1rem; }
+
+.section {
+  background: white;
+  border: solid;
+  margin: 0 auto;
+  padding: 40px; }
 
 .fade-overlay {
   position: absolute;
@@ -144,6 +152,7 @@ h4 {
 
 header {
   align-items: center;
+  background: white;
   border-bottom: 2px solid #afafaf;
   box-shadow: 0px 0px 10px #afafaf;
   display: flex;
@@ -190,8 +199,7 @@ header {
 .registration-section {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  padding: 0 10%; }
+  justify-content: center; }
   .registration-section .registration-start-screen {
     align-items: center;
     display: flex;
