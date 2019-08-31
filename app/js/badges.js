@@ -984,6 +984,16 @@ function postRowToGoogle(range, contentArray) {
 }
 
 /**
+ * Retrieves the P2W flag from the sheet and returns a promise with the result.
+ * @return {Promise} Boolean of value.
+ */
+function checkForP2WFlag() {
+  return getFromGoogle('J1').then(function (response) {
+    return JSON.parse(JSON.parse(response.result.values[0][0]));
+  });
+}
+
+/**
  * Adds value to array of values in single cell
  */
 function addValueToArrayCell(value, cell, index, callBack) {
