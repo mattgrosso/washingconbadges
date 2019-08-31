@@ -375,11 +375,7 @@ document.querySelector('.user-badges').addEventListener('keydown', function (eve
     const badgeCode = target.value;
 
     // Entered invalid badge number or had a bad scan
-    if (badgeCode.length !== 13) {
-      displayMessage(
-        "Invalid badge number.",
-        "Maybe you typed into the wrong field? Or maybe the scanner had a bad scan. Just try again."
-      );
+    if (!badgeCodeIsValid(badgeCode)) {
       target.value = "";
       return;
     }
@@ -475,6 +471,12 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
 
   const badgeCode = document.querySelector('#checkout-badge-barcode').value;
   const gameCode = document.querySelector('#checkout-game-barcode').value;
+
+  // Entered invalid badge number or had a bad scan
+  if (!badgeCodeIsValid(badgeCode)) {
+    document.querySelector('#checkout-badge-barcode').value = "";
+    return;
+  }
 
   if (badgeCode && gameCode) {
     postValueToPersonRow(badgeCode, gameCode);
@@ -612,6 +614,12 @@ document.querySelector('#return-game').addEventListener('click', function (event
 
   const badgeCode = document.querySelector('#returns-badge-barcode').value;
   const gameCode = document.querySelector('#returns-game-barcode').value;
+
+  if (!badgeCodeIsValid(badgeCode)) {
+    document.querySelector('#returns-badge-barcode').value = "";
+    return;
+  }
+
   returnGame(badgeCode, gameCode);
 });
 
@@ -652,7 +660,7 @@ function checkCorrectGame(badgeCode, gameCode, userRow, rowNumber) {
       displayMessage(
         'Wrong Game.',
         `Please return ${findGameTitle(checkedOut[badgeCode].gameCode).name}`
-      )
+      );
     }
   } catch (e) {
     displayMessage(
@@ -857,7 +865,7 @@ document.querySelector('#generate-winners').addEventListener('click', function (
 
       const winningDrawings = drawings.filter(function (drawing) {
         return drawing.winner;
-      })
+      });
       let sentCount = 0;
 
       winningDrawings.forEach(function (each) {
@@ -867,7 +875,7 @@ document.querySelector('#generate-winners').addEventListener('click', function (
 
       displayMessage(
         `${sentCount} texts were sent.`
-      )
+      );
     });
 
   });
@@ -930,7 +938,7 @@ document.querySelector('#current-log-link').addEventListener('click', function (
         });
       }
 
-      logList.innerHTML = listItems
+      logList.innerHTML = listItems;
     });
   });
 });
@@ -1052,6 +1060,29 @@ function displayMessage(headLine, detailLine, timer) {
 // Takes in the barcode from a demo library game and returns the title of the game
 function findGameTitle(barcode) {
   return playToWinGames[barcode] || demoGames[barcode] || {name: barcode, quantity: 1};
+}
+
+// Ensures that a given barcode is 13 digits long and is all numbers
+function badgeCodeIsValid(badgeCode) {
+  if (badgeCode.length !== 13) {
+    displayMessage(
+      "Wrong number of digits for badge number.",
+      "Maybe you typed into the wrong field? Or maybe the scanner had a bad scan. Just try again."
+    );
+
+    return false;
+  }
+
+  if (!badgeCode.match(/^[0-9]*$/)) {
+    displayMessage(
+      "You've got letters (or something) in your badge code.",
+      "Maybe you typed into the wrong field? Or maybe the scanner had a bad scan. Just try again."
+    );
+
+    return false;
+  }
+
+  return true;
 }
 
 // Clears the site and returns the user to the given page
