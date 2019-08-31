@@ -881,6 +881,35 @@ document.querySelector('#generate-winners').addEventListener('click', function (
   });
 });
 
+function generateListOfCheckedOutP2W() {
+  const playToWinNumbers = Object.keys(playToWinGames);
+  const checkedOutP2W = [];
+
+  return getFromGoogle('G:G').then(function (response) {
+    response.result.values.forEach(function (row) {
+      row.forEach(function (cell) {
+        playToWinNumbers.forEach(function (playToWinNumber) {
+          if (cell.includes(playToWinNumber)) {
+            checkedOutP2W.push(playToWinNumber);
+          }
+        });
+      });
+    });
+
+    return checkedOutP2W;
+  });
+}
+
+function generateListOfP2WInLibrary() {
+  return generateListOfCheckedOutP2W().then(function (checkedOutList) {
+    const playToWinNumbers = Object.keys(playToWinGames);
+
+    return playToWinNumbers.filter(function (gameNumber) {
+      return !checkedOutList.includes(gameNumber);
+    });
+  });
+}
+
 function sendSMS(number, game, name) {
   const query = `number=${number}&game=${game}&name=${name}`;
 
