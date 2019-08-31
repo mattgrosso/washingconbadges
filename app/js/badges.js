@@ -987,9 +987,23 @@ function postRowToGoogle(range, contentArray) {
  * Retrieves the P2W flag from the sheet and returns a promise with the result.
  * @return {Promise} Boolean of value.
  */
-function checkForP2WFlag() {
+function checkP2WFlag() {
   return getFromGoogle('J1').then(function (response) {
     return JSON.parse(JSON.parse(response.result.values[0][0]));
+  });
+}
+
+/**
+ * Toggles flag for activating P2W mode.
+ * @return {Promise}
+ */
+function toggleP2WFlag() {
+  return checkP2WFlag().then(function (response) {
+    if (response) {
+      return postToGoogle('J1', JSON.stringify("false"));
+    } else {
+      return postToGoogle('J1', JSON.stringify("true"));
+    }
   });
 }
 
