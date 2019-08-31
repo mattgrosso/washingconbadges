@@ -366,10 +366,24 @@ function checkLocks() {
  * Adds event to enter key press on badge inputs (mostly triggered by scanner)
  */
 document.querySelector('.user-badges').addEventListener('keydown', function (event) {
-  if (event.which === 13 || event.which === 9) {
+  const enter = 13;
+  const tab = 9;
+
+  if (event.which === enter || event.which === tab) {
     event.preventDefault();
     const target = event.target;
     const badgeCode = target.value;
+
+    // Entered invalid badge number or had a bad scan
+    if (badgeCode.length !== 13) {
+      displayMessage(
+        "Invalid badge number.",
+        "Maybe you typed into the wrong field? Or maybe the scanner had a bad scan. Just try again."
+      );
+      target.value = "";
+      return;
+    }
+
     const userRow = target.dataset.row;
     const inputNumber = target.dataset.inputnumber;
     const inputCount = target.dataset.inputcount;
