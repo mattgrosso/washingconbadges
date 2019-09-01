@@ -793,7 +793,7 @@ function displayUserData(user) {
 
 // Start winners section Functions
 
-// Look through a list of play-to-win Games
+// Look through the list of play-to-win games that are not checked out
 // For each of those games, scan the checkout histories to find the names of people who checked it out.
 // Return each game and the info for the winner in a list
 document.querySelector('#generate-winners').addEventListener('click', function (event) {
@@ -803,41 +803,53 @@ document.querySelector('#generate-winners').addEventListener('click', function (
     let allData = response.result.values;
     let drawings = [];
 
-    Object.keys(playToWinGames).forEach(function (gameCode) {
-      let rowsInTheRunning = [];
+    generateListOfP2WInLibrary().then(function (p2WInLibrary) {
+      p2WInLibrary.forEach(function (gameCode) {
+        let rowsInTheRunning = [];
 
-      allData.forEach(function (eachRow, index) {
-        if (eachRow[7]) {
-          try {
-            if (JSON.parse(eachRow[7]).includes(gameCode)) {
-              rowsInTheRunning.push(index);
+        allData.forEach(function (eachRow, index) {
+          if (eachRow[7]) {
+            try {
+              if (JSON.parse(eachRow[7]).includes(gameCode)) {
+                rowsInTheRunning.push(index);
+              }
+            } catch (e) {
+
             }
-          } catch (e) {
+          }
+        });
 
+        let uniqueWinners = [];
+
+        for (var i = 0; i < findGameTitle(gameCode).quantity; i++) {
+          const randomWinnerIndex = randomNumberNotInArray(rowsInTheRunning.length, uniqueWinners);
+
+          if (typeof randomWinnerIndex === "number") {
+            const winnersRow = rowsInTheRunning[randomWinnerIndex];
+
+            uniqueWinners.push(randomWinnerIndex);
+            drawings.push({
+              gameTitle: findGameTitle(gameCode).name.substr(0, findGameTitle(gameCode).name.length-6),
+              gameCode: gameCode,
+              entries: rowsInTheRunning,
+              winner: allData[winnersRow]
+            });
+          } else {
+            console.log(randomWinnerIndex);
           }
         }
       });
 
-      let uniqueWinners = [];
-
-      for (var i = 0; i < findGameTitle(gameCode).quantity; i++) {
-        const randomWinnerIndex = randomNumberNotInArray(rowsInTheRunning.length, uniqueWinners);
-
-        if (typeof randomWinnerIndex === "number") {
-          const winnersRow = rowsInTheRunning[randomWinnerIndex];
-
-          uniqueWinners.push(randomWinnerIndex);
-          drawings.push({
-            gameTitle: findGameTitle(gameCode).name.substr(0, findGameTitle(gameCode).name.length-6),
-            gameCode: gameCode,
-            entries: rowsInTheRunning,
-            winner: allData[winnersRow]
-          });
+      // Put the winners array into the database.
+      postToGoogle('K1', JSON.stringify(drawings)).then(function (response) {
+        if (response.status >= 200 && response.status < 300) {
+          console.log('Google says it worked.');
         } else {
-          console.log(randomWinnerIndex);
+          console.log('Google says something went wrong.');
         }
-      }
+      });
     });
+
 
     const winnersList = document.querySelector('#winners-list');
     let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
