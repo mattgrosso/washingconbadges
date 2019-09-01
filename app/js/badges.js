@@ -799,96 +799,10 @@ function displayUserData(user) {
 document.querySelector('#generate-winners').addEventListener('click', function (event) {
   event.preventDefault();
 
-  getFromGoogle('A:H').then(function (response) {
-    let allData = response.result.values;
-    let drawings = [];
-
-    generateListOfP2WInLibrary().then(function (p2WInLibrary) {
-      p2WInLibrary.forEach(function (gameCode) {
-        let rowsInTheRunning = [];
-
-        allData.forEach(function (eachRow, index) {
-          if (eachRow[7]) {
-            try {
-              if (JSON.parse(eachRow[7]).includes(gameCode)) {
-                rowsInTheRunning.push(index);
-              }
-            } catch (e) {
-
-            }
-          }
-        });
-
-        let uniqueWinners = [];
-
-        for (var i = 0; i < findGameTitle(gameCode).quantity; i++) {
-          const randomWinnerIndex = randomNumberNotInArray(rowsInTheRunning.length, uniqueWinners);
-
-          if (typeof randomWinnerIndex === "number") {
-            const winnersRow = rowsInTheRunning[randomWinnerIndex];
-
-            uniqueWinners.push(randomWinnerIndex);
-            drawings.push({
-              gameTitle: findGameTitle(gameCode).name.substr(0, findGameTitle(gameCode).name.length-6),
-              gameCode: gameCode,
-              entries: rowsInTheRunning,
-              winner: allData[winnersRow]
-            });
-          } else {
-            console.log(randomWinnerIndex);
-          }
-        }
-      });
-
-      // Put the winners array into the database.
-      postToGoogle('K1', JSON.stringify(drawings)).then(function (response) {
-        if (response.status >= 200 && response.status < 300) {
-          console.log('Google says it worked.');
-        } else {
-          console.log('Google says something went wrong.');
-        }
-      });
-    });
-
-
-    const winnersList = document.querySelector('#winners-list');
-    let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
-
-    drawings.forEach(function (each) {
-      if (each.winner) {
-        listItems += `<li>
-                        <p>${each.gameTitle}</p>
-                        <div>
-                          <p>${each.winner[3]}</p>
-                          <p>${prettifyPhoneNumber(each.winner[4])}</p>
-                          <p>${each.winner[1]}</p>
-                        </div>
-                      </li>`;
-      }
-    });
-
-    winnersList.innerHTML = listItems;
-
-    document.querySelector('#generate-winners').classList.add('hidden');
-    document.querySelector('#send-an-sms').classList.remove('hidden');
-
-    document.querySelector('#send-an-sms').addEventListener('click', function (event) {
-      event.preventDefault();
-
-      const winningDrawings = drawings.filter(function (drawing) {
-        return drawing.winner;
-      });
-      let sentCount = 0;
-
-      winningDrawings.forEach(function (each) {
-        sendSMS(each.winner[4], each.gameTitle, each.winner[3]);
-        sentCount++;
-      });
-
-      displayMessage(
-        `${sentCount} texts were sent.`
-      );
-    });
+  generateListOfP2WInLibrary().then(function (p2WInLibrary) {
+    generateWinnersForArray(p2WInLibrary);
+  });
+});
 
   });
 });
@@ -1045,6 +959,103 @@ function toggleP2WFlag() {
     } else {
       return postToGoogle('J1', JSON.stringify("true"));
     }
+  });
+}
+
+/**
+ * Generates an array of winners for a given array of games.
+ * @param  {Array} array Array of games to give away
+ * @return {Array}       Array of winners
+ */
+function generateWinnersForArray(arrayOfGames) {
+  getFromGoogle('A:H').then(function (response) {
+    let allData = response.result.values;
+    let drawings = [];
+
+    arrayOfGames.forEach(function (gameCode) {
+      let rowsInTheRunning = [];
+
+      allData.forEach(function (eachRow, index) {
+        if (eachRow[7]) {
+          try {
+            if (JSON.parse(eachRow[7]).includes(gameCode)) {
+              rowsInTheRunning.push(index);
+            }
+          } catch (e) {
+
+          }
+        }
+      });
+
+      let uniqueWinners = [];
+
+      for (var i = 0; i < findGameTitle(gameCode).quantity; i++) {
+        const randomWinnerIndex = randomNumberNotInArray(rowsInTheRunning.length, uniqueWinners);
+
+        if (typeof randomWinnerIndex === "number") {
+          const winnersRow = rowsInTheRunning[randomWinnerIndex];
+
+          uniqueWinners.push(randomWinnerIndex);
+          drawings.push({
+            gameTitle: findGameTitle(gameCode).name.substr(0, findGameTitle(gameCode).name.length-6),
+            gameCode: gameCode,
+            entries: rowsInTheRunning,
+            winner: allData[winnersRow]
+          });
+        } else {
+          console.log(randomWinnerIndex);
+        }
+      }
+    });
+
+    // Get the winners array from the database.
+    getFromGoogle('K1').then(function (data) {
+      if (!data.result.values) {
+        // Put the winners array into the database.
+        postToGoogle('K1', JSON.stringify(drawings)).then(function (response) {
+          if (response.status >= 200 && response.status < 300) {
+            console.log('Google says it worked.');
+          } else {
+            console.log('Google says something went wrong.');
+          }
+        });
+      } else {
+        // Add the new winners into the old list
+        const winnersArray = JSON.parse(data.result.values[0]);
+
+        drawings.forEach(function (drawing) {
+          winnersArray.push(drawing);
+        });
+
+        postToGoogle('K1', JSON.stringify(winnersArray)).then(function (response) {
+          if (response.status >= 200 && response.status < 300) {
+            console.log('Google says it worked.');
+          } else {
+            console.log('Google says something went wrong.');
+          }
+        });
+      }
+    });
+
+    const winnersList = document.querySelector('#winners-list');
+    let listItems = '<li class="headers"><p>Game</p><p>Winner</p></li>';
+
+    drawings.forEach(function (each) {
+      if (each.winner) {
+        listItems += `<li>
+                        <p>${each.gameTitle}</p>
+                        <div>
+                          <p>${each.winner[3]}</p>
+                          <p>${prettifyPhoneNumber(each.winner[4])}</p>
+                          <p>${each.winner[1]}</p>
+                        </div>
+                      </li>`;
+      }
+    });
+
+    winnersList.innerHTML = listItems;
+
+    return drawings;
   });
 }
 
