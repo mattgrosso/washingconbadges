@@ -479,7 +479,9 @@ document.querySelector('#checkout-game').addEventListener('click', function (eve
   }
 
   if (badgeCode && gameCode) {
-    postValueToPersonRow(badgeCode, gameCode);
+    badgeWon(badgeCode).then(function () {
+      postValueToPersonRow(badgeCode, gameCode);
+    });
   } else {
     displayMessage(
       'Missing Values',
