@@ -64,11 +64,7 @@
             </fieldset>
             <fieldset>
               <label>Email</label>
-              <input id="new-registration-form-email" class="new-registration-form-email" type="email" autocomplete="disabled" data-next-field="new-registration-form-phone">
-            </fieldset>
-            <fieldset>
-              <label>Phone</label>
-              <input id="new-registration-form-phone" class="new-registration-form-phone" type="tel" autocomplete="disabled" data-next-field="new-registration-form-number-of-badges">
+              <input id="new-registration-form-email" class="new-registration-form-email" type="email" autocomplete="disabled" data-next-field="new-registration-form-number-of-badges">
             </fieldset>
             <fieldset>
               <label>Number of Badges</label>
@@ -84,7 +80,6 @@
             <hr>
             <p class="user-orderId"></p>
             <p class="user-email"></p>
-            <p class="user-phone"></p>
             <hr>
             <button class="next-guest">Next Guest</button>
           </div>
@@ -120,21 +115,6 @@
           </fieldset>
           <button id="checkout-game">Checkout</button>
         </form>
-        <div class="phone-prompt hidden-at-start hidden">
-          <form autocomplete="off">
-            <h2>This is a play to win game</h2>
-            <div>
-              <p>If you'd like to be in the running, we'll need a phone number we can text on Sunday evening.</p>
-              <p>We will not use the number for anything else. Ever.</p>
-            </div>
-            <fieldset>
-              <label for="phone-prompt-input">Phone Number</label>
-              <input id="phone-prompt-input" class="starting-point" type="text">
-            </fieldset>
-            <button id="enter-phone">Add Number</button>
-            <button id="no-phone-number">No Thank You</button>
-          </form>
-        </div>
       </section>
 
       <section class="returns-section section hidden-at-start hidden">
@@ -168,7 +148,6 @@
               <hr>
               <p class="user-lookup-orderId"></p>
               <p class="user-lookup-email"></p>
-              <p class="user-lookup-phone"></p>
             </div>
             <div class="user-lookup-status-wrapper">
               <h3>Checkout Status</h3>

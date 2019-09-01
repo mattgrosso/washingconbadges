@@ -184,7 +184,6 @@ document.querySelector('#submit-new-registration').addEventListener('click', fun
   if (validForm) {
     const name = document.querySelector('.new-registration-form-name').value;
     const email = document.querySelector('.new-registration-form-email').value;
-    const phone = document.querySelector('.new-registration-form-phone').value;
     const badgecount = document.querySelector('.new-registration-form-badgecount').value;
     const id = `new-sale-${uuid()}`;
 
@@ -192,8 +191,7 @@ document.querySelector('#submit-new-registration').addEventListener('click', fun
       id,
       email,
       badgecount,
-      name,
-      phone
+      name
     ];
 
     addNewUserToDatabase(newUser);
@@ -243,7 +241,6 @@ function findUser(searchString) {
             email: each[1],
             quantity: each[2],
             name: each[3],
-            phone: each[4],
             badges: JSON.parse(each[5] || false)
           };
         }
@@ -558,11 +555,7 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
     if (!responseObj[badgeCode]) { // If the object in the cell doesn't already have a value at a key matching the badgeCode
       responseObj[badgeCode] = checkoutObject;
       postToGoogle(`${column}${row}`, JSON.stringify(responseObj)).then(function () {
-        if (playToWin && !userRow[4]) {
-          promptForPhone(row);
-        } else {
-          confirmGameCheckout();
-        }
+        confirmGameCheckout();
       });
     } else { // The object does have a value at a key matching the badge number
       displayMessage(
@@ -570,30 +563,6 @@ function postValueToRowAndColumn(gameCode, badgeCode, row, column) {
         'Is checked out with this badge. Please return it.'
       );
     }
-  });
-}
-
-function promptForPhone(userRow) {
-  const phonePrompt = document.querySelector('.phone-prompt');
-  const phoneInput = document.querySelector('#phone-prompt-input');
-
-  phoneInput.value = null;
-  phonePrompt.classList.remove('hidden');
-
-  document.querySelector('#enter-phone').addEventListener('click', function (event) {
-    event.preventDefault();
-    postToGoogle(`E${userRow}`, phoneInput.value.replace(/\D/g,'')).then(function () {
-      confirmGameCheckout();
-      phonePrompt.classList.add('hidden');
-    });
-  });
-
-  document.querySelector('#no-phone-number').addEventListener('click', function (event) {
-    event.preventDefault();
-    postToGoogle(`E${userRow}`, 'declined').then(function () {
-      confirmGameCheckout();
-      phonePrompt.classList.add('hidden');
-    });
   });
 }
 
@@ -741,7 +710,6 @@ function getUserData(row) {
       order_id: userArray[0],
       email: userArray[1],
       name: userArray[3],
-      phone: userArray[4],
       badges: {
         badgeCodes: JSON.parse(badgeCodes),
         purchased: parseInt(purchased),
@@ -760,14 +728,12 @@ function displayUserData(user) {
   const userLookupName = document.querySelector('.user-lookup-name');
   const userLookupOrderId = document.querySelector('.user-lookup-orderId');
   const userLookupEmail = document.querySelector('.user-lookup-email');
-  const userLookupPhone = document.querySelector('.user-lookup-phone');
   const userLookupStatusList = document.querySelector('.user-lookup-checkout-status ul');
   const userLookupHistory = document.querySelector('.user-lookup-history ul');
 
   userLookupName.innerText = user.name;
   userLookupOrderId.innerText = user.order_id;
   userLookupEmail.innerText = user.email;
-  userLookupPhone.innerText = user.phone;
 
   let badgeCount = user.badges.activated;
   let badgeSatuses = '<li class="headers"><p>Badge</p><p>Game</p></li>';
@@ -1041,7 +1007,6 @@ function generateWinnersForArray(arrayOfGames) {
                         <p>${each.gameTitle}</p>
                         <div>
                           <p>${each.winner[3]}</p>
-                          <p>${prettifyPhoneNumber(each.winner[4])}</p>
                           <p>${each.winner[1]}</p>
                         </div>
                       </li>`;
@@ -1229,16 +1194,6 @@ function backToStartOf(startPoint) {
     document.querySelector('.registration-section').classList.remove('hidden');
     document.querySelector('.registration-section .starting-point').focus();
   }
-}
-
-function prettifyPhoneNumber(phoneNumberString) {
-  const prettyPhone = phoneNumberString.split('').filter(function (each) {
-    return !/[^0-9]/.test(each);
-  });
-  prettyPhone.splice(6, 0, '-');
-  prettyPhone.splice(3, 0, '-');
-  prettyPhone.join(' ');
-   return prettyPhone.join('');
 }
 
 function randomNumberNotInArray(cap, array) {
