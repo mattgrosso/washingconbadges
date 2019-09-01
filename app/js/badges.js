@@ -816,9 +816,6 @@ document.querySelector('#generate-winners').addEventListener('click', function (
   });
 });
 
-  });
-});
-
 function generateListOfCheckedOutP2W() {
   const playToWinNumbers = Object.keys(playToWinGames);
   const checkedOutP2W = [];
