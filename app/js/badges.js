@@ -846,22 +846,6 @@ function generateListOfP2WInLibrary() {
   });
 }
 
-function sendSMS(number, game, name) {
-  const query = `number=${number}&game=${game}&name=${name}`;
-
-  fetch(`https://serene-fortress-48905.herokuapp.com/sms?${query}`, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-          "Content-Type": "application/json",
-      },
-      body: "This is broken anyway",
-  }).then(function (response) {
-    console.log(`${name} was notified that they won ${game} at ${number}`);
-    return response;
-  });
-}
-
 // End winners section Functions
 
 // Start Current Log Section
