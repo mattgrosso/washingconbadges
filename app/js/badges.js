@@ -711,7 +711,9 @@ document.querySelector('#lookup-user').addEventListener('click', function (event
 
   let badgeCode = document.querySelector('.user-lookup-section form input').value;
 
-  findRowForBadge(badgeCode);
+  badgeWon(badgeCode).then(function () {
+    findRowForBadge(badgeCode);
+  });
 });
 
 function findRowForBadge(badgeCode) {
