@@ -620,7 +620,15 @@ document.querySelector('#return-game').addEventListener('click', function (event
     return;
   }
 
-  returnGame(badgeCode, gameCode);
+  if (checkP2WFlag()) {
+    if (playToWinGames[gameCode]) {
+      generateWinnersForArray([gameCode]);
+    }
+
+    badgeWon(badgeCode).then(function () {
+      returnGame(badgeCode, gameCode);
+    });
+  }
 });
 
 function returnGame(badgeCode, gameCode) {
@@ -679,10 +687,12 @@ function addGameToHistory(badgeCode, rowNumber, gameCode) {
 }
 
 function confirmGameReturned() {
-  displayMessage(
-    'Hope you enjoyed the game!',
-    null,
-    2000);
+  if (!isMessageShowing()) {
+    displayMessage(
+      'Hope you enjoyed the game!',
+      null,
+      2000);
+  }
   setTimeout(function () {
     backToStartOf('returns');
   }, 2000);
@@ -1060,6 +1070,43 @@ function generateWinnersForArray(arrayOfGames) {
 }
 
 /**
+ * Checks given badge number against list of P2W winners and returns the games won
+ * @param  {String}  badgeCode
+ */
+function badgeWon(badgeCode) {
+  return getFromGoogle('K1').then(function (data) {
+    if (!data.result.values) {
+      console.log('There is nothing in the winners array yet.');
+      return false;
+    }
+
+    const drawingsArray = JSON.parse(data.result.values[0]);
+
+    return drawingsArray.filter(function (drawing) {    // Given a list of drawings give me back a list of drawings that match this logic:
+      const winnerBadges = JSON.parse(drawing.winner[5]);
+
+      return winnerBadges.some(function (badge) {       // Look through the winner's badge list
+        return badge === badgeCode;                     // Tell me if the badge list contains any badges that match badgeCode
+      });
+    });
+  }).then(function (badgesWon) {
+    if (badgesWon.length) {
+      let gameTitlesString = "";
+
+      badgesWon.forEach(function (each) {
+        if (!gameTitlesString) {
+          gameTitlesString = each.gameTitle;
+        } else {
+          gameTitlesString = gameTitlesString.concat(' and ', each.gameTitle);
+        }
+      });
+
+      displayMessage("You Won!", `This person won ${gameTitlesString}`, 20000);
+    }
+  });
+}
+
+/**
  * Adds value to array of values in single cell
  */
 function addValueToArrayCell(value, cell, index, callBack) {
@@ -1224,5 +1271,11 @@ function randomNumberNotInArray(cap, array) {
 
 function timeStampToMinutesAgo(timestamp) {
   return `${Math.floor((Date.now() - timestamp)/1000/60)} minutes ago`;
+}
+
+function isMessageShowing() {
+  const messageContent = document.querySelector('.message-content');
+
+  return !messageContent.classList.contains('hidden');
 }
 // End Utility Functions
