@@ -4,8 +4,7 @@ var sass = require('gulp-sass');
 var del = require('del');
 var notify = require('gulp-notify');
 
-
-gulp.task('sass', function () {
+function runSass() {
   return gulp.src('app/scss/styles.scss')
     .pipe(sass())
     .pipe(gulp.dest('app/css'))
@@ -15,7 +14,10 @@ gulp.task('sass', function () {
     .pipe(notify('Sass Compiled!', {
       wait: false
     }));
-});
+}
+
+gulp.task('sass', runSass);
+
 
 gulp.task('browserSync', function () {
   browserSync.init({
@@ -30,8 +32,11 @@ gulp.task('clean:dist', function() {
   return del.sync('dist');
 });
 
-gulp.task('watch', ['browserSync', 'sass'], function () {
-  gulp.watch('app/scss/**/*.scss', ['sass']);
-  gulp.watch('app/*.html', browserSync.reload);
-  gulp.watch('app/js/**/*.js', browserSync.reload);
+gulp.task('watch', function(){
+    console.log('watch ran!');
+    gulp.parallel(gulp.task('browserSync'), gulp.task('sass'))();
+    gulp.watch('app/scss/**/*.scss', runSass)
+    gulp.watch('app/*.html', browserSync.reload);
+    gulp.watch('app/js/**/*.js', browserSync.reload);
+    console.log('watch finished!');
 });

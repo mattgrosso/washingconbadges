@@ -21,12 +21,12 @@
   "devDependencies": {
     "browser-sync": "^2.26.7",
     "del": "^3.0.0",
-    "gulp": "3.9.1",
     "gulp-notify": "^3.2.0",
     "gulp-sass": "^4.0.1",
     "natives": "^1.1.6"
   },
   "dependencies": {
+    "gulp": "^4.0.2",
     "http-serve": "^1.0.1"
   }
 }
